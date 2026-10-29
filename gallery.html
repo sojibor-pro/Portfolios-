@@ -1,0 +1,701 @@
+<!doctype html>
+<html lang="en" data-theme="dark">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Photography &amp; Visual Archives | MD Sojibor Rahman</title>
+    <meta name="description" content="Visual stories, street documentary, portraiture, and architectural geometry by MD Sojibor Rahman. Connect your Google Sheet or Excel photography catalog live." />
+
+    <!-- Google Fonts: Inter & Playfair Display -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400;1,600&display=swap" rel="stylesheet" />
+
+    <!-- DaisyUI CDN -->
+    <link href="https://cdn.jsdelivr.net/npm/daisyui@4.12.23/dist/full.min.css" rel="stylesheet" type="text/css" />
+
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+
+    <!-- SheetJS & PapaParse for Excel (.xlsx) and Google Sheets (CSV) Integration -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/PapaParse/5.4.1/papaparse.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/xlsx@0.18.5/dist/xlsx.full.min.js"></script>
+
+    <script>
+      tailwind.config = {
+        darkMode: ['class', '[data-theme="dark"]'],
+        theme: {
+          extend: {
+            colors: {
+              amber: {
+                DEFAULT: '#E0A458',
+                accent: '#E0A458',
+                hover: '#C98D45',
+                light: '#F8E9D6',
+                muted: 'rgba(224, 164, 88, 0.12)'
+              },
+              sage: {
+                DEFAULT: '#7C9A7E',
+                secondary: '#7C9A7E'
+              },
+              midnight: '#0E0E10',
+              cream: '#F5F1EA',
+              offwhite: '#EDEDED'
+            },
+            fontFamily: {
+              serif: ['"Playfair Display"', 'Georgia', 'serif'],
+              sans: ['Inter', 'system-ui', '-apple-system', 'sans-serif'],
+            }
+          }
+        }
+      };
+    </script>
+
+    <style>
+      :root, [data-theme="light"] {
+        --color-bg-base: #F5F1EA;
+        --color-bg-card: #FAF7F2;
+        --color-bg-surface: #FFFFFF;
+        --color-text-main: #0E0E10;
+        --color-text-muted: #575762;
+        --color-border: rgba(14, 14, 16, 0.10);
+        --nav-glass-bg: rgba(245, 241, 234, 0.92);
+      }
+
+      [data-theme="dark"] {
+        --color-bg-base: #0E0E10;
+        --color-bg-card: #18181E;
+        --color-bg-surface: #141418;
+        --color-text-main: #EDEDED;
+        --color-text-muted: #9D9DA8;
+        --color-border: rgba(237, 237, 237, 0.10);
+        --nav-glass-bg: rgba(14, 14, 16, 0.92);
+      }
+
+      body {
+        background-color: var(--color-bg-base);
+        color: var(--color-text-main);
+        font-family: 'Inter', system-ui, -apple-system, sans-serif;
+        transition: background-color 0.3s ease, color 0.3s ease;
+      }
+
+      h1, h2, h3, h4, .font-serif {
+        font-family: 'Playfair Display', Georgia, serif;
+      }
+
+      .glass-nav {
+        background: var(--nav-glass-bg);
+        backdrop-filter: blur(14px);
+        border-bottom: 1px solid var(--color-border);
+      }
+
+      .custom-card {
+        background-color: var(--color-bg-card);
+        border: 1px solid var(--color-border);
+        transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+      }
+
+      .custom-card:hover {
+        border-color: rgba(224, 164, 88, 0.45);
+        transform: translateY(-3px);
+      }
+
+      #lightbox-modal {
+        transition: opacity 0.25s ease, visibility 0.25s ease;
+      }
+      #lightbox-modal.active {
+        opacity: 1;
+        visibility: visible;
+        pointer-events: auto;
+      }
+    </style>
+  </head>
+  <body class="selection:bg-[#E0A458] selection:text-black antialiased">
+    
+    <!-- ================= NAVBAR ================= -->
+    <header class="fixed top-0 left-0 right-0 z-50 glass-nav transition-all duration-300">
+      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-20 flex items-center justify-between">
+        
+        <!-- Brand -->
+        <a href="index.html" class="group flex items-center gap-1 font-serif text-2xl tracking-tight font-bold transition-colors">
+          <span>Sojibor</span><span class="text-[#E0A458] text-3xl leading-none group-hover:scale-125 transition-transform duration-200">.</span>
+        </a>
+
+        <!-- Desktop Navigation Links (Consistent across all pages) -->
+        <nav class="hidden md:flex items-center space-x-7 text-sm font-medium">
+          <a href="index.html#home" class="hover:text-[#E0A458] transition-colors py-1">Home</a>
+          <a href="index.html#about" class="hover:text-[#E0A458] transition-colors py-1">About</a>
+          <a href="work.html" class="hover:text-[#E0A458] transition-colors py-1">Work</a>
+          <a href="index.html#research" class="hover:text-[#E0A458] transition-colors py-1">Research</a>
+          <a href="gallery.html" class="text-[#E0A458] font-semibold border-b-2 border-[#E0A458] py-1">Photography</a>
+          <a href="index.html#services" class="hover:text-[#E0A458] transition-colors py-1">Services</a>
+          <a href="index.html#contact" class="hover:text-[#E0A458] transition-colors py-1">Contact</a>
+        </nav>
+
+        <!-- Right Side: Connect Sheet, Theme Toggle & Let's Talk CTA -->
+        <div class="flex items-center gap-3 sm:gap-4">
+          <!-- Excel / Google Sheet Sync Button -->
+          <button 
+            id="open-sync-modal-btn"
+            class="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-semibold bg-[#E0A458]/15 hover:bg-[#E0A458]/25 text-[#E0A458] border border-[#E0A458]/30 transition-all"
+            title="Connect Google Sheet / Excel for Photography"
+          >
+            <svg class="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z" />
+            </svg>
+            <span class="hidden sm:inline">Sync Photos</span>
+          </button>
+
+          <!-- Theme Toggle Button -->
+          <button 
+            id="theme-toggle" 
+            aria-label="Toggle Dark/Light Mode" 
+            class="p-2.5 rounded-full border border-[var(--color-border)] hover:border-[#E0A458] bg-[var(--color-bg-card)] transition-colors focus:outline-none"
+            title="Toggle theme"
+          >
+            <svg id="sun-icon" class="w-4 h-4 hidden text-[#E0A458]" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z" />
+            </svg>
+            <svg id="moon-icon" class="w-4 h-4 text-[#0E0E10]" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z" />
+            </svg>
+          </button>
+
+          <!-- "Let's Talk" Button -->
+          <a 
+            href="index.html#contact" 
+            class="hidden sm:inline-flex items-center justify-center px-5 py-2.5 text-xs font-semibold uppercase tracking-wider text-black bg-[#E0A458] hover:bg-[#c88f47] transition-all rounded shadow-sm hover:shadow-md"
+          >
+            Let's Talk
+          </a>
+
+          <!-- Mobile Hamburger Toggle -->
+          <button 
+            id="mobile-menu-btn" 
+            aria-label="Open mobile menu" 
+            class="md:hidden p-2 rounded-lg border border-[var(--color-border)] text-current hover:text-[#E0A458] focus:outline-none"
+          >
+            <svg id="menu-icon-open" class="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16m-7 6h7" />
+            </svg>
+            <svg id="menu-icon-close" class="w-6 h-6 hidden" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+            </svg>
+          </button>
+        </div>
+      </div>
+
+      <!-- Mobile Dropdown Navigation -->
+      <div id="mobile-nav" class="hidden md:hidden px-6 pt-3 pb-6 border-b border-[var(--color-border)] bg-[var(--color-bg-base)]">
+        <div class="flex flex-col space-y-3.5 text-base font-medium">
+          <a href="index.html#home" class="mobile-link hover:text-[#E0A458] transition-colors py-1">Home</a>
+          <a href="index.html#about" class="mobile-link hover:text-[#E0A458] transition-colors py-1">About</a>
+          <a href="work.html" class="mobile-link hover:text-[#E0A458] transition-colors py-1">Work</a>
+          <a href="index.html#research" class="mobile-link hover:text-[#E0A458] transition-colors py-1">Research</a>
+          <a href="gallery.html" class="mobile-link text-[#E0A458] font-semibold transition-colors py-1">Photography</a>
+          <a href="index.html#services" class="mobile-link hover:text-[#E0A458] transition-colors py-1">Services</a>
+          <a href="index.html#contact" class="mobile-link hover:text-[#E0A458] transition-colors py-1">Contact</a>
+          <div class="pt-3">
+            <a href="index.html#contact" class="mobile-link block text-center py-2.5 text-xs font-semibold uppercase tracking-wider text-black bg-[#E0A458] hover:bg-[#c88f47] rounded">
+              Let's Talk
+            </a>
+          </div>
+        </div>
+      </div>
+    </header>
+
+    <main class="pt-32 pb-24 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto">
+      
+      <!-- Section Header -->
+      <div class="text-center max-w-3xl mx-auto mb-10">
+        <div class="inline-flex items-center gap-2 text-xs font-semibold uppercase tracking-widest text-[#E0A458] mb-3">
+          <span class="w-6 h-[2px] bg-[#E0A458]"></span>
+          Creative Passion &amp; Visual Diary
+          <span class="w-6 h-[2px] bg-[#E0A458]"></span>
+        </div>
+        <h1 class="text-4xl sm:text-5xl font-serif font-bold tracking-tight mb-4 text-[var(--color-text-main)]">
+          Selected Photography Works
+        </h1>
+        <p class="text-base text-[var(--color-text-muted)] max-w-2xl mx-auto">
+          Photography is my personal passion — not for sale. A visual archive capturing candid street stories, human emotion, and architectural light across Bangladesh.
+        </p>
+      </div>
+
+      <!-- Live Sheet Connection Status Bar -->
+      <div id="sheet-status-bar" class="max-w-4xl mx-auto mb-8 p-3 rounded-2xl bg-[var(--color-bg-card)] border border-[var(--color-border)] flex flex-wrap items-center justify-between gap-3 text-xs">
+        <div class="flex items-center gap-2.5">
+          <span id="data-source-dot" class="w-2.5 h-2.5 rounded-full bg-emerald-500 animate-pulse"></span>
+          <span id="data-source-label" class="text-[var(--color-text-main)] font-medium">Source: Curated Photography Gallery</span>
+          <span id="photo-count-badge" class="px-2 py-0.5 rounded bg-[#E0A458]/15 text-[#E0A458] font-mono text-[11px]">6 Photos</span>
+        </div>
+        <div class="flex items-center gap-2">
+          <button id="download-csv-template" class="hover:text-[#E0A458] transition-colors flex items-center gap-1 text-[11px]">
+            <svg class="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4" /></svg>
+            <span>Download Photo Excel Template</span>
+          </button>
+        </div>
+      </div>
+
+      <!-- Filters & Search -->
+      <div class="flex flex-col md:flex-row items-center justify-between gap-4 mb-10 max-w-5xl mx-auto">
+        <div class="flex flex-wrap items-center gap-2" id="filter-container">
+          <button class="filter-tab px-4 py-2 rounded-xl text-xs font-semibold bg-[#E0A458] text-black transition-all" data-category="all">All Photos</button>
+          <button class="filter-tab px-4 py-2 rounded-xl text-xs font-semibold border border-[var(--color-border)] text-[var(--color-text-muted)] hover:border-[#E0A458] transition-all" data-category="street">Street &amp; Documentary</button>
+          <button class="filter-tab px-4 py-2 rounded-xl text-xs font-semibold border border-[var(--color-border)] text-[var(--color-text-muted)] hover:border-[#E0A458] transition-all" data-category="portrait">Portraiture</button>
+          <button class="filter-tab px-4 py-2 rounded-xl text-xs font-semibold border border-[var(--color-border)] text-[var(--color-text-muted)] hover:border-[#E0A458] transition-all" data-category="textile">Textile &amp; Craft</button>
+          <button class="filter-tab px-4 py-2 rounded-xl text-xs font-semibold border border-[var(--color-border)] text-[var(--color-text-muted)] hover:border-[#E0A458] transition-all" data-category="architecture">Architecture</button>
+        </div>
+
+        <div class="w-full md:w-72 relative">
+          <input 
+            type="text" 
+            id="photo-search-input" 
+            placeholder="Search photos or gear..."
+            class="w-full pl-9 pr-4 py-2 text-xs rounded-xl border border-[var(--color-border)] bg-[var(--color-bg-card)] text-[var(--color-text-main)] placeholder-[var(--color-text-muted)] focus:outline-none focus:border-[#E0A458] transition-colors"
+          />
+          <svg class="w-4 h-4 absolute left-3 top-2.5 text-[var(--color-text-muted)]" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+          </svg>
+        </div>
+      </div>
+
+      <!-- Photo Masonry Grid -->
+      <div id="photos-grid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 sm:gap-8">
+        <!-- Rendered dynamically -->
+      </div>
+
+      <!-- Empty State -->
+      <div id="photo-empty-state" class="hidden text-center py-20">
+        <p class="text-base text-[var(--color-text-muted)] mb-3">No photographs found matching your filter.</p>
+        <button id="reset-filter-btn" class="text-xs font-semibold text-[#E0A458] hover:underline">Reset Search &amp; Filters</button>
+      </div>
+
+    </main>
+
+    <!-- Lightbox Modal -->
+    <div id="lightbox-modal" class="fixed inset-0 z-50 bg-black/95 backdrop-blur-md opacity-0 pointer-events-none invisible flex items-center justify-center p-4">
+      <button id="lightbox-close" class="absolute top-6 right-6 p-3 rounded-full text-white/80 hover:text-white bg-white/10" aria-label="Close">
+        <svg class="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" /></svg>
+      </button>
+      <div class="relative max-w-5xl max-h-[85vh] flex flex-col items-center">
+        <img id="lightbox-img" src="" alt="Enlarged" class="max-w-full max-h-[72vh] object-contain rounded-xl shadow-2xl" />
+        <div class="mt-4 text-center">
+          <p id="lightbox-caption" class="text-white font-serif text-lg"></p>
+          <p id="lightbox-meta" class="text-[#E0A458] text-xs font-mono mt-1"></p>
+        </div>
+      </div>
+    </div>
+
+    <!-- Google Sheet / Excel Modal -->
+    <div id="sync-modal" class="fixed inset-0 z-50 bg-black/80 backdrop-blur-sm opacity-0 pointer-events-none invisible flex items-center justify-center p-4 transition-all">
+      <div class="custom-card rounded-3xl p-6 sm:p-8 max-w-lg w-full relative">
+        <button id="close-sync-modal" class="absolute top-5 right-5 text-gray-400 hover:text-white" aria-label="Close">
+          <svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" /></svg>
+        </button>
+
+        <div class="flex items-center gap-3 mb-4">
+          <div class="w-10 h-10 rounded-xl bg-[#E0A458]/20 text-[#E0A458] flex items-center justify-center">
+            <svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z" />
+            </svg>
+          </div>
+          <div>
+            <h3 class="font-serif font-bold text-xl text-[var(--color-text-main)]">Connect Photography Spreadsheet</h3>
+            <p class="text-xs text-[var(--color-text-muted)]">Live dynamic data for your photo gallery</p>
+          </div>
+        </div>
+
+        <div class="space-y-4 text-xs text-[var(--color-text-muted)]">
+          <div>
+            <label class="block font-medium text-[var(--color-text-main)] mb-1">
+              Option 1: Paste Google Sheet Published CSV Link
+            </label>
+            <p class="text-[11px] mb-2 text-gray-400">
+              In Google Sheets: <em>File → Share → Publish to web → Link: Comma-separated values (.csv)</em>
+            </p>
+            <input 
+              type="url" 
+              id="sheet-url-input" 
+              placeholder="https://docs.google.com/spreadsheets/d/e/.../pub?output=csv"
+              class="w-full px-3 py-2 rounded-xl border border-[var(--color-border)] bg-[var(--color-bg-base)] text-[var(--color-text-main)] text-xs focus:outline-none focus:border-[#E0A458]"
+            />
+            <button 
+              id="btn-fetch-sheet" 
+              class="mt-2 w-full py-2.5 rounded-xl bg-[#E0A458] text-black font-semibold text-xs hover:bg-[#c88f47] transition-all"
+            >
+              Fetch Live Google Sheet Photos
+            </button>
+          </div>
+
+          <div class="relative flex py-1 items-center">
+            <div class="flex-grow border-t border-[var(--color-border)]"></div>
+            <span class="flex-shrink mx-3 text-[10px] text-gray-500 uppercase font-mono">or upload local file</span>
+            <div class="flex-grow border-t border-[var(--color-border)]"></div>
+          </div>
+
+          <div>
+            <label class="block font-medium text-[var(--color-text-main)] mb-1">
+              Option 2: Upload Excel (.xlsx) or CSV File
+            </label>
+            <input 
+              type="file" 
+              id="excel-file-input" 
+              accept=".csv, .xlsx, .xls" 
+              class="w-full text-xs file:mr-3 file:py-2 file:px-4 file:rounded-lg file:border-0 file:text-xs file:font-semibold file:bg-[#E0A458]/20 file:text-[#E0A458] hover:file:bg-[#E0A458]/30"
+            />
+          </div>
+
+          <div class="pt-2 flex justify-between items-center">
+            <button id="btn-reset-default" class="text-xs text-red-400 hover:underline">
+              Restore Default Gallery
+            </button>
+            <button id="btn-download-sample-csv" class="text-xs text-[#E0A458] hover:underline font-mono">
+              Download Sample Spreadsheet
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Footer -->
+    <footer class="border-t border-[var(--color-border)] py-10 px-4 text-center text-xs text-[var(--color-text-muted)]">
+      © 2026 MD Sojibor Rahman · Made in Dhaka · <a href="index.html" class="text-[#E0A458] hover:underline">Return to Main Portfolio</a>
+    </footer>
+
+    <!-- Scripts -->
+    <script>
+      const DEFAULT_PHOTOS = [
+        {
+          title: "Streets of Old Dhaka",
+          category: "street",
+          caption: "Streets of Old Dhaka · Golden hour shadows and motion",
+          meta: "Old Dhaka · 35mm f/2.0",
+          full: "https://images.unsplash.com/photo-1509316975850-ff9c5deb0cd9?auto=format&fit=crop&w=1600&q=85",
+          thumb: "https://images.unsplash.com/photo-1509316975850-ff9c5deb0cd9?auto=format&fit=crop&w=800&q=80"
+        },
+        {
+          title: "Handloom Weave Textures",
+          category: "textile",
+          caption: "Handloom Weave Textures · Tangail weavers at work",
+          meta: "Tangail, Bangladesh · 50mm f/1.8",
+          full: "https://images.unsplash.com/photo-1606760227091-3dd870d97f1d?auto=format&fit=crop&w=1600&q=85",
+          thumb: "https://images.unsplash.com/photo-1606760227091-3dd870d97f1d?auto=format&fit=crop&w=800&q=80"
+        },
+        {
+          title: "Studio Portraiture",
+          category: "portrait",
+          caption: "Studio Portraiture · Natural ambient light & quiet contemplation",
+          meta: "Studio Session · 85mm f/1.4",
+          full: "https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=1600&q=85",
+          thumb: "https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=800&q=80"
+        },
+        {
+          title: "Architectural Shadows",
+          category: "architecture",
+          caption: "Architectural Geometry · Light, angles and brutalist structures",
+          meta: "National Parliament · 24mm f/4.0",
+          full: "https://images.unsplash.com/photo-1513694203232-719a280e022f?auto=format&fit=crop&w=1600&q=85",
+          thumb: "https://images.unsplash.com/photo-1513694203232-719a280e022f?auto=format&fit=crop&w=800&q=80"
+        },
+        {
+          title: "Serene River Dusk",
+          category: "street",
+          caption: "Serene Waters · Quiet dawn on the Meghna riverbanks",
+          meta: "Meghna River · 50mm f/2.8",
+          full: "https://images.unsplash.com/photo-1507525428034-b723cf961d3e?auto=format&fit=crop&w=1600&q=85",
+          thumb: "https://images.unsplash.com/photo-1507525428034-b723cf961d3e?auto=format&fit=crop&w=800&q=80"
+        },
+        {
+          title: "Rainy Night Solitude",
+          category: "street",
+          caption: "Night Reflections · Dhaka rainy night urban silhouettes",
+          meta: "Dhanmondi, Dhaka · 35mm f/1.4",
+          full: "https://images.unsplash.com/photo-1519501025264-65ba15a82390?auto=format&fit=crop&w=1600&q=85",
+          thumb: "https://images.unsplash.com/photo-1519501025264-65ba15a82390?auto=format&fit=crop&w=800&q=80"
+        }
+      ];
+
+      let currentPhotos = [];
+      let activeCategory = 'all';
+      let searchQuery = '';
+
+      const gridEl = document.getElementById('photos-grid');
+      const emptyStateEl = document.getElementById('photo-empty-state');
+      const countBadge = document.getElementById('photo-count-badge');
+      const sourceLabel = document.getElementById('data-source-label');
+      const searchInput = document.getElementById('photo-search-input');
+      const filterTabs = document.querySelectorAll('.filter-tab');
+      const syncModal = document.getElementById('sync-modal');
+      const openSyncModalBtn = document.getElementById('open-sync-modal-btn');
+      const closeSyncModal = document.getElementById('close-sync-modal');
+
+      function initPhotos() {
+        const stored = localStorage.getItem('sojibor_gallery_photos');
+        const storedUrl = localStorage.getItem('sojibor_gallery_sheet_url');
+
+        if (storedUrl) {
+          fetchSheetData(storedUrl, false);
+        } else if (stored) {
+          try {
+            currentPhotos = JSON.parse(stored);
+            sourceLabel.textContent = "Source: Custom Spreadsheet Photos";
+          } catch(e) {
+            currentPhotos = DEFAULT_PHOTOS;
+          }
+          renderPhotos();
+        } else {
+          currentPhotos = DEFAULT_PHOTOS;
+          renderPhotos();
+        }
+      }
+
+      function renderPhotos() {
+        const filtered = currentPhotos.filter(p => {
+          const matchCategory = activeCategory === 'all' || p.category.toLowerCase().includes(activeCategory.toLowerCase());
+          const query = searchQuery.toLowerCase();
+          const matchSearch = !query || 
+            p.title.toLowerCase().includes(query) ||
+            (p.caption && p.caption.toLowerCase().includes(query)) ||
+            (p.meta && p.meta.toLowerCase().includes(query));
+          return matchCategory && matchSearch;
+        });
+
+        countBadge.textContent = `${filtered.length} Photos`;
+
+        if (filtered.length === 0) {
+          gridEl.innerHTML = '';
+          emptyStateEl.classList.remove('hidden');
+          return;
+        }
+
+        emptyStateEl.classList.add('hidden');
+        gridEl.innerHTML = filtered.map((item, idx) => `
+          <div 
+            class="gallery-item group relative rounded-2xl overflow-hidden cursor-pointer custom-card aspect-[4/5]"
+            data-full="${item.full || item.thumb}"
+            data-caption="${item.caption || item.title}"
+            data-meta="${item.meta || ''}"
+          >
+            <img 
+              src="${item.thumb || item.full}" 
+              alt="${item.title}" 
+              class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700"
+              onerror="this.src='https://images.unsplash.com/photo-1516035069371-29a1b244cc32?auto=format&fit=crop&w=800&q=80'"
+            />
+            <div class="absolute inset-0 bg-gradient-to-t from-black/85 via-black/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex flex-col justify-end p-6">
+              <span class="text-xs text-[#E0A458] font-mono mb-1 uppercase tracking-wider">${item.category || 'Photography'}</span>
+              <h4 class="text-white font-serif text-lg font-semibold">${item.title}</h4>
+              <p class="text-gray-300 text-xs mt-1">${item.meta || 'Click to view full image'}</p>
+            </div>
+          </div>
+        `).join('');
+
+        // Re-attach lightbox handlers
+        document.querySelectorAll('.gallery-item').forEach(el => {
+          el.addEventListener('click', () => {
+            openLightbox(el.getAttribute('data-full'), el.getAttribute('data-caption'), el.getAttribute('data-meta'));
+          });
+        });
+      }
+
+      // Filter tabs
+      filterTabs.forEach(tab => {
+        tab.addEventListener('click', () => {
+          activeCategory = tab.getAttribute('data-category');
+          filterTabs.forEach(t => t.className = 'filter-tab px-4 py-2 rounded-xl text-xs font-semibold border border-[var(--color-border)] text-[var(--color-text-muted)] hover:border-[#E0A458] transition-all');
+          tab.className = 'filter-tab px-4 py-2 rounded-xl text-xs font-semibold bg-[#E0A458] text-black transition-all';
+          renderPhotos();
+        });
+      });
+
+      // Search
+      searchInput.addEventListener('input', (e) => {
+        searchQuery = e.target.value;
+        renderPhotos();
+      });
+
+      document.getElementById('reset-filter-btn').addEventListener('click', () => {
+        searchQuery = '';
+        searchInput.value = '';
+        activeCategory = 'all';
+        filterTabs[0].click();
+      });
+
+      // Lightbox
+      const modal = document.getElementById('lightbox-modal');
+      const img = document.getElementById('lightbox-img');
+      const cap = document.getElementById('lightbox-caption');
+      const meta = document.getElementById('lightbox-meta');
+      const closeBtn = document.getElementById('lightbox-close');
+
+      function openLightbox(fullSrc, captionText, metaText) {
+        img.src = fullSrc;
+        cap.textContent = captionText || '';
+        meta.textContent = metaText || '';
+        modal.classList.add('active');
+        document.body.style.overflow = 'hidden';
+      }
+
+      function closeModal() {
+        modal.classList.remove('active');
+        document.body.style.overflow = '';
+      }
+
+      closeBtn.addEventListener('click', closeModal);
+      modal.addEventListener('click', (e) => { if (e.target === modal) closeModal(); });
+      window.addEventListener('keydown', (e) => { if (e.key === 'Escape') closeModal(); });
+
+      // Modal Controls
+      openSyncModalBtn.addEventListener('click', () => syncModal.classList.add('active', 'opacity-100', '!visible', '!pointer-events-auto'));
+      closeSyncModal.addEventListener('click', () => syncModal.classList.remove('active', 'opacity-100', '!visible', '!pointer-events-auto'));
+      syncModal.addEventListener('click', (e) => {
+        if (e.target === syncModal) syncModal.classList.remove('active', 'opacity-100', '!visible', '!pointer-events-auto');
+      });
+
+      // Fetch Sheet CSV
+      function fetchSheetData(url, saveUrl = true) {
+        Papa.parse(url, {
+          download: true,
+          header: true,
+          skipEmptyLines: true,
+          complete: function(results) {
+            if (results.data && results.data.length > 0) {
+              currentPhotos = results.data.map(row => ({
+                title: row.Title || row.title || 'Untitled Photo',
+                category: (row.Category || row.category || 'street').toLowerCase(),
+                caption: row.Caption || row.caption || row.Title || '',
+                meta: row.Meta || row.Gear || row.Location || row.meta || '',
+                full: row.FullImageUrl || row.ImageUrl || row.Image || row.full || 'https://images.unsplash.com/photo-1516035069371-29a1b244cc32?auto=format&fit=crop&w=1600&q=85',
+                thumb: row.ThumbnailUrl || row.ImageUrl || row.Image || row.thumb || 'https://images.unsplash.com/photo-1516035069371-29a1b244cc32?auto=format&fit=crop&w=800&q=80'
+              }));
+              if (saveUrl) localStorage.setItem('sojibor_gallery_sheet_url', url);
+              localStorage.setItem('sojibor_gallery_photos', JSON.stringify(currentPhotos));
+              sourceLabel.textContent = "Source: Live Google Sheet (CSV)";
+              renderPhotos();
+              syncModal.classList.remove('active', 'opacity-100', '!visible', '!pointer-events-auto');
+              alert(`Successfully connected! Loaded ${currentPhotos.length} photos from Google Sheets.`);
+            }
+          },
+          error: function(err) {
+            alert("Error fetching Google Sheet CSV. Please ensure it is published to the web as CSV: " + err);
+          }
+        });
+      }
+
+      document.getElementById('btn-fetch-sheet').addEventListener('click', () => {
+        const url = document.getElementById('sheet-url-input').value.trim();
+        if (!url) return alert("Please enter a valid published Google Sheets CSV URL.");
+        fetchSheetData(url);
+      });
+
+      // Local Excel File Upload
+      document.getElementById('excel-file-input').addEventListener('change', (e) => {
+        const file = e.target.files[0];
+        if (!file) return;
+
+        const reader = new FileReader();
+        reader.onload = function(event) {
+          const data = new Uint8Array(event.target.result);
+          const workbook = XLSX.read(data, { type: 'array' });
+          const firstSheet = workbook.SheetNames[0];
+          const worksheet = workbook.Sheets[firstSheet];
+          const json = XLSX.utils.sheet_to_json(worksheet);
+
+          if (json.length > 0) {
+            currentPhotos = json.map(row => ({
+              title: row.Title || row.title || 'Untitled Photo',
+              category: (row.Category || row.category || 'street').toLowerCase(),
+              caption: row.Caption || row.caption || row.Title || '',
+              meta: row.Meta || row.Gear || row.Location || row.meta || '',
+              full: row.FullImageUrl || row.ImageUrl || row.Image || row.full || 'https://images.unsplash.com/photo-1516035069371-29a1b244cc32?auto=format&fit=crop&w=1600&q=85',
+              thumb: row.ThumbnailUrl || row.ImageUrl || row.Image || row.thumb || 'https://images.unsplash.com/photo-1516035069371-29a1b244cc32?auto=format&fit=crop&w=800&q=80'
+            }));
+            localStorage.setItem('sojibor_gallery_photos', JSON.stringify(currentPhotos));
+            localStorage.removeItem('sojibor_gallery_sheet_url');
+            sourceLabel.textContent = `Source: Uploaded File (${file.name})`;
+            renderPhotos();
+            syncModal.classList.remove('active', 'opacity-100', '!visible', '!pointer-events-auto');
+            alert(`Loaded ${currentPhotos.length} photos from ${file.name}`);
+          }
+        };
+        reader.readAsArrayBuffer(file);
+      });
+
+      // Reset
+      document.getElementById('btn-reset-default').addEventListener('click', () => {
+        localStorage.removeItem('sojibor_gallery_photos');
+        localStorage.removeItem('sojibor_gallery_sheet_url');
+        currentPhotos = DEFAULT_PHOTOS;
+        sourceLabel.textContent = "Source: Curated Photography Gallery";
+        renderPhotos();
+        syncModal.classList.remove('active', 'opacity-100', '!visible', '!pointer-events-auto');
+        alert("Restored default gallery.");
+      });
+
+      // Sample CSV Template Download
+      function downloadPhotoTemplate() {
+        const csvContent = "Title,Category,Caption,Location,Gear,FullImageUrl,ThumbnailUrl\n" +
+          '"Streets of Old Dhaka","street","Streets of Old Dhaka · Golden hour shadows","Dhaka, Bangladesh","35mm f/2.0","https://images.unsplash.com/photo-1509316975850-ff9c5deb0cd9?auto=format&fit=crop&w=1600&q=85","https://images.unsplash.com/photo-1509316975850-ff9c5deb0cd9?auto=format&fit=crop&w=800&q=80"\n' +
+          '"Handloom Weave Textures","textile","Handloom Weave Textures · Tangail weavers at work","Tangail","50mm f/1.8","https://images.unsplash.com/photo-1606760227091-3dd870d97f1d?auto=format&fit=crop&w=1600&q=85","https://images.unsplash.com/photo-1606760227091-3dd870d97f1d?auto=format&fit=crop&w=800&q=80"\n' +
+          '"Studio Portraiture","portrait","Studio Portraiture · Natural ambient light","Studio Session","85mm f/1.4","https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=1600&q=85","https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=800&q=80"\n';
+
+        const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
+        const url = URL.createObjectURL(blob);
+        const a = document.createElement('a');
+        a.href = url;
+        a.download = 'sojibor_photography_catalog_template.csv';
+        a.click();
+        URL.revokeObjectURL(url);
+      }
+
+      document.getElementById('download-csv-template').addEventListener('click', downloadPhotoTemplate);
+      document.getElementById('btn-download-sample-csv').addEventListener('click', downloadPhotoTemplate);
+
+      // Theme toggle
+      const themeToggleBtn = document.getElementById('theme-toggle');
+      const sunIcon = document.getElementById('sun-icon');
+      const moonIcon = document.getElementById('moon-icon');
+
+      function applyTheme(theme) {
+        document.documentElement.setAttribute('data-theme', theme);
+        localStorage.setItem('theme', theme);
+        if (theme === 'dark') {
+          sunIcon.classList.remove('hidden');
+          moonIcon.classList.add('hidden');
+        } else {
+          sunIcon.classList.add('hidden');
+          moonIcon.classList.remove('hidden');
+        }
+      }
+
+      applyTheme(localStorage.getItem('theme') || 'dark');
+      themeToggleBtn.addEventListener('click', () => {
+        const next = document.documentElement.getAttribute('data-theme') === 'dark' ? 'light' : 'dark';
+        applyTheme(next);
+      });
+
+      // Mobile Menu Toggle
+      const mobileMenuBtn = document.getElementById('mobile-menu-btn');
+      const mobileNav = document.getElementById('mobile-nav');
+      const menuIconOpen = document.getElementById('menu-icon-open');
+      const menuIconClose = document.getElementById('menu-icon-close');
+
+      if (mobileMenuBtn && mobileNav) {
+        mobileMenuBtn.addEventListener('click', () => {
+          const isOpen = !mobileNav.classList.contains('hidden');
+          if (isOpen) {
+            mobileNav.classList.add('hidden');
+            if (menuIconOpen) menuIconOpen.classList.remove('hidden');
+            if (menuIconClose) menuIconClose.classList.add('hidden');
+          } else {
+            mobileNav.classList.remove('hidden');
+            if (menuIconOpen) menuIconOpen.classList.add('hidden');
+            if (menuIconClose) menuIconClose.classList.remove('hidden');
+          }
+        });
+      }
+
+      document.addEventListener('DOMContentLoaded', initPhotos);
+    </script>
+  </body>
+</html>

@@ -1,0 +1,664 @@
+<!doctype html>
+<html lang="en" data-theme="dark">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Selected Web Work &amp; Case Studies | MD Sojibor Rahman</title>
+    <meta name="description" content="Explore WordPress projects, custom web apps, WooCommerce stores, and LMS platforms developed by MD Sojibor Rahman. Connect your Google Sheet or Excel data live." />
+
+    <!-- Google Fonts: Inter & Playfair Display -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400;1,600&display=swap" rel="stylesheet" />
+
+    <!-- DaisyUI CDN -->
+    <link href="https://cdn.jsdelivr.net/npm/daisyui@4.12.23/dist/full.min.css" rel="stylesheet" type="text/css" />
+
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+
+    <!-- SheetJS & PapaParse for Excel (.xlsx) and Google Sheets (CSV) Integration -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/PapaParse/5.4.1/papaparse.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/xlsx@0.18.5/dist/xlsx.full.min.js"></script>
+
+    <script>
+      tailwind.config = {
+        darkMode: ['class', '[data-theme="dark"]'],
+        theme: {
+          extend: {
+            colors: {
+              amber: {
+                DEFAULT: '#E0A458',
+                accent: '#E0A458',
+                hover: '#C98D45',
+                light: '#F8E9D6',
+                muted: 'rgba(224, 164, 88, 0.12)'
+              },
+              sage: {
+                DEFAULT: '#7C9A7E',
+                secondary: '#7C9A7E'
+              },
+              midnight: '#0E0E10',
+              cream: '#F5F1EA',
+              offwhite: '#EDEDED'
+            },
+            fontFamily: {
+              serif: ['"Playfair Display"', 'Georgia', 'serif'],
+              sans: ['Inter', 'system-ui', '-apple-system', 'sans-serif'],
+            }
+          }
+        }
+      };
+    </script>
+
+    <style>
+      :root, [data-theme="light"] {
+        --color-bg-base: #F5F1EA;
+        --color-bg-card: #FAF7F2;
+        --color-bg-surface: #FFFFFF;
+        --color-text-main: #0E0E10;
+        --color-text-muted: #575762;
+        --color-border: rgba(14, 14, 16, 0.10);
+        --nav-glass-bg: rgba(245, 241, 234, 0.92);
+      }
+
+      [data-theme="dark"] {
+        --color-bg-base: #0E0E10;
+        --color-bg-card: #18181E;
+        --color-bg-surface: #141418;
+        --color-text-main: #EDEDED;
+        --color-text-muted: #9D9DA8;
+        --color-border: rgba(237, 237, 237, 0.10);
+        --nav-glass-bg: rgba(14, 14, 16, 0.92);
+      }
+
+      body {
+        background-color: var(--color-bg-base);
+        color: var(--color-text-main);
+        font-family: 'Inter', system-ui, -apple-system, sans-serif;
+        transition: background-color 0.3s ease, color 0.3s ease;
+      }
+
+      h1, h2, h3, h4, .font-serif {
+        font-family: 'Playfair Display', Georgia, serif;
+      }
+
+      .glass-nav {
+        background: var(--nav-glass-bg);
+        backdrop-filter: blur(14px);
+        border-bottom: 1px solid var(--color-border);
+      }
+
+      .custom-card {
+        background-color: var(--color-bg-card);
+        border: 1px solid var(--color-border);
+        transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+      }
+
+      .custom-card:hover {
+        border-color: rgba(224, 164, 88, 0.45);
+        transform: translateY(-3px);
+      }
+    </style>
+  </head>
+  <body class="selection:bg-[#E0A458] selection:text-black antialiased">
+    
+    <!-- ================= NAVBAR ================= -->
+    <header class="fixed top-0 left-0 right-0 z-50 glass-nav transition-all duration-300">
+      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-20 flex items-center justify-between">
+        
+        <!-- Brand -->
+        <a href="index.html" class="group flex items-center gap-1 font-serif text-2xl tracking-tight font-bold transition-colors">
+          <span>Sojibor</span><span class="text-[#E0A458] text-3xl leading-none group-hover:scale-125 transition-transform duration-200">.</span>
+        </a>
+
+        <!-- Desktop Navigation Links (Consistent across all pages) -->
+        <nav class="hidden md:flex items-center space-x-7 text-sm font-medium">
+          <a href="index.html#home" class="hover:text-[#E0A458] transition-colors py-1">Home</a>
+          <a href="index.html#about" class="hover:text-[#E0A458] transition-colors py-1">About</a>
+          <a href="work.html" class="text-[#E0A458] font-semibold border-b-2 border-[#E0A458] py-1">Work</a>
+          <a href="index.html#research" class="hover:text-[#E0A458] transition-colors py-1">Research</a>
+          <a href="gallery.html" class="hover:text-[#E0A458] transition-colors py-1">Photography</a>
+          <a href="index.html#services" class="hover:text-[#E0A458] transition-colors py-1">Services</a>
+          <a href="index.html#contact" class="hover:text-[#E0A458] transition-colors py-1">Contact</a>
+        </nav>
+
+        <!-- Right Side: Connect Sheet, Theme Toggle & Let's Talk CTA -->
+        <div class="flex items-center gap-3 sm:gap-4">
+          <!-- Excel / Google Sheet Sync Button -->
+          <button 
+            id="open-sync-modal-btn"
+            class="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-semibold bg-[#7C9A7E]/20 hover:bg-[#7C9A7E]/30 text-[#7C9A7E] border border-[#7C9A7E]/30 transition-all"
+            title="Connect Google Sheet / Excel"
+          >
+            <svg class="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 17v-2m3 2v-4m3 4v-6m2 10H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+            </svg>
+            <span class="hidden sm:inline">Sync Sheet</span>
+          </button>
+
+          <!-- Theme Toggle Button -->
+          <button 
+            id="theme-toggle" 
+            aria-label="Toggle Dark/Light Mode" 
+            class="p-2.5 rounded-full border border-[var(--color-border)] hover:border-[#E0A458] bg-[var(--color-bg-card)] transition-colors focus:outline-none"
+            title="Toggle theme"
+          >
+            <svg id="sun-icon" class="w-4 h-4 hidden text-[#E0A458]" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z" />
+            </svg>
+            <svg id="moon-icon" class="w-4 h-4 text-[#0E0E10]" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z" />
+            </svg>
+          </button>
+
+          <!-- "Let's Talk" Button -->
+          <a 
+            href="index.html#contact" 
+            class="hidden sm:inline-flex items-center justify-center px-5 py-2.5 text-xs font-semibold uppercase tracking-wider text-black bg-[#E0A458] hover:bg-[#c88f47] transition-all rounded shadow-sm hover:shadow-md"
+          >
+            Let's Talk
+          </a>
+
+          <!-- Mobile Hamburger Toggle -->
+          <button 
+            id="mobile-menu-btn" 
+            aria-label="Open mobile menu" 
+            class="md:hidden p-2 rounded-lg border border-[var(--color-border)] text-current hover:text-[#E0A458] focus:outline-none"
+          >
+            <svg id="menu-icon-open" class="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16m-7 6h7" />
+            </svg>
+            <svg id="menu-icon-close" class="w-6 h-6 hidden" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+            </svg>
+          </button>
+        </div>
+      </div>
+
+      <!-- Mobile Dropdown Navigation -->
+      <div id="mobile-nav" class="hidden md:hidden px-6 pt-3 pb-6 border-b border-[var(--color-border)] bg-[var(--color-bg-base)]">
+        <div class="flex flex-col space-y-3.5 text-base font-medium">
+          <a href="index.html#home" class="mobile-link hover:text-[#E0A458] transition-colors py-1">Home</a>
+          <a href="index.html#about" class="mobile-link hover:text-[#E0A458] transition-colors py-1">About</a>
+          <a href="work.html" class="mobile-link text-[#E0A458] font-semibold transition-colors py-1">Work</a>
+          <a href="index.html#research" class="mobile-link hover:text-[#E0A458] transition-colors py-1">Research</a>
+          <a href="gallery.html" class="mobile-link hover:text-[#E0A458] transition-colors py-1">Photography</a>
+          <a href="index.html#services" class="mobile-link hover:text-[#E0A458] transition-colors py-1">Services</a>
+          <a href="index.html#contact" class="mobile-link hover:text-[#E0A458] transition-colors py-1">Contact</a>
+          <div class="pt-3">
+            <a href="index.html#contact" class="mobile-link block text-center py-2.5 text-xs font-semibold uppercase tracking-wider text-black bg-[#E0A458] hover:bg-[#c88f47] rounded">
+              Let's Talk
+            </a>
+          </div>
+        </div>
+      </div>
+    </header>
+
+    <main class="pt-32 pb-24 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto">
+      
+      <!-- Section Header -->
+      <div class="text-center max-w-3xl mx-auto mb-10">
+        <div class="inline-flex items-center gap-2 text-xs font-semibold uppercase tracking-widest text-[#E0A458] mb-3">
+          <span class="w-6 h-[2px] bg-[#E0A458]"></span>
+          Project Portfolio
+          <span class="w-6 h-[2px] bg-[#E0A458]"></span>
+        </div>
+        <h1 class="text-4xl sm:text-5xl font-serif font-bold tracking-tight mb-4 text-[var(--color-text-main)]">
+          All Web Work &amp; Case Studies
+        </h1>
+        <p class="text-base text-[var(--color-text-muted)]">
+          Comprehensive archive of custom WordPress applications, WooCommerce systems, learning platforms, and high-speed web solutions.
+        </p>
+      </div>
+
+      <!-- Live Sheet Connection Status Bar -->
+      <div id="sheet-status-bar" class="max-w-4xl mx-auto mb-8 p-3 rounded-2xl bg-[var(--color-bg-card)] border border-[var(--color-border)] flex flex-wrap items-center justify-between gap-3 text-xs">
+        <div class="flex items-center gap-2.5">
+          <span id="data-source-dot" class="w-2.5 h-2.5 rounded-full bg-emerald-500 animate-pulse"></span>
+          <span id="data-source-label" class="text-[var(--color-text-main)] font-medium">Source: Curated Portfolio Repository</span>
+          <span id="project-count-badge" class="px-2 py-0.5 rounded bg-[#E0A458]/15 text-[#E0A458] font-mono text-[11px]">3 Projects</span>
+        </div>
+        <div class="flex items-center gap-2">
+          <button id="download-csv-template" class="hover:text-[#E0A458] transition-colors flex items-center gap-1 text-[11px]">
+            <svg class="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4" /></svg>
+            <span>Download Excel Template</span>
+          </button>
+        </div>
+      </div>
+
+      <!-- Search & Category Filters -->
+      <div class="flex flex-col md:flex-row items-center justify-between gap-4 mb-10 max-w-5xl mx-auto">
+        <!-- Category Filters -->
+        <div class="flex flex-wrap items-center gap-2" id="filter-container">
+          <button class="filter-tab px-4 py-2 rounded-xl text-xs font-semibold bg-[#E0A458] text-black transition-all" data-category="all">All Projects</button>
+          <button class="filter-tab px-4 py-2 rounded-xl text-xs font-semibold border border-[var(--color-border)] text-[var(--color-text-muted)] hover:border-[#E0A458] transition-all" data-category="Custom Web App">Custom Web App</button>
+          <button class="filter-tab px-4 py-2 rounded-xl text-xs font-semibold border border-[var(--color-border)] text-[var(--color-text-muted)] hover:border-[#E0A458] transition-all" data-category="E-commerce">E-commerce</button>
+          <button class="filter-tab px-4 py-2 rounded-xl text-xs font-semibold border border-[var(--color-border)] text-[var(--color-text-muted)] hover:border-[#E0A458] transition-all" data-category="Learning Platform">Learning Platform</button>
+        </div>
+
+        <!-- Search Input -->
+        <div class="w-full md:w-72 relative">
+          <input 
+            type="text" 
+            id="work-search-input" 
+            placeholder="Search projects or stack..."
+            class="w-full pl-9 pr-4 py-2 text-xs rounded-xl border border-[var(--color-border)] bg-[var(--color-bg-card)] text-[var(--color-text-main)] placeholder-[var(--color-text-muted)] focus:outline-none focus:border-[#E0A458] transition-colors"
+          />
+          <svg class="w-4 h-4 absolute left-3 top-2.5 text-[var(--color-text-muted)]" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+          </svg>
+        </div>
+      </div>
+
+      <!-- Work Projects Grid -->
+      <div id="projects-grid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+        <!-- Rendered dynamically from Google Sheet / Excel or Default Repository -->
+      </div>
+
+      <!-- Empty State -->
+      <div id="work-empty-state" class="hidden text-center py-20">
+        <p class="text-base text-[var(--color-text-muted)] mb-3">No matching projects found.</p>
+        <button id="reset-filter-btn" class="text-xs font-semibold text-[#E0A458] hover:underline">Reset Search &amp; Filters</button>
+      </div>
+
+    </main>
+
+    <!-- Footer -->
+    <footer class="border-t border-[var(--color-border)] py-10 px-4 text-center text-xs text-[var(--color-text-muted)]">
+      © 2026 MD Sojibor Rahman · Made in Dhaka · <a href="index.html" class="text-[#E0A458] hover:underline">Return to Main Portfolio</a>
+    </footer>
+
+    <!-- Google Sheet / Excel Modal -->
+    <div id="sync-modal" class="fixed inset-0 z-50 bg-black/80 backdrop-blur-sm opacity-0 pointer-events-none invisible flex items-center justify-center p-4 transition-all">
+      <div class="custom-card rounded-3xl p-6 sm:p-8 max-w-lg w-full relative">
+        <button id="close-sync-modal" class="absolute top-5 right-5 text-gray-400 hover:text-white" aria-label="Close">
+          <svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" /></svg>
+        </button>
+
+        <div class="flex items-center gap-3 mb-4">
+          <div class="w-10 h-10 rounded-xl bg-[#7C9A7E]/20 text-[#7C9A7E] flex items-center justify-center">
+            <svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 17v-2m3 2v-4m3 4v-6m2 10H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+            </svg>
+          </div>
+          <div>
+            <h3 class="font-serif font-bold text-xl text-[var(--color-text-main)]">Integrate Excel / Google Sheet</h3>
+            <p class="text-xs text-[var(--color-text-muted)]">Live dynamic data for your previous work</p>
+          </div>
+        </div>
+
+        <div class="space-y-4 text-xs text-[var(--color-text-muted)]">
+          <!-- Option A: Google Sheet CSV link -->
+          <div>
+            <label class="block font-medium text-[var(--color-text-main)] mb-1">
+              Option 1: Paste Google Sheet Published CSV Link
+            </label>
+            <p class="text-[11px] mb-2 text-gray-400">
+              In Google Sheets: <em>File → Share → Publish to web → Link: Comma-separated values (.csv)</em>
+            </p>
+            <input 
+              type="url" 
+              id="sheet-url-input" 
+              placeholder="https://docs.google.com/spreadsheets/d/e/.../pub?output=csv"
+              class="w-full px-3 py-2 rounded-xl border border-[var(--color-border)] bg-[var(--color-bg-base)] text-[var(--color-text-main)] text-xs focus:outline-none focus:border-[#E0A458]"
+            />
+            <button 
+              id="btn-fetch-sheet" 
+              class="mt-2 w-full py-2.5 rounded-xl bg-[#E0A458] text-black font-semibold text-xs hover:bg-[#c88f47] transition-all"
+            >
+              Fetch Live Google Sheet Data
+            </button>
+          </div>
+
+          <div class="relative flex py-1 items-center">
+            <div class="flex-grow border-t border-[var(--color-border)]"></div>
+            <span class="flex-shrink mx-3 text-[10px] text-gray-500 uppercase font-mono">or upload local file</span>
+            <div class="flex-grow border-t border-[var(--color-border)]"></div>
+          </div>
+
+          <!-- Option B: Excel / CSV File upload -->
+          <div>
+            <label class="block font-medium text-[var(--color-text-main)] mb-1">
+              Option 2: Upload Excel (.xlsx) or CSV File
+            </label>
+            <input 
+              type="file" 
+              id="excel-file-input" 
+              accept=".csv, .xlsx, .xls" 
+              class="w-full text-xs file:mr-3 file:py-2 file:px-4 file:rounded-lg file:border-0 file:text-xs file:font-semibold file:bg-[#7C9A7E]/20 file:text-[#7C9A7E] hover:file:bg-[#7C9A7E]/30"
+            />
+          </div>
+
+          <!-- Reset Button -->
+          <div class="pt-2 flex justify-between items-center">
+            <button id="btn-reset-default" class="text-xs text-red-400 hover:underline">
+              Restore Default Curated Projects
+            </button>
+            <button id="btn-download-sample-csv" class="text-xs text-[#E0A458] hover:underline font-mono">
+              Download Sample Spreadsheet
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Scripts -->
+    <script>
+      // Default Curated Projects
+      const DEFAULT_PROJECTS = [
+        {
+          title: "Doctor Prescription Management System",
+          category: "Custom Web App",
+          challenge: "Doctors were spending 15+ minutes per patient writing prescriptions by hand, causing errors and slow clinic flow.",
+          solution: "Built a WordPress-based prescription system with auto-complete drug database, dosage calculators, and 1-click printable PDF.",
+          result: "Reduced prescription writing time by ~60%, eliminated handwriting ambiguity, and streamlined patient record retrieval.",
+          tech: "WordPress, PHP, REST API, TCPDF, Role-Based Access",
+          image: "https://images.unsplash.com/photo-1576091160399-112ba8d25d1d?auto=format&fit=crop&w=1200&q=80",
+          link: "#"
+        },
+        {
+          title: "WooCommerce Store for Small Retailer",
+          category: "E-commerce",
+          challenge: "A local clothing retailer needed to sell online with fast load times on 3G/4G networks and local payment gateways.",
+          solution: "Set up a full WooCommerce store on a fast, mobile-first theme with local payment gateways (bKash, Nagad) and inventory syncing.",
+          result: "Store launched in 3 weeks, achieved under 1.2s page load speed, and drove 240+ orders in month one.",
+          tech: "WooCommerce, bKash, Nagad, Mobile-First, Performance Optimization",
+          image: "https://images.unsplash.com/photo-1441986300917-64674bd600d8?auto=format&fit=crop&w=1200&q=80",
+          link: "#"
+        },
+        {
+          title: "LMS Platform for a Coaching Center",
+          category: "Learning Platform",
+          challenge: "A coaching center delivered course materials via WhatsApp and Google Drive, causing piracy and zero engagement tracking.",
+          solution: "Deployed LearnDash on WordPress with structured course modules, video watermarking, automated quizzes, and certificates.",
+          result: "Onboarded 120 students in first 2 months, improved quiz completion by 45%, and protected intellectual property.",
+          tech: "LearnDash LMS, WordPress, Video DRM, Student Analytics",
+          image: "https://images.unsplash.com/photo-1501504905252-473c47e087f8?auto=format&fit=crop&w=1200&q=80",
+          link: "#"
+        }
+      ];
+
+      let currentProjects = [];
+      let activeCategory = 'all';
+      let searchQuery = '';
+
+      // Elements
+      const gridEl = document.getElementById('projects-grid');
+      const emptyStateEl = document.getElementById('work-empty-state');
+      const countBadge = document.getElementById('project-count-badge');
+      const sourceLabel = document.getElementById('data-source-label');
+      const searchInput = document.getElementById('work-search-input');
+      const filterTabs = document.querySelectorAll('.filter-tab');
+      const syncModal = document.getElementById('sync-modal');
+      const openSyncModalBtn = document.getElementById('open-sync-modal-btn');
+      const closeSyncModal = document.getElementById('close-sync-modal');
+
+      function initProjects() {
+        const stored = localStorage.getItem('sojibor_work_projects');
+        const storedUrl = localStorage.getItem('sojibor_work_sheet_url');
+
+        if (storedUrl) {
+          fetchSheetData(storedUrl, false);
+        } else if (stored) {
+          try {
+            currentProjects = JSON.parse(stored);
+            sourceLabel.textContent = "Source: Custom Spreadsheet Data";
+          } catch (e) {
+            currentProjects = DEFAULT_PROJECTS;
+          }
+          renderProjects();
+        } else {
+          currentProjects = DEFAULT_PROJECTS;
+          renderProjects();
+        }
+      }
+
+      function renderProjects() {
+        const filtered = currentProjects.filter(p => {
+          const matchCategory = activeCategory === 'all' || p.category.toLowerCase() === activeCategory.toLowerCase();
+          const query = searchQuery.toLowerCase();
+          const matchSearch = !query || 
+            p.title.toLowerCase().includes(query) || 
+            (p.challenge && p.challenge.toLowerCase().includes(query)) ||
+            (p.solution && p.solution.toLowerCase().includes(query)) ||
+            (p.tech && p.tech.toLowerCase().includes(query));
+          return matchCategory && matchSearch;
+        });
+
+        countBadge.textContent = `${filtered.length} Projects`;
+
+        if (filtered.length === 0) {
+          gridEl.innerHTML = '';
+          emptyStateEl.classList.remove('hidden');
+          return;
+        }
+
+        emptyStateEl.classList.add('hidden');
+        gridEl.innerHTML = filtered.map(item => `
+          <article class="custom-card rounded-2xl overflow-hidden flex flex-col justify-between group">
+            <div>
+              <div class="relative aspect-[16/10] overflow-hidden bg-black/20">
+                <img 
+                  src="${item.image || 'https://images.unsplash.com/photo-1507238691740-187a5b1d37b8?auto=format&fit=crop&w=1000&q=80'}" 
+                  alt="${item.title}" 
+                  class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700"
+                  onerror="this.src='https://images.unsplash.com/photo-1507238691740-187a5b1d37b8?auto=format&fit=crop&w=1000&q=80'"
+                />
+                <div class="absolute top-3 left-3 px-2.5 py-1 rounded bg-black/70 backdrop-blur-md text-[11px] font-semibold text-[#E0A458] border border-white/10">
+                  ${item.category || 'Web Project'}
+                </div>
+              </div>
+
+              <div class="p-6 space-y-4">
+                <h3 class="font-serif font-bold text-xl text-[var(--color-text-main)] group-hover:text-[#E0A458] transition-colors">
+                  ${item.title}
+                </h3>
+                
+                <div class="space-y-2 text-xs text-[var(--color-text-muted)] leading-relaxed">
+                  <div>
+                    <strong class="text-[var(--color-text-main)] block mb-0.5">Challenge:</strong>
+                    <p>${item.challenge || ''}</p>
+                  </div>
+                  <div>
+                    <strong class="text-[var(--color-text-main)] block mb-0.5">Solution:</strong>
+                    <p>${item.solution || ''}</p>
+                  </div>
+                  <div class="pt-1 text-[#7C9A7E]">
+                    <strong class="block mb-0.5 font-semibold">Outcome:</strong>
+                    <p>${item.result || ''}</p>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div class="p-6 pt-0 border-t border-[var(--color-border)] mt-4">
+              <div class="text-[11px] font-mono text-[var(--color-text-muted)] pt-3 flex flex-wrap gap-1.5">
+                ${(item.tech || '').split(',').map(t => `<span class="px-2 py-0.5 rounded bg-[var(--color-bg-base)] border border-[var(--color-border)]">${t.trim()}</span>`).join('')}
+              </div>
+            </div>
+          </article>
+        `).join('');
+      }
+
+      // Filter click
+      filterTabs.forEach(tab => {
+        tab.addEventListener('click', () => {
+          activeCategory = tab.getAttribute('data-category');
+          filterTabs.forEach(t => t.className = 'filter-tab px-4 py-2 rounded-xl text-xs font-semibold border border-[var(--color-border)] text-[var(--color-text-muted)] hover:border-[#E0A458] transition-all');
+          tab.className = 'filter-tab px-4 py-2 rounded-xl text-xs font-semibold bg-[#E0A458] text-black transition-all';
+          renderProjects();
+        });
+      });
+
+      // Search input
+      searchInput.addEventListener('input', (e) => {
+        searchQuery = e.target.value;
+        renderProjects();
+      });
+
+      document.getElementById('reset-filter-btn').addEventListener('click', () => {
+        searchQuery = '';
+        searchInput.value = '';
+        activeCategory = 'all';
+        filterTabs[0].click();
+      });
+
+      // Modal Controls
+      openSyncModalBtn.addEventListener('click', () => syncModal.classList.add('active', 'opacity-100', '!visible', '!pointer-events-auto'));
+      closeSyncModal.addEventListener('click', () => syncModal.classList.remove('active', 'opacity-100', '!visible', '!pointer-events-auto'));
+      syncModal.addEventListener('click', (e) => {
+        if (e.target === syncModal) syncModal.classList.remove('active', 'opacity-100', '!visible', '!pointer-events-auto');
+      });
+
+      // Fetch Sheet CSV
+      function fetchSheetData(url, saveUrl = true) {
+        Papa.parse(url, {
+          download: true,
+          header: true,
+          skipEmptyLines: true,
+          complete: function(results) {
+            if (results.data && results.data.length > 0) {
+              currentProjects = results.data.map(row => ({
+                title: row.Title || row.title || 'Untitled Project',
+                category: row.Category || row.category || 'Web App',
+                challenge: row.Challenge || row.challenge || '',
+                solution: row.Solution || row.solution || '',
+                result: row.Result || row.result || '',
+                tech: row.Tech || row.Technologies || row.tech || '',
+                image: row.ImageUrl || row.Image || row.image || 'https://images.unsplash.com/photo-1507238691740-187a5b1d37b8?auto=format&fit=crop&w=1000&q=80',
+                link: row.Link || row.link || '#'
+              }));
+              if (saveUrl) localStorage.setItem('sojibor_work_sheet_url', url);
+              localStorage.setItem('sojibor_work_projects', JSON.stringify(currentProjects));
+              sourceLabel.textContent = "Source: Live Google Sheet (CSV)";
+              renderProjects();
+              syncModal.classList.remove('active', 'opacity-100', '!visible', '!pointer-events-auto');
+              alert(`Successfully connected! Loaded ${currentProjects.length} projects from Google Sheets.`);
+            }
+          },
+          error: function(err) {
+            alert("Error fetching Google Sheet CSV. Please ensure the Google Sheet is published to the web as CSV: " + err);
+          }
+        });
+      }
+
+      document.getElementById('btn-fetch-sheet').addEventListener('click', () => {
+        const url = document.getElementById('sheet-url-input').value.trim();
+        if (!url) return alert("Please enter a valid published Google Sheets CSV URL.");
+        fetchSheetData(url);
+      });
+
+      // Local Excel File Upload (.xlsx / .csv)
+      document.getElementById('excel-file-input').addEventListener('change', (e) => {
+        const file = e.target.files[0];
+        if (!file) return;
+
+        const reader = new FileReader();
+        reader.onload = function(event) {
+          const data = new Uint8Array(event.target.result);
+          const workbook = XLSX.read(data, { type: 'array' });
+          const firstSheet = workbook.SheetNames[0];
+          const worksheet = workbook.Sheets[firstSheet];
+          const json = XLSX.utils.sheet_to_json(worksheet);
+
+          if (json.length > 0) {
+            currentProjects = json.map(row => ({
+              title: row.Title || row.title || 'Untitled Project',
+              category: row.Category || row.category || 'Web App',
+              challenge: row.Challenge || row.challenge || '',
+              solution: row.Solution || row.solution || '',
+              result: row.Result || row.result || '',
+              tech: row.Tech || row.Technologies || row.tech || '',
+              image: row.ImageUrl || row.Image || row.image || 'https://images.unsplash.com/photo-1507238691740-187a5b1d37b8?auto=format&fit=crop&w=1000&q=80',
+              link: row.Link || row.link || '#'
+            }));
+            localStorage.setItem('sojibor_work_projects', JSON.stringify(currentProjects));
+            localStorage.removeItem('sojibor_work_sheet_url');
+            sourceLabel.textContent = `Source: Uploaded File (${file.name})`;
+            renderProjects();
+            syncModal.classList.remove('active', 'opacity-100', '!visible', '!pointer-events-auto');
+            alert(`Loaded ${currentProjects.length} projects from ${file.name}`);
+          }
+        };
+        reader.readAsArrayBuffer(file);
+      });
+
+      // Reset to default
+      document.getElementById('btn-reset-default').addEventListener('click', () => {
+        localStorage.removeItem('sojibor_work_projects');
+        localStorage.removeItem('sojibor_work_sheet_url');
+        currentProjects = DEFAULT_PROJECTS;
+        sourceLabel.textContent = "Source: Curated Portfolio Repository";
+        renderProjects();
+        syncModal.classList.remove('active', 'opacity-100', '!visible', '!pointer-events-auto');
+        alert("Restored default projects.");
+      });
+
+      // Download CSV Template
+      function downloadTemplate() {
+        const csvContent = "Title,Category,Challenge,Solution,Result,Tech,ImageUrl\n" +
+          '"Doctor Prescription Management System","Custom Web App","Manual writing took 15+ minutes per patient","Built WordPress prescription system with drug database and dosage calculator","Reduced prescription time by 60%","WordPress, PHP, REST API, TCPDF","https://images.unsplash.com/photo-1576091160399-112ba8d25d1d?auto=format&fit=crop&w=1200&q=80"\n' +
+          '"WooCommerce Store for Small Retailer","E-commerce","Local retailer needed online sales on 3G/4G","Fast mobile-first WooCommerce with bKash/Nagad gateways","Store launched in 3 weeks with 240+ orders","WooCommerce, bKash, Nagad, Mobile-First","https://images.unsplash.com/photo-1441986300917-64674bd600d8?auto=format&fit=crop&w=1200&q=80"\n' +
+          '"LMS Platform for a Coaching Center","Learning Platform","Course materials pirated via WhatsApp","Deployed LearnDash with video DRM, quizzes, certificates","Onboarded 120 students in 2 months with 45% higher completions","LearnDash, WordPress, DRM","https://images.unsplash.com/photo-1501504905252-473c47e087f8?auto=format&fit=crop&w=1200&q=80"\n';
+
+        const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
+        const url = URL.createObjectURL(blob);
+        const a = document.createElement('a');
+        a.href = url;
+        a.download = 'sojibor_work_projects_template.csv';
+        a.click();
+        URL.revokeObjectURL(url);
+      }
+
+      document.getElementById('download-csv-template').addEventListener('click', downloadTemplate);
+      document.getElementById('btn-download-sample-csv').addEventListener('click', downloadTemplate);
+
+      // Theme toggle
+      const themeToggleBtn = document.getElementById('theme-toggle');
+      const sunIcon = document.getElementById('sun-icon');
+      const moonIcon = document.getElementById('moon-icon');
+
+      function applyTheme(theme) {
+        document.documentElement.setAttribute('data-theme', theme);
+        localStorage.setItem('theme', theme);
+        if (theme === 'dark') {
+          sunIcon.classList.remove('hidden');
+          moonIcon.classList.add('hidden');
+        } else {
+          sunIcon.classList.add('hidden');
+          moonIcon.classList.remove('hidden');
+        }
+      }
+
+      applyTheme(localStorage.getItem('theme') || 'dark');
+      themeToggleBtn.addEventListener('click', () => {
+        const next = document.documentElement.getAttribute('data-theme') === 'dark' ? 'light' : 'dark';
+        applyTheme(next);
+      });
+
+      // Mobile Menu Toggle
+      const mobileMenuBtn = document.getElementById('mobile-menu-btn');
+      const mobileNav = document.getElementById('mobile-nav');
+      const menuIconOpen = document.getElementById('menu-icon-open');
+      const menuIconClose = document.getElementById('menu-icon-close');
+
+      if (mobileMenuBtn && mobileNav) {
+        mobileMenuBtn.addEventListener('click', () => {
+          const isOpen = !mobileNav.classList.contains('hidden');
+          if (isOpen) {
+            mobileNav.classList.add('hidden');
+            if (menuIconOpen) menuIconOpen.classList.remove('hidden');
+            if (menuIconClose) menuIconClose.classList.add('hidden');
+          } else {
+            mobileNav.classList.remove('hidden');
+            if (menuIconOpen) menuIconOpen.classList.add('hidden');
+            if (menuIconClose) menuIconClose.classList.remove('hidden');
+          }
+        });
+      }
+
+      document.addEventListener('DOMContentLoaded', initProjects);
+    </script>
+  </body>
+</html>

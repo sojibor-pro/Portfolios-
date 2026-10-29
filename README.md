@@ -61,8 +61,25 @@ Every time you push changes to GitHub, Vercel will automatically redeploy your l
 
 ---
 
-### 🌐 Optional: Connect Your Custom Domain
-1. In Vercel, go to your project → **Settings** → **Domains**.
-2. Enter your custom domain (e.g. `sojibor.com`).
-3. Add the DNS records provided by Vercel in your domain registrar (e.g., Namecheap, Cloudflare, GoDaddy).
-4. Vercel automatically provisions a free SSL certificate!
+### 🌐 Structure & Dedicated Pages
+- **`index.html`**: Main landing page with dynamic Hero, About, Selected Web Work, BUTEX Research, Photography Preview, Services, and Contact.
+- **`work.html`**: Dedicated "All Web Work & Case Studies" directory with live search, category filtering, and **Excel / Google Sheets sync**.
+- **`gallery.html`**: Dedicated "Photography & Visual Archives" gallery with live search, category filtering, fullscreen lightbox, and **Excel / Google Sheets sync**.
+
+---
+
+## 📊 How to Connect Your 2 Google Sheets / Excel Spreadsheets
+
+### For Previous Web Work (`work.html`):
+1. In Google Sheets, make columns: `Title, Category, Challenge, Solution, Result, Tech, ImageUrl`
+2. Go to **File → Share → Publish to web**.
+3. Select **Comma-separated values (.csv)** and click **Publish**.
+4. Copy the link, go to `/work.html`, click **Connect Excel / Sheet**, paste the link, and click **Fetch**!
+*(Or click "Download Excel Template" to edit locally and upload `.xlsx`)*
+
+### For Photography (`gallery.html`):
+1. In Google Sheets, make columns: `Title, Category, Caption, Location, Gear, FullImageUrl, ThumbnailUrl`
+2. Publish to web as **CSV**.
+3. Go to `/gallery.html`, click **Connect Excel / Sheet**, paste the link, and click **Fetch**!
+*(Or upload an `.xlsx` file directly)*
+

@@ -266,65 +266,127 @@
 
     <main>
       <!-- ================= 2. HERO SECTION ================= -->
-      <section id="home" class="relative min-h-screen flex items-center justify-center pt-20 px-4 sm:px-6 lg:px-8 overflow-hidden">
+      <section id="home" class="relative min-h-[92vh] flex items-center justify-center pt-24 pb-16 px-4 sm:px-6 lg:px-8 overflow-hidden">
         <!-- Background Image & Atmospheric Dark Gradient Overlay -->
         <div class="absolute inset-0 z-0">
           <img 
             src="https://images.unsplash.com/photo-1516035069371-29a1b244cc32?auto=format&fit=crop&w=2400&q=85" 
             alt="Photography & Engineering Backdrop" 
-            class="w-full h-full object-cover object-center filter brightness-[0.38] contrast-105 scale-105 transition-transform duration-1000"
+            class="w-full h-full object-cover object-center filter brightness-[0.35] contrast-110 scale-105 transition-transform duration-1000"
           />
-          <!-- Multi-tier gradient overlay to ensure seamless blending with both light and dark modes -->
-          <div class="absolute inset-0 bg-gradient-to-t from-[var(--color-bg-base)] via-black/75 to-black/85"></div>
-          <div class="absolute inset-0 bg-[radial-gradient(ellipse_at_center,_var(--tw-gradient-stops))] from-amber-500/10 via-transparent to-transparent"></div>
+          <div class="absolute inset-0 bg-gradient-to-t from-[var(--color-bg-base)] via-black/80 to-black/85"></div>
+          <div class="absolute inset-0 bg-[radial-gradient(ellipse_at_center,_var(--tw-gradient-stops))] from-amber-500/12 via-transparent to-transparent"></div>
         </div>
 
-        <div class="relative z-10 max-w-4xl mx-auto text-center py-24 sm:py-32">
+        <!-- Dynamic Ambient Interactive Particle Canvas -->
+        <canvas id="hero-particle-canvas" class="absolute inset-0 z-[1] pointer-events-none opacity-60"></canvas>
+
+        <div class="relative z-10 max-w-5xl mx-auto text-center">
           
-          <!-- Badge -->
-          <div class="inline-flex items-center gap-2.5 px-4 py-1.5 rounded-full border border-emerald-500/30 bg-emerald-950/40 backdrop-blur-md mb-8 text-xs font-medium tracking-wide text-emerald-400">
-            <span class="w-2 h-2 rounded-full bg-emerald-400 pulse-dot"></span>
-            <span>OPEN FOR FREELANCE &amp; FULL-TIME ROLES</span>
+          <!-- Live Dhaka Clock & Availability Badge -->
+          <div class="inline-flex flex-wrap items-center justify-center gap-2.5 px-4 py-2 rounded-full border border-white/15 bg-black/60 backdrop-blur-md mb-8 text-xs font-medium text-gray-200 shadow-xl">
+            <span class="inline-flex items-center gap-1.5 text-emerald-400">
+              <span class="w-2 h-2 rounded-full bg-emerald-400 pulse-dot"></span>
+              <span>Available for Hire</span>
+            </span>
+            <span class="text-gray-500 hidden sm:inline">|</span>
+            <span class="text-xs text-gray-300 font-mono flex items-center gap-1.5">
+              <svg class="w-3.5 h-3.5 text-[#E0A458]" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
+              </svg>
+              <span>Dhaka, BD:</span>
+              <span id="dhaka-clock" class="text-[#E0A458] font-semibold">--:--:--</span>
+            </span>
           </div>
 
-          <!-- Fixed Big Serif H1 -->
-          <h1 class="text-4xl sm:text-6xl md:text-7xl font-serif font-bold text-white tracking-tight leading-[1.1] mb-6">
+          <!-- Fixed Big Serif H1 with glowing gradient accents -->
+          <h1 class="text-4xl sm:text-6xl md:text-7xl lg:text-8xl font-serif font-bold text-white tracking-tight leading-[1.08] mb-6 drop-shadow-md">
             MD Sojibor Rahman
           </h1>
 
           <!-- H2 with Typing Animation (Amber Italic) -->
-          <div class="min-h-[4rem] sm:min-h-[3.25rem] flex items-center justify-center mb-6">
-            <h2 class="text-xl sm:text-2xl md:text-3xl font-serif italic text-[#E0A458] font-normal leading-snug">
-              <span id="typing-text"></span><span id="typing-cursor" class="typing-cursor">|</span>
+          <div class="min-h-[4.5rem] sm:min-h-[3.75rem] flex items-center justify-center mb-6">
+            <h2 class="text-xl sm:text-3xl md:text-4xl font-serif italic text-[#E0A458] font-normal leading-snug drop-shadow">
+              <span id="typing-text"></span><span id="typing-cursor" class="typing-cursor text-3xl sm:text-4xl">|</span>
             </h2>
           </div>
 
           <!-- Subtitle / Bio Paragraph -->
-          <p class="max-w-2xl mx-auto text-base sm:text-lg text-gray-300 font-normal leading-relaxed mb-10">
+          <p class="max-w-3xl mx-auto text-base sm:text-lg md:text-xl text-gray-300 font-normal leading-relaxed mb-8">
             WordPress developer, photographer, and Textile Engineer. BSc in Textile Engineering (Wet Process) · PGD in Textile Industry Management (BUTEX).
           </p>
 
-          <!-- Action Buttons -->
-          <div class="flex flex-col sm:flex-row items-center justify-center gap-4">
+          <!-- Action Buttons with Dedicated Page Links -->
+          <div class="flex flex-col sm:flex-row items-center justify-center gap-4 mb-14">
             <a 
               href="#work" 
-              class="w-full sm:w-auto inline-flex items-center justify-center px-7 py-3.5 text-sm font-semibold text-black bg-[#E0A458] hover:bg-[#c88f47] transition-all rounded shadow-lg shadow-amber-500/20"
+              class="w-full sm:w-auto inline-flex items-center justify-center gap-2 px-8 py-4 text-sm font-semibold text-black bg-[#E0A458] hover:bg-[#c88f47] transition-all rounded-xl shadow-lg shadow-amber-500/25 hover:scale-105"
             >
-              View My Work
+              <span>View My Work</span>
+              <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" /></svg>
             </a>
+            
             <a 
-              href="#photography" 
-              class="w-full sm:w-auto inline-flex items-center justify-center px-7 py-3.5 text-sm font-medium text-white border border-white/30 hover:border-[#E0A458] hover:text-[#E0A458] bg-black/30 backdrop-blur-sm transition-all rounded"
+              href="work.html" 
+              class="w-full sm:w-auto inline-flex items-center justify-center gap-2 px-6 py-4 text-xs font-semibold uppercase tracking-wider text-[#E0A458] border border-[#E0A458]/40 hover:bg-[#E0A458]/10 bg-black/40 backdrop-blur-sm transition-all rounded-xl"
             >
-              See Photography
+              <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 17v-2m3 2v-4m3 4v-6m2 10H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" /></svg>
+              <span>All Projects (Excel/Sheet Sync) →</span>
             </a>
+
+            <a 
+              href="gallery.html" 
+              class="w-full sm:w-auto inline-flex items-center justify-center gap-2 px-7 py-4 text-sm font-medium text-white border border-white/30 hover:border-[#7C9A7E] hover:text-[#7C9A7E] bg-black/30 backdrop-blur-sm transition-all rounded-xl"
+            >
+              <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 9a2 2 0 012-2h.93a2 2 0 001.664-.89l.812-1.22A2 2 0 0110.07 4h3.86a2 2 0 011.664.89l.812 1.22A2 2 0 0018.07 7H19a2 2 0 012 2v9a2 2 0 01-2 2H5a2 2 0 01-2-2V9z" /><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 13a3 3 0 11-6 0 3 3 0 016 0z" /></svg>
+              <span>See Photography</span>
+            </a>
+          </div>
+
+          <!-- Dynamic Modern Floating Metric Cards Row -->
+          <div class="grid grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-4 max-w-4xl mx-auto text-left">
+            <div class="p-4 rounded-2xl bg-black/40 backdrop-blur-md border border-white/10 hover:border-[#E0A458]/40 transition-all">
+              <span class="text-2xl sm:text-3xl font-serif font-bold text-[#E0A458] block">5+</span>
+              <span class="text-xs text-gray-300 font-medium">Years Full-Stack WP Dev</span>
+              <span class="text-[10px] text-gray-400 block mt-0.5">Themes, Plugins &amp; APIs</span>
+            </div>
+
+            <div class="p-4 rounded-2xl bg-black/40 backdrop-blur-md border border-white/10 hover:border-[#7C9A7E]/40 transition-all">
+              <span class="text-2xl sm:text-3xl font-serif font-bold text-[#7C9A7E] block">40+</span>
+              <span class="text-xs text-gray-300 font-medium">Web Projects Shipped</span>
+              <span class="text-[10px] text-gray-400 block mt-0.5">WooCommerce &amp; LMS Systems</span>
+            </div>
+
+            <div class="p-4 rounded-2xl bg-black/40 backdrop-blur-md border border-white/10 hover:border-[#E0A458]/40 transition-all">
+              <span class="text-2xl sm:text-3xl font-serif font-bold text-[#E0A458] block">42%</span>
+              <span class="text-xs text-gray-300 font-medium">Dye-Bath Water Saved</span>
+              <span class="text-[10px] text-gray-400 block mt-0.5">BUTEX Thesis Research</span>
+            </div>
+
+            <div class="p-4 rounded-2xl bg-black/40 backdrop-blur-md border border-white/10 hover:border-[#7C9A7E]/40 transition-all">
+              <span class="text-2xl sm:text-3xl font-serif font-bold text-[#7C9A7E] block">&lt; 1.2s</span>
+              <span class="text-xs text-gray-300 font-medium">Average Load Speed</span>
+              <span class="text-[10px] text-gray-400 block mt-0.5">Performance Optimized</span>
+            </div>
+          </div>
+
+          <!-- Dynamic Tech Stack Badges Ticker -->
+          <div class="mt-10 pt-6 border-t border-white/10 flex flex-wrap items-center justify-center gap-2 text-xs">
+            <span class="text-[11px] uppercase tracking-wider text-gray-400 font-mono mr-2">Core Stack:</span>
+            <span class="px-2.5 py-1 rounded-lg bg-black/40 border border-white/10 text-gray-300">WordPress</span>
+            <span class="px-2.5 py-1 rounded-lg bg-black/40 border border-white/10 text-gray-300">WooCommerce</span>
+            <span class="px-2.5 py-1 rounded-lg bg-black/40 border border-white/10 text-gray-300">LearnDash LMS</span>
+            <span class="px-2.5 py-1 rounded-lg bg-black/40 border border-white/10 text-gray-300">PHP 8+</span>
+            <span class="px-2.5 py-1 rounded-lg bg-black/40 border border-white/10 text-gray-300">Tailwind CSS</span>
+            <span class="px-2.5 py-1 rounded-lg bg-black/40 border border-white/10 text-gray-300">REST APIs</span>
+            <span class="px-2.5 py-1 rounded-lg bg-black/40 border border-white/10 text-[#7C9A7E]">BUTEX Wet Process</span>
+            <span class="px-2.5 py-1 rounded-lg bg-black/40 border border-white/10 text-[#E0A458]">Photography</span>
           </div>
 
         </div>
 
         <!-- Scroll Down Cue -->
-        <div class="absolute bottom-6 left-1/2 -translate-x-1/2 z-10 flex flex-col items-center text-gray-400 text-xs">
-          <span class="mb-2 tracking-widest uppercase text-[10px] text-gray-400/80">Scroll</span>
+        <div class="absolute bottom-4 left-1/2 -translate-x-1/2 z-10 flex flex-col items-center text-gray-400 text-xs">
           <svg class="w-4 h-4 animate-bounce text-[#E0A458]" fill="none" viewBox="0 0 24 24" stroke="currentColor">
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 14l-7 7m0 0l-7-7m7 7V3" />
           </svg>
@@ -642,6 +704,20 @@
           </article>
 
         </div>
+
+        <!-- Dedicated Page Link: View All Work -->
+        <div class="mt-16 text-center reveal">
+          <a 
+            href="work.html" 
+            class="inline-flex items-center gap-3 px-8 py-4 rounded-xl text-sm font-semibold border border-[var(--color-border)] hover:border-[#E0A458] text-[var(--color-text-main)] hover:text-[#E0A458] custom-card group shadow-md"
+          >
+            <svg class="w-5 h-5 text-[#E0A458]" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 17v-2m3 2v-4m3 4v-6m2 10H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+            </svg>
+            <span>View All Projects &amp; Case Studies (with Excel/Sheet Sync)</span>
+            <span class="group-hover:translate-x-1.5 transition-transform text-[#E0A458]">→</span>
+          </a>
+        </div>
       </section>
 
 
@@ -756,14 +832,14 @@
         <div class="text-center max-w-3xl mx-auto mb-16 reveal">
           <div class="inline-flex items-center gap-2 text-xs font-semibold uppercase tracking-widest text-[#E0A458] mb-3">
             <span class="w-6 h-[2px] bg-[#E0A458]"></span>
-            Visual Storytelling
+            Creative Passion &amp; Visual Diary
             <span class="w-6 h-[2px] bg-[#E0A458]"></span>
           </div>
           <h2 class="text-3xl sm:text-4xl lg:text-5xl font-serif font-bold tracking-tight mb-4">
             Photography
           </h2>
-          <p class="text-base sm:text-lg text-[var(--color-text-muted)]">
-            A small window into how I see the world. Click any photo to enlarge, or view the full gallery.
+          <p class="text-base sm:text-lg text-[var(--color-text-muted)] max-w-2xl mx-auto">
+            A pure artistic passion — not for selling, but a personal medium to document life, fleeting street stories, and natural light across Bangladesh. Click any photo to enlarge.
           </p>
         </div>
 
@@ -890,10 +966,13 @@
         <div class="mt-14 text-center reveal">
           <a 
             href="gallery.html" 
-            class="inline-flex items-center gap-2 px-8 py-4 rounded-xl text-sm font-semibold border border-[var(--color-border)] hover:border-[#E0A458] text-[var(--color-text-main)] hover:text-[#E0A458] custom-card group"
+            class="inline-flex items-center gap-3 px-8 py-4 rounded-xl text-sm font-semibold border border-[var(--color-border)] hover:border-[#E0A458] text-[var(--color-text-main)] hover:text-[#E0A458] custom-card group shadow-md"
           >
-            <span>View All Photos</span>
-            <span class="group-hover:translate-x-1 transition-transform">→</span>
+            <svg class="w-5 h-5 text-[#E0A458]" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z" />
+            </svg>
+            <span>View Full Photography Gallery (with Excel/Sheet Sync)</span>
+            <span class="group-hover:translate-x-1.5 transition-transform text-[#E0A458]">→</span>
           </a>
         </div>
       </section>
@@ -1003,31 +1082,31 @@
             </div>
           </div>
 
-          <!-- Service 7: Photography -->
+          <!-- Service 7: Performance Optimization -->
           <div class="custom-card rounded-2xl p-6 flex flex-col justify-between">
             <div>
-              <div class="text-3xl mb-4">📸</div>
-              <h3 class="font-serif font-bold text-lg text-[var(--color-text-main)] mb-2">Photography</h3>
+              <div class="text-3xl mb-4">🚀</div>
+              <h3 class="font-serif font-bold text-lg text-[var(--color-text-main)] mb-2">Speed Optimization</h3>
               <p class="text-xs text-[var(--color-text-muted)] leading-relaxed">
-                Professional portrait sessions, editorial feature stories, product photography, and authentic on-location documentary shoots.
+                Core Web Vitals tuning, advanced caching strategies, asset minification, and database optimization for sub-second page loads.
               </p>
             </div>
             <div class="mt-4 pt-3 border-t border-[var(--color-border)] text-[11px] font-mono text-[#E0A458]">
-              Editorial · Portraits · Commercial
+              Sub-Second · 95+ PageSpeed
             </div>
           </div>
 
-          <!-- Service 8: Creative Direction -->
+          <!-- Service 8: UI/UX & Design Systems -->
           <div class="custom-card rounded-2xl p-6 flex flex-col justify-between">
             <div>
               <div class="text-3xl mb-4">🎨</div>
-              <h3 class="font-serif font-bold text-lg text-[var(--color-text-main)] mb-2">Creative Direction</h3>
+              <h3 class="font-serif font-bold text-lg text-[var(--color-text-main)] mb-2">UI/UX &amp; Design Systems</h3>
               <p class="text-xs text-[var(--color-text-muted)] leading-relaxed">
-                Harmonizing typography, color palettes, visual identities, and brand storytelling across web and physical media.
+                Minimalist typography, intuitive user flows, conversion-oriented layout architecture, and aesthetic visual styling for modern brands.
               </p>
             </div>
             <div class="mt-4 pt-3 border-t border-[var(--color-border)] text-[11px] font-mono text-[#7C9A7E]">
-              Identity · Storytelling · Aesthetics
+              Minimal · Responsive · Conversion
             </div>
           </div>
 
@@ -1502,14 +1581,92 @@
       });
 
       /* ================= CV DOWNLOAD INTERACTION ================= */
+      function triggerCvDownload(filename, title, content) {
+        const blob = new Blob([content], { type: 'text/plain;charset=utf-8' });
+        const url = URL.createObjectURL(blob);
+        const a = document.createElement('a');
+        a.href = url;
+        a.download = filename;
+        document.body.appendChild(a);
+        a.click();
+        document.body.removeChild(a);
+        URL.revokeObjectURL(url);
+        showToast(`✓ Downloading: ${filename}`);
+      }
+
+      function showToast(message) {
+        const existingToast = document.getElementById('global-toast');
+        if (existingToast) existingToast.remove();
+
+        const toast = document.createElement('div');
+        toast.id = 'global-toast';
+        toast.className = 'fixed bottom-6 right-6 z-50 px-5 py-3 rounded-xl bg-[var(--color-bg-card)] border border-[#E0A458] text-[var(--color-text-main)] text-xs font-medium shadow-2xl transition-all duration-300 transform translate-y-2 opacity-0 flex items-center gap-2';
+        toast.innerHTML = `<span class="w-2 h-2 rounded-full bg-[#E0A458] animate-ping"></span><span>${message}</span>`;
+        document.body.appendChild(toast);
+
+        requestAnimationFrame(() => {
+          toast.classList.remove('translate-y-2', 'opacity-0');
+        });
+
+        setTimeout(() => {
+          toast.classList.add('opacity-0', 'translate-y-2');
+          setTimeout(() => toast.remove(), 300);
+        }, 3200);
+      }
+
       document.getElementById('btn-textile-cv').addEventListener('click', (e) => {
         e.preventDefault();
-        alert("Downloading 'MD_Sojibor_Rahman_Textile_CV.pdf'...\n\nBSc in Textile Engineering (Wet Process) · PGD in Textile Industry Management (BUTEX).");
+        const content = `=====================================================
+MD SOJIBOR RAHMAN - TEXTILE ENGINEERING CURRICULUM VITAE
+Dhaka, Bangladesh | Email: sajibar.me@gmail.com | Phone: +880 1700-000000
+LinkedIn: https://linkedin.com/in/sojibor
+=====================================================
+
+EDUCATION & QUALIFICATIONS:
+- Post Graduate Diploma (PGD) in Textile Industry Management
+  Bangladesh University of Textiles (BUTEX)
+- Bachelor of Science (BSc) in Textile Engineering (Wet Process)
+  Bangladesh University of Textiles (BUTEX)
+
+KEY RESEARCH:
+- "Reuse of Spent Dye Bath in Cotton & Viscose Dyeing" (2024)
+  Final-Year Thesis focused on sustainable reactive dyeing, spectrophotometric dye-salt reconstitution, 42% water conservation, and industrial effluent minimization.
+
+CORE COMPETENCIES:
+- Wet Processing & Dyeing Chemistry (Cotton, Viscose, Synthetics)
+- Spectrophotometric Color Matching & Quality Control (Delta E < 1.0)
+- Sustainable Dye-Bath Recovery & Effluent Treatment Optimization
+- Factory Process Management & Textile Production Workflows
+=====================================================`;
+        triggerCvDownload('MD_Sojibor_Rahman_Textile_CV.txt', 'Textile CV', content);
       });
 
       document.getElementById('btn-wp-cv').addEventListener('click', (e) => {
         e.preventDefault();
-        alert("Downloading 'MD_Sojibor_Rahman_WordPress_CV.pdf'...\n\nSpecialized in Custom WordPress Themes, WooCommerce, LMS Platforms & Web Optimization.");
+        const content = `=====================================================
+MD SOJIBOR RAHMAN - WORDPRESS DEVELOPER CURRICULUM VITAE
+Dhaka, Bangladesh | Email: sajibar.me@gmail.com | Phone: +880 1700-000000
+LinkedIn: https://linkedin.com/in/sojibor
+=====================================================
+
+SUMMARY:
+Results-driven WordPress Developer & Web Engineer specializing in high-performance WooCommerce stores, LMS platforms (LearnDash), custom plugins, speed optimization, and secure API integrations.
+
+CORE TECHNICAL SKILLS:
+- Core: PHP, JavaScript (ES6+), HTML5, CSS3, Tailwind CSS, MySQL, REST APIs
+- WordPress: Custom Themes & Child Themes, Custom Post Types & Taxonomies, Hooks/Filters
+- Platforms: WooCommerce, LearnDash LMS, MemberPress, BuddyBoss, Advanced Custom Fields
+- Infrastructure: Host migrations, DNS/SSL setup, caching engines, database tuning, security hardening
+
+SELECTED PROJECTS:
+1. Doctor Prescription Management System (Custom Web App):
+   - Reduced prescription writing time by ~60% with role-based access & auto-complete drug database.
+2. WooCommerce Store for Clothing Retailer (E-Commerce):
+   - Under 1.2s page load, local payment gateways (bKash/Nagad), 240+ orders in month one.
+3. LMS Platform for Coaching Center (LearnDash):
+   - 120+ active students, automated quizzes, timed assignments, and DRM video protection.
+=====================================================`;
+        triggerCvDownload('MD_Sojibor_Rahman_WordPress_CV.txt', 'WordPress CV', content);
       });
 
       /* ================= CONTACT FORM HANDLER ================= */
@@ -1542,9 +1699,127 @@
         }, 750);
       }
 
+      /* ================= LIVE DHAKA CLOCK ================= */
+      function initDhakaClock() {
+        const clockEl = document.getElementById('dhaka-clock');
+        if (!clockEl) return;
+
+        function update() {
+          try {
+            const now = new Date();
+            const timeStr = new Intl.DateTimeFormat('en-US', {
+              timeZone: 'Asia/Dhaka',
+              hour: '2-digit',
+              minute: '2-digit',
+              second: '2-digit',
+              hour12: true
+            }).format(now);
+            clockEl.textContent = timeStr;
+          } catch(e) {
+            clockEl.textContent = new Date().toLocaleTimeString();
+          }
+        }
+        update();
+        setInterval(update, 1000);
+      }
+
+      /* ================= INTERACTIVE HERO PARTICLE CANVAS ================= */
+      function initHeroParticleCanvas() {
+        const canvas = document.getElementById('hero-particle-canvas');
+        if (!canvas) return;
+        const ctx = canvas.getContext('2d');
+        if (!ctx) return;
+
+        let width = 0;
+        let height = 0;
+        let particles = [];
+        let mouse = { x: -1000, y: -1000 };
+
+        function resize() {
+          width = canvas.parentElement.offsetWidth;
+          height = canvas.parentElement.offsetHeight;
+          canvas.width = width;
+          canvas.height = height;
+        }
+        resize();
+        window.addEventListener('resize', resize);
+
+        window.addEventListener('mousemove', (e) => {
+          const rect = canvas.getBoundingClientRect();
+          mouse.x = e.clientX - rect.left;
+          mouse.y = e.clientY - rect.top;
+        });
+
+        const PARTICLE_COUNT = Math.min(45, Math.floor(window.innerWidth / 30));
+        for (let i = 0; i < PARTICLE_COUNT; i++) {
+          particles.push({
+            x: Math.random() * width,
+            y: Math.random() * height,
+            vx: (Math.random() - 0.5) * 0.45,
+            vy: (Math.random() - 0.5) * 0.45,
+            radius: Math.random() * 1.8 + 0.8,
+            baseAlpha: Math.random() * 0.5 + 0.2
+          });
+        }
+
+        let animationFrame;
+        function animate() {
+          ctx.clearRect(0, 0, width, height);
+
+          // Draw particles & links
+          for (let i = 0; i < particles.length; i++) {
+            const p = particles[i];
+
+            // Movement
+            p.x += p.vx;
+            p.y += p.vy;
+
+            // Bounce edges
+            if (p.x < 0 || p.x > width) p.vx *= -1;
+            if (p.y < 0 || p.y > height) p.vy *= -1;
+
+            // Mouse interaction
+            const dx = mouse.x - p.x;
+            const dy = mouse.y - p.y;
+            const dist = Math.sqrt(dx * dx + dy * dy);
+            if (dist < 120) {
+              p.x -= (dx / dist) * 0.8;
+              p.y -= (dy / dist) * 0.8;
+            }
+
+            // Draw particle
+            ctx.beginPath();
+            ctx.arc(p.x, p.y, p.radius, 0, Math.PI * 2);
+            ctx.fillStyle = `rgba(224, 164, 88, ${p.baseAlpha})`;
+            ctx.shadowBlur = 6;
+            ctx.shadowColor = '#E0A458';
+            ctx.fill();
+
+            // Connect nearby
+            for (let j = i + 1; j < particles.length; j++) {
+              const p2 = particles[j];
+              const dist2 = Math.hypot(p.x - p2.x, p.y - p2.y);
+              if (dist2 < 85) {
+                ctx.beginPath();
+                ctx.moveTo(p.x, p.y);
+                ctx.lineTo(p2.x, p2.y);
+                ctx.strokeStyle = `rgba(224, 164, 88, ${(1 - dist2 / 85) * 0.22})`;
+                ctx.lineWidth = 0.7;
+                ctx.stroke();
+              }
+            }
+          }
+
+          animationFrame = requestAnimationFrame(animate);
+        }
+        animate();
+      }
+
       /* ================= INITIALIZATION ================= */
       document.addEventListener('DOMContentLoaded', () => {
         initTheme();
+        initDhakaClock();
+        initHeroParticleCanvas();
         setupScrollReveal();
         setTimeout(typeLoop, 500);
       });
