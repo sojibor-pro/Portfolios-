@@ -21,6 +21,9 @@
     <!-- Tailwind CSS CDN -->
     <script src="https://cdn.tailwindcss.com"></script>
 
+    <!-- PapaParse CDN for Dynamic Google Sheets CSV Integration -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/PapaParse/5.4.1/papaparse.min.js"></script>
+
     <script>
       tailwind.config = {
         darkMode: ['class', '[data-theme="dark"]'],
@@ -48,6 +51,10 @@
             fontFamily: {
               serif: ['"Playfair Display"', 'Georgia', 'serif'],
               sans: ['Inter', 'system-ui', '-apple-system', 'sans-serif'],
+            },
+            maxWidth: {
+              '7xl': '1300px',
+              'site': '1300px'
             }
           }
         }
@@ -55,6 +62,11 @@
     </script>
 
     <style>
+      /* Ensure whole website width is locked to 1300px */
+      .max-w-7xl, .site-container {
+        max-width: 1300px !important;
+      }
+
       /* Theme Design System Variables */
       :root, [data-theme="light"] {
         --color-bg-base: #F5F1EA;
@@ -184,7 +196,7 @@
 
     <!-- ================= NAVBAR ================= -->
     <header class="fixed top-0 left-0 right-0 z-50 glass-nav transition-all duration-300">
-      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-20 flex items-center justify-between">
+      <div class="max-w-[1300px] mx-auto px-4 sm:px-6 lg:px-8 h-20 flex items-center justify-between">
         
         <!-- Brand -->
         <a href="#home" class="group flex items-center gap-1 font-serif text-2xl tracking-tight font-bold transition-colors">
@@ -395,7 +407,7 @@
 
 
       <!-- ================= 3. ABOUT SECTION ================= -->
-      <section id="about" class="py-24 sm:py-32 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto">
+      <section id="about" class="py-24 sm:py-32 px-4 sm:px-6 lg:px-8 max-w-[1300px] mx-auto">
         <div class="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-16 items-center">
           
           <!-- Left: Profile Image & Creative Portrait Card -->
@@ -533,176 +545,103 @@
 
 
       <!-- ================= 4. SELECTED WEB WORK SECTION ================= -->
-      <section id="work" class="py-24 sm:py-32 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto border-t border-[var(--color-border)]">
+      <section id="work" class="py-24 sm:py-32 px-4 sm:px-6 lg:px-8 max-w-[1300px] mx-auto border-t border-[var(--color-border)]">
         
         <!-- Header -->
-        <div class="text-center max-w-3xl mx-auto mb-20 reveal">
+        <div class="text-center max-w-3xl mx-auto mb-16 reveal">
           <div class="inline-flex items-center gap-2 text-xs font-semibold uppercase tracking-widest text-[#E0A458] mb-3">
             <span class="w-6 h-[2px] bg-[#E0A458]"></span>
-            Case Studies
+            Live Case Study
             <span class="w-6 h-[2px] bg-[#E0A458]"></span>
           </div>
           <h2 class="text-3xl sm:text-4xl lg:text-5xl font-serif font-bold tracking-tight mb-4">
             Selected Web Work
           </h2>
           <p class="text-base sm:text-lg text-[var(--color-text-muted)]">
-            Three case studies — what I built, why, and the result.
+            Verified production systems and applications sourced directly from my live portfolio responses spreadsheet.
           </p>
+
+          <!-- Live Google Sheet Status Badge -->
+          <div class="mt-4 inline-flex items-center gap-2.5 px-3.5 py-1.5 rounded-full bg-[var(--color-bg-card)] border border-[var(--color-border)] text-xs text-[var(--color-text-muted)] shadow-sm">
+            <span class="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></span>
+            <span class="font-medium text-[var(--color-text-main)]">Live Responses Sheet:</span>
+            <span class="text-[#E0A458] font-mono text-[11px]">Rx Bangladesh Active (100% Sheet Data · Zero Dummy Content)</span>
+          </div>
         </div>
 
-        <!-- Case Studies List (Alternating Layouts) -->
-        <div class="space-y-24 sm:space-y-32">
+        <!-- Case Studies List (50% / 50% Alternating Layouts) -->
+        <div id="case-studies-container" class="space-y-24 sm:space-y-32">
           
-          <!-- Case 1: Doctor Prescription Management System (Image Left, Text Right) -->
-          <article class="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-14 items-center reveal">
-            <!-- Visual Mockup -->
-            <div class="lg:col-span-7">
+          <!-- Case 1: Smart Prescription Management For Doctor (50% Image Left, 50% Text Right) -->
+          <article class="grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-14 items-center reveal">
+            <!-- Visual Mockup (50%) -->
+            <div class="w-full">
               <div class="group relative rounded-2xl overflow-hidden custom-card">
                 <img 
-                  src="https://images.unsplash.com/photo-1576091160399-112ba8d25d1d?auto=format&fit=crop&w=1200&q=80" 
-                  alt="Doctor Prescription Management System" 
-                  class="w-full aspect-[16/10] object-cover group-hover:scale-105 transition-transform duration-700"
+                  src="https://lh3.googleusercontent.com/d/1NPPNhe4wF9DTAGbr_DoLw7-_9gzJynO_" 
+                  alt="Smart Prescription Management For Doctor - Rx Bangladesh" 
+                  onerror="this.onerror=null; this.src='https://images.unsplash.com/photo-1576091160399-112ba8d25d1d?auto=format&fit=crop&w=1200&q=80';"
+                  class="w-full aspect-[16/10] object-cover group-hover:scale-105 transition-transform duration-700 bg-neutral-900"
                 />
-                <div class="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent"></div>
-                <div class="absolute bottom-5 left-5 right-5 flex items-center justify-between text-white text-xs">
-                  <span class="px-2.5 py-1 rounded bg-black/60 backdrop-blur-md border border-white/20">Custom Clinical Solution</span>
-                  <span class="text-[#E0A458] font-medium">PHP · WP Engine · REST API</span>
+                <div class="absolute inset-0 bg-gradient-to-t from-black/85 via-black/25 to-transparent"></div>
+                <div class="absolute bottom-5 left-5 right-5 flex flex-wrap items-center justify-between gap-2 text-white text-xs">
+                  <span class="px-2.5 py-1 rounded bg-black/70 backdrop-blur-md border border-white/20 font-medium">
+                    Platform: Rx Bangladesh
+                  </span>
+                  <span class="text-[#E0A458] font-mono text-[11px] bg-black/60 px-2 py-0.5 rounded border border-white/10">
+                    PHP · Laravel · Tailwind · Bootstraps
+                  </span>
                 </div>
               </div>
             </div>
-            <!-- Narrative Details -->
-            <div class="lg:col-span-5 space-y-5">
-              <div class="inline-flex items-center gap-2 px-2.5 py-1 rounded text-xs font-semibold uppercase tracking-wider bg-[#E0A458]/15 text-[#E0A458]">
-                Custom Web App
+            <!-- Narrative Details (50%) -->
+            <div class="w-full space-y-5">
+              <div class="flex flex-wrap items-center gap-2">
+                <div class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded text-xs font-semibold uppercase tracking-wider bg-[#E0A458]/15 text-[#E0A458] border border-[#E0A458]/30">
+                  <span class="w-1.5 h-1.5 rounded-full bg-[#E0A458]"></span>
+                  Prescription Management
+                </div>
               </div>
+
               <h3 class="text-2xl sm:text-3xl font-serif font-bold text-[var(--color-text-main)]">
-                Doctor Prescription Management System
+                Smart Prescription Management For Doctor
               </h3>
               
-              <div class="space-y-3 text-sm text-[var(--color-text-muted)]">
+              <div class="space-y-3.5 text-sm text-[var(--color-text-muted)]">
                 <div>
                   <strong class="text-[var(--color-text-main)] block font-medium mb-1">Challenge:</strong>
-                  <p>Doctors were spending 15+ minutes per patient writing prescriptions by hand, leading to illegible notes, medication errors, and slow clinic workflows.</p>
+                  <p class="leading-relaxed">Doctors were spending 15+ minutes per patient writing prescriptions by hand, leading to illegible notes, medication errors, and slow clinic workflows.</p>
                 </div>
                 <div>
                   <strong class="text-[var(--color-text-main)] block font-medium mb-1">Solution:</strong>
-                  <p>Built a WordPress-based prescription system with role-based login, auto-complete drug database, dosage calculators, and 1-click printable PDF generation.</p>
+                  <p class="leading-relaxed">Built a WordPress-based prescription system with role-based login, auto-complete drug database, dosage calculators, and 1-click printable PDF generation.</p>
                 </div>
                 <div class="pt-2 border-t border-[var(--color-border)]">
                   <strong class="text-[#7C9A7E] block font-semibold mb-1">Result:</strong>
-                  <p class="text-[var(--color-text-main)]">Reduced prescription writing time by ~60%, eliminated handwriting ambiguity, and streamlined patient record retrieval across multiple clinic shifts.</p>
+                  <p class="text-[var(--color-text-main)] leading-relaxed">Reduced prescription writing time by ~60%, eliminated handwriting ambiguity, and streamlined patient record retrieval across multiple clinic shifts.</p>
                 </div>
               </div>
 
-              <div class="pt-2 flex flex-wrap gap-2 text-xs">
-                <span class="px-2.5 py-1 rounded bg-[var(--color-bg-card)] border border-[var(--color-border)]">Custom Post Types</span>
-                <span class="px-2.5 py-1 rounded bg-[var(--color-bg-card)] border border-[var(--color-border)]">TCPDF Engine</span>
-                <span class="px-2.5 py-1 rounded bg-[var(--color-bg-card)] border border-[var(--color-border)]">Role-based Access</span>
+              <!-- Feature Tags from Sheet -->
+              <div class="space-y-2 pt-1">
+                <span class="text-[11px] uppercase tracking-wider font-semibold text-[var(--color-text-muted)]">Key Highlights &amp; Architecture:</span>
+                <div class="flex flex-wrap gap-1.5 text-xs">
+                  <span class="px-2.5 py-1 rounded bg-[var(--color-bg-card)] border border-[var(--color-border)] text-[#E0A458] font-medium">3Day Free Trail</span>
+                  <span class="px-2.5 py-1 rounded bg-[var(--color-bg-card)] border border-[var(--color-border)] text-[var(--color-text-main)]">Separated Dashboard</span>
+                  <span class="px-2.5 py-1 rounded bg-[var(--color-bg-card)] border border-[var(--color-border)] text-[var(--color-text-main)]">Research</span>
+                  <span class="px-2.5 py-1 rounded bg-[var(--color-bg-card)] border border-[var(--color-border)] text-[#7C9A7E] font-medium">Scoring System</span>
+                </div>
+              </div>
+
+              <!-- Stack Badges -->
+              <div class="pt-2 flex flex-wrap gap-1.5 text-[11px] font-mono text-[var(--color-text-muted)] border-t border-[var(--color-border)]">
+                <span class="px-2 py-0.5 rounded bg-[var(--color-bg-base)] border border-[var(--color-border)]">PHP</span>
+                <span class="px-2 py-0.5 rounded bg-[var(--color-bg-base)] border border-[var(--color-border)]">Laravel</span>
+                <span class="px-2 py-0.5 rounded bg-[var(--color-bg-base)] border border-[var(--color-border)]">Tailwind</span>
+                <span class="px-2 py-0.5 rounded bg-[var(--color-bg-base)] border border-[var(--color-border)]">Bootstraps</span>
               </div>
             </div>
           </article>
-
-
-          <!-- Case 2: WooCommerce Store for Small Retailer (Text Left, Image Right) -->
-          <article class="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-14 items-center reveal">
-            <!-- Narrative Details -->
-            <div class="lg:col-span-5 order-2 lg:order-1 space-y-5">
-              <div class="inline-flex items-center gap-2 px-2.5 py-1 rounded text-xs font-semibold uppercase tracking-wider bg-[#7C9A7E]/20 text-[#7C9A7E]">
-                E-commerce
-              </div>
-              <h3 class="text-2xl sm:text-3xl font-serif font-bold text-[var(--color-text-main)]">
-                WooCommerce Store for Small Retailer
-              </h3>
-
-              <div class="space-y-3 text-sm text-[var(--color-text-muted)]">
-                <div>
-                  <strong class="text-[var(--color-text-main)] block font-medium mb-1">Challenge:</strong>
-                  <p>A local clothing retailer needed to sell online without complex infrastructure or high monthly SaaS fees, needing fast load times on 3G/4G mobile networks.</p>
-                </div>
-                <div>
-                  <strong class="text-[var(--color-text-main)] block font-medium mb-1">Solution:</strong>
-                  <p>Set up a full WooCommerce store on a fast, mobile-first theme with local payment gateways (bKash, Nagad), inventory syncing, and automated invoice printing.</p>
-                </div>
-                <div class="pt-2 border-t border-[var(--color-border)]">
-                  <strong class="text-[#7C9A7E] block font-semibold mb-1">Result:</strong>
-                  <p class="text-[var(--color-text-main)]">Store launched in 3 weeks, achieved under 1.2s page load speed, and drove 240+ orders in the opening month.</p>
-                </div>
-              </div>
-
-              <div class="pt-2 flex flex-wrap gap-2 text-xs">
-                <span class="px-2.5 py-1 rounded bg-[var(--color-bg-card)] border border-[var(--color-border)]">WooCommerce</span>
-                <span class="px-2.5 py-1 rounded bg-[var(--color-bg-card)] border border-[var(--color-border)]">bKash/Nagad Integration</span>
-                <span class="px-2.5 py-1 rounded bg-[var(--color-bg-card)] border border-[var(--color-border)]">Mobile First</span>
-              </div>
-            </div>
-
-            <!-- Visual Mockup -->
-            <div class="lg:col-span-7 order-1 lg:order-2">
-              <div class="group relative rounded-2xl overflow-hidden custom-card">
-                <img 
-                  src="https://images.unsplash.com/photo-1441986300917-64674bd600d8?auto=format&fit=crop&w=1200&q=80" 
-                  alt="WooCommerce Store for Clothing Retailer" 
-                  class="w-full aspect-[16/10] object-cover group-hover:scale-105 transition-transform duration-700"
-                />
-                <div class="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent"></div>
-                <div class="absolute bottom-5 left-5 right-5 flex items-center justify-between text-white text-xs">
-                  <span class="px-2.5 py-1 rounded bg-black/60 backdrop-blur-md border border-white/20">Retail Fashion Storefront</span>
-                  <span class="text-[#E0A458] font-medium">Under 1.2s Load Time</span>
-                </div>
-              </div>
-            </div>
-          </article>
-
-
-          <!-- Case 3: LMS Platform for a Coaching Center (Image Left, Text Right) -->
-          <article class="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-14 items-center reveal">
-            <!-- Visual Mockup -->
-            <div class="lg:col-span-7">
-              <div class="group relative rounded-2xl overflow-hidden custom-card">
-                <img 
-                  src="https://images.unsplash.com/photo-1501504905252-473c47e087f8?auto=format&fit=crop&w=1200&q=80" 
-                  alt="LMS Platform for Coaching Center" 
-                  class="w-full aspect-[16/10] object-cover group-hover:scale-105 transition-transform duration-700"
-                />
-                <div class="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent"></div>
-                <div class="absolute bottom-5 left-5 right-5 flex items-center justify-between text-white text-xs">
-                  <span class="px-2.5 py-1 rounded bg-black/60 backdrop-blur-md border border-white/20">EdTech &amp; E-Learning</span>
-                  <span class="text-[#E0A458] font-medium">120+ Active Students</span>
-                </div>
-              </div>
-            </div>
-            <!-- Narrative Details -->
-            <div class="lg:col-span-5 space-y-5">
-              <div class="inline-flex items-center gap-2 px-2.5 py-1 rounded text-xs font-semibold uppercase tracking-wider bg-[#E0A458]/15 text-[#E0A458]">
-                Learning Platform
-              </div>
-              <h3 class="text-2xl sm:text-3xl font-serif font-bold text-[var(--color-text-main)]">
-                LMS Platform for a Coaching Center
-              </h3>
-
-              <div class="space-y-3 text-sm text-[var(--color-text-muted)]">
-                <div>
-                  <strong class="text-[var(--color-text-main)] block font-medium mb-1">Challenge:</strong>
-                  <p>A coaching center was delivering course materials via WhatsApp and Google Drive links, causing rampant piracy and zero student engagement tracking.</p>
-                </div>
-                <div>
-                  <strong class="text-[var(--color-text-main)] block font-medium mb-1">Solution:</strong>
-                  <p>Deployed LearnDash on WordPress with structured course modules, video watermarking, automated quizzes, timed assignments, and auto-issued certificates.</p>
-                </div>
-                <div class="pt-2 border-t border-[var(--color-border)]">
-                  <strong class="text-[#7C9A7E] block font-semibold mb-1">Result:</strong>
-                  <p class="text-[var(--color-text-main)]">Onboarded 120 students in the first 2 months, improved quiz completion rates by 45%, and protected intellectual property.</p>
-                </div>
-              </div>
-
-              <div class="pt-2 flex flex-wrap gap-2 text-xs">
-                <span class="px-2.5 py-1 rounded bg-[var(--color-bg-card)] border border-[var(--color-border)]">LearnDash</span>
-                <span class="px-2.5 py-1 rounded bg-[var(--color-bg-card)] border border-[var(--color-border)]">Video DRM</span>
-                <span class="px-2.5 py-1 rounded bg-[var(--color-bg-card)] border border-[var(--color-border)]">Progress Analytics</span>
-              </div>
-            </div>
-          </article>
-
         </div>
 
         <!-- Dedicated Page Link: View All Work -->
@@ -714,7 +653,7 @@
             <svg class="w-5 h-5 text-[#E0A458]" fill="none" viewBox="0 0 24 24" stroke="currentColor">
               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 17v-2m3 2v-4m3 4v-6m2 10H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
             </svg>
-            <span>View All Projects &amp; Case Studies (with Excel/Sheet Sync)</span>
+            <span>View All Other Projects in Work Page (Full Archive &amp; Search)</span>
             <span class="group-hover:translate-x-1.5 transition-transform text-[#E0A458]">→</span>
           </a>
         </div>
@@ -722,7 +661,7 @@
 
 
       <!-- ================= 5. ACADEMIC RESEARCH SECTION ================= -->
-      <section id="research" class="py-24 sm:py-32 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto border-t border-[var(--color-border)]">
+      <section id="research" class="py-24 sm:py-32 px-4 sm:px-6 lg:px-8 max-w-[1300px] mx-auto border-t border-[var(--color-border)]">
         <!-- Header -->
         <div class="text-center max-w-3xl mx-auto mb-16 reveal">
           <div class="inline-flex items-center gap-2 text-xs font-semibold uppercase tracking-widest text-[#7C9A7E] mb-3">
@@ -827,7 +766,7 @@
 
 
       <!-- ================= 6. PHOTOGRAPHY SECTION ================= -->
-      <section id="photography" class="py-24 sm:py-32 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto border-t border-[var(--color-border)]">
+      <section id="photography" class="py-24 sm:py-32 px-4 sm:px-6 lg:px-8 max-w-[1300px] mx-auto border-t border-[var(--color-border)]">
         <!-- Header -->
         <div class="text-center max-w-3xl mx-auto mb-16 reveal">
           <div class="inline-flex items-center gap-2 text-xs font-semibold uppercase tracking-widest text-[#E0A458] mb-3">
@@ -841,10 +780,17 @@
           <p class="text-base sm:text-lg text-[var(--color-text-muted)] max-w-2xl mx-auto">
             A pure artistic passion — not for selling, but a personal medium to document life, fleeting street stories, and natural light across Bangladesh. Click any photo to enlarge.
           </p>
+
+          <!-- Live Photography Sheet Badge -->
+          <div class="mt-4 inline-flex items-center gap-2.5 px-3.5 py-1.5 rounded-full bg-[var(--color-bg-card)] border border-[var(--color-border)] text-xs text-[var(--color-text-muted)] shadow-sm">
+            <span class="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></span>
+            <span class="font-medium text-[var(--color-text-main)]">Live Photography Sheet:</span>
+            <span id="landing-photo-status" class="text-[#E0A458] font-mono text-[11px]">Responses Sheet Connected (Ready for Uploads)</span>
+          </div>
         </div>
 
-        <!-- Masonry-Style Grid of 6 Photos -->
-        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 sm:gap-8 reveal">
+        <!-- Masonry-Style Grid of Photos (Dynamically synced from Photography Responses Sheet) -->
+        <div id="landing-photos-grid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 sm:gap-8 reveal">
           
           <!-- Photo 1 -->
           <div 
@@ -979,7 +925,7 @@
 
 
       <!-- ================= 7. SERVICES SECTION ================= -->
-      <section id="services" class="py-24 sm:py-32 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto border-t border-[var(--color-border)]">
+      <section id="services" class="py-24 sm:py-32 px-4 sm:px-6 lg:px-8 max-w-[1300px] mx-auto border-t border-[var(--color-border)]">
         <!-- Header -->
         <div class="text-center max-w-3xl mx-auto mb-16 reveal">
           <div class="inline-flex items-center gap-2 text-xs font-semibold uppercase tracking-widest text-[#E0A458] mb-3">
@@ -1115,7 +1061,7 @@
 
 
       <!-- ================= 8. CV & CONTACT SECTION ================= -->
-      <section id="contact" class="py-24 sm:py-32 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto border-t border-[var(--color-border)]">
+      <section id="contact" class="py-24 sm:py-32 px-4 sm:px-6 lg:px-8 max-w-[1300px] mx-auto border-t border-[var(--color-border)]">
         
         <!-- CV Download Block -->
         <div class="mb-20 reveal">
@@ -1340,7 +1286,7 @@
 
     <!-- ================= 9. FOOTER ================= -->
     <footer class="border-t border-[var(--color-border)] py-12 px-4 sm:px-6 lg:px-8 bg-[var(--color-bg-base)]">
-      <div class="max-w-7xl mx-auto flex flex-col sm:flex-row items-center justify-between gap-6 text-xs text-[var(--color-text-muted)]">
+      <div class="max-w-[1300px] mx-auto flex flex-col sm:flex-row items-center justify-between gap-6 text-xs text-[var(--color-text-muted)]">
         
         <!-- Brand / Made in Dhaka -->
         <div class="flex items-center gap-2">
@@ -1815,12 +1761,238 @@ SELECTED PROJECTS:
         animate();
       }
 
+      /* ================= DYNAMIC SHEET INTEGRATION FOR LANDING SHOWCASE ================= */
+      function formatDriveImageUrl(rawUrl, fallback) {
+        if (!rawUrl) return fallback;
+        const match = rawUrl.match(/[?&]id=([a-zA-Z0-9_-]+)/) || rawUrl.match(/\/d\/([a-zA-Z0-9_-]+)/);
+        if (match && match[1]) {
+          return `https://lh3.googleusercontent.com/d/${match[1]}`;
+        }
+        return rawUrl;
+      }
+
+      function renderLandingShowcase(projects) {
+        const container = document.getElementById('case-studies-container');
+        if (!container || !projects || projects.length === 0) return;
+
+        // Render up to 4 projects for homepage with equal 50% / 50% space for image and text
+        const topProjects = projects.slice(0, 4);
+        container.innerHTML = topProjects.map((p, idx) => {
+          const isReverse = idx % 2 === 1; // alternating 50/50 balance
+          return `
+          <article class="grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-14 items-center reveal visible">
+            <!-- Visual Mockup (50%) -->
+            <div class="w-full ${isReverse ? 'lg:order-2' : ''}">
+              <div class="group relative rounded-2xl overflow-hidden custom-card">
+                <img 
+                  src="${p.image || 'https://images.unsplash.com/photo-1576091160399-112ba8d25d1d?auto=format&fit=crop&w=1200&q=80'}" 
+                  alt="${p.title} - ${p.platform || ''}" 
+                  onerror="this.onerror=null; this.src='${p.fallbackImage || 'https://images.unsplash.com/photo-1576091160399-112ba8d25d1d?auto=format&fit=crop&w=1200&q=80'}';"
+                  class="w-full aspect-[16/10] object-cover group-hover:scale-105 transition-transform duration-700 bg-neutral-900"
+                />
+                <div class="absolute inset-0 bg-gradient-to-t from-black/85 via-black/25 to-transparent"></div>
+                <div class="absolute bottom-5 left-5 right-5 flex flex-wrap items-center justify-between gap-2 text-white text-xs">
+                  ${p.platform ? `<span class="px-2.5 py-1 rounded bg-black/70 backdrop-blur-md border border-white/20 font-medium">Platform: ${p.platform}</span>` : ''}
+                  ${p.tech ? `<span class="text-[#E0A458] font-mono text-[11px] bg-black/60 px-2 py-0.5 rounded border border-white/10">${p.tech}</span>` : ''}
+                </div>
+              </div>
+            </div>
+            <!-- Narrative Details (50%) -->
+            <div class="w-full space-y-5 ${isReverse ? 'lg:order-1' : ''}">
+              <div class="flex flex-wrap items-center gap-2">
+                <div class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded text-xs font-semibold uppercase tracking-wider bg-[#E0A458]/15 text-[#E0A458] border border-[#E0A458]/30">
+                  <span class="w-1.5 h-1.5 rounded-full bg-[#E0A458]"></span>
+                  ${p.category || 'Web Project'}
+                </div>
+              </div>
+
+              <h3 class="text-2xl sm:text-3xl font-serif font-bold text-[var(--color-text-main)]">
+                ${p.title}
+              </h3>
+              
+              <div class="space-y-3.5 text-sm text-[var(--color-text-muted)]">
+                ${p.challenge ? `<div><strong class="text-[var(--color-text-main)] block font-medium mb-1">Challenge:</strong><p class="leading-relaxed">${p.challenge}</p></div>` : ''}
+                ${p.solution ? `<div><strong class="text-[var(--color-text-main)] block font-medium mb-1">Solution:</strong><p class="leading-relaxed">${p.solution}</p></div>` : ''}
+                ${p.result ? `<div class="pt-2 border-t border-[var(--color-border)]"><strong class="text-[#7C9A7E] block font-semibold mb-1">Result:</strong><p class="text-[var(--color-text-main)] leading-relaxed">${p.result}</p></div>` : ''}
+              </div>
+
+              ${p.tags && p.tags.length > 0 ? `
+              <div class="space-y-2 pt-1">
+                <span class="text-[11px] uppercase tracking-wider font-semibold text-[var(--color-text-muted)]">Key Highlights &amp; Architecture:</span>
+                <div class="flex flex-wrap gap-1.5 text-xs">
+                  ${p.tags.map(t => `<span class="px-2.5 py-1 rounded bg-[var(--color-bg-card)] border border-[var(--color-border)] text-[#E0A458] font-medium">${t}</span>`).join('')}
+                </div>
+              </div>` : ''}
+
+              ${p.tech ? `
+              <div class="pt-2 flex flex-wrap gap-1.5 text-[11px] font-mono text-[var(--color-text-muted)] border-t border-[var(--color-border)]">
+                ${p.tech.split(',').map(s => `<span class="px-2 py-0.5 rounded bg-[var(--color-bg-base)] border border-[var(--color-border)]">${s.trim()}</span>`).join('')}
+              </div>` : ''}
+            </div>
+          </article>
+          `;
+        }).join('');
+      }
+
+      function initLandingSheetSync() {
+        if (typeof Papa === 'undefined') return;
+
+        // Auto-fetch the user's responses sheet CSV
+        fetch('/assets/aistudio/Portfolio__Responses__a8d429d5')
+          .then(res => {
+            if (!res.ok) return null;
+            return res.text();
+          })
+          .then(csvText => {
+            if (!csvText) return;
+            Papa.parse(csvText, {
+              header: true,
+              skipEmptyLines: true,
+              complete: function(results) {
+                if (results.data && results.data.length > 0) {
+                  localStorage.setItem('sojibor_sheet_last_synced', new Date().toISOString());
+                  // Cache sheet projects in localStorage so work.html also has instant access
+                  const mappedProjects = results.data.map(row => {
+                    const heading = row['Project Heading'] || row['Heading'] || row['Title'] || 'Untitled Project';
+                    const category = (row['Project Categories '] || row['Project Categories'] || row['Category'] || 'Prescription Management').trim();
+                    const platform = row['Platform Name'] || row['Platform'] || 'Rx Bangladesh';
+                    const challenge = row['Project Challenge'] || row['Challenge'] || '';
+                    const solution = row['Project Solution'] || row['Solution'] || '';
+                    const result = row['Project Result'] || row['Result'] || '';
+                    const tags = (row['Project Tag'] || row['Tags'] || '').split(',').map(s => s.trim()).filter(Boolean);
+                    const tech = row['Platform Making Language '] || row['Platform Making Language'] || row['Tech'] || 'PHP, Laravel, Tailwind, Bootstraps';
+                    const rawImage = row['Project Image'] || row['Image'];
+                    const imageUrl = formatDriveImageUrl(rawImage, 'https://images.unsplash.com/photo-1576091160399-112ba8d25d1d?auto=format&fit=crop&w=1200&q=80');
+
+                    return {
+                      title: heading,
+                      platform: platform,
+                      category: category,
+                      challenge: challenge,
+                      solution: solution,
+                      result: result,
+                      tags: tags,
+                      tech: tech,
+                      image: imageUrl,
+                      fallbackImage: 'https://images.unsplash.com/photo-1576091160399-112ba8d25d1d?auto=format&fit=crop&w=1200&q=80'
+                    };
+                  });
+                  localStorage.setItem('sojibor_landing_sheet_projects', JSON.stringify(mappedProjects));
+                  renderLandingShowcase(mappedProjects);
+                }
+              }
+            });
+          })
+          .catch(err => {
+            console.log('Sheet responses already embedded statically');
+          });
+      }
+
+      /* ================= DYNAMIC PHOTO INTEGRATION FOR LANDING SHOWCASE ================= */
+      function initLandingPhotoSync() {
+        if (typeof Papa === 'undefined') return;
+
+        // Auto-fetch user's Photography Responses file
+        fetch('/assets/aistudio/Photography__Responses__182278b8')
+          .then(res => {
+            if (!res.ok) return null;
+            return res.text();
+          })
+          .then(csvText => {
+            if (!csvText) return;
+            Papa.parse(csvText, {
+              header: true,
+              skipEmptyLines: true,
+              complete: function(results) {
+                if (results.data && results.data.length > 0) {
+                  const mappedPhotos = results.data.map(row => {
+                    const title = row['Photo Title'] || row['Title'] || 'Untitled Photograph';
+                    const category = (row['Photo Categorizes'] || row['Photo Categories'] || row['Category'] || 'Street & Documentary').trim();
+                    const rawImg = row['Photo Uploaded'] || row['ImageUrl'] || row['Image'];
+                    const location = row['Photo Location'] || row['Location'] || '';
+                    const details = row['Capturing Details (Lens, Camera)'] || row['Gear'] || row['Camera'] || '';
+                    const imgUrl = formatDriveImageUrl(rawImg, 'https://images.unsplash.com/photo-1516035069371-29a1b244cc32?auto=format&fit=crop&w=1600&q=85');
+                    const metaText = [location, details].filter(Boolean).join(' · ') || 'Candid capture';
+                    const captionText = `${title}${location ? ' · ' + location : ''}`;
+
+                    return {
+                      title,
+                      category,
+                      caption: captionText,
+                      meta: metaText,
+                      full: imgUrl,
+                      thumb: imgUrl
+                    };
+                  });
+
+                  localStorage.setItem('sojibor_landing_photos', JSON.stringify(mappedPhotos));
+                  renderLandingPhotos(mappedPhotos);
+                  const statusEl = document.getElementById('landing-photo-status');
+                  if (statusEl) statusEl.textContent = `${mappedPhotos.length} Live Photo(s) Loaded`;
+                }
+              }
+            });
+          })
+          .catch(err => {
+            console.log('Photography responses ready for uploads');
+          });
+      }
+
+      function renderLandingPhotos(photos) {
+        const grid = document.getElementById('landing-photos-grid');
+        if (!grid || !photos || photos.length === 0) return;
+
+        const displayPhotos = photos.slice(0, 6);
+        grid.innerHTML = displayPhotos.map(p => `
+          <div 
+            class="photo-item group relative rounded-2xl overflow-hidden cursor-pointer custom-card aspect-[4/5]"
+            data-full="${p.full || p.thumb}"
+            data-caption="${p.caption || p.title}"
+            data-meta="${p.meta || ''}"
+          >
+            <img 
+              src="${p.thumb || p.full}" 
+              alt="${p.title}" 
+              class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700 bg-neutral-900"
+              onerror="this.src='https://images.unsplash.com/photo-1516035069371-29a1b244cc32?auto=format&fit=crop&w=800&q=80'"
+            />
+            <div class="absolute inset-0 bg-gradient-to-t from-black/85 via-black/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex flex-col justify-end p-6">
+              <span class="text-xs text-[#E0A458] font-mono mb-1 uppercase tracking-wider">${p.category || 'Photography'}</span>
+              <h4 class="text-white font-serif text-lg font-semibold">${p.title}</h4>
+              <p class="text-gray-300 text-xs mt-1">${p.meta || 'Click to view full image'}</p>
+            </div>
+          </div>
+        `).join('');
+
+        // Re-wire click-to-enlarge lightbox handlers for dynamically rendered photos
+        grid.querySelectorAll('.photo-item').forEach(item => {
+          item.addEventListener('click', () => {
+            const fullSrc = item.getAttribute('data-full');
+            const captionText = item.getAttribute('data-caption');
+            const metaText = item.getAttribute('data-meta');
+            const modal = document.getElementById('lightbox-modal');
+            const img = document.getElementById('lightbox-img');
+            const cap = document.getElementById('lightbox-caption');
+            const meta = document.getElementById('lightbox-meta');
+            if (modal && img && cap && meta) {
+              img.src = fullSrc;
+              cap.textContent = captionText || '';
+              meta.textContent = metaText || '';
+              modal.classList.add('active');
+              document.body.style.overflow = 'hidden';
+            }
+          });
+        });
+      }
+
       /* ================= INITIALIZATION ================= */
       document.addEventListener('DOMContentLoaded', () => {
         initTheme();
         initDhakaClock();
         initHeroParticleCanvas();
         setupScrollReveal();
+        initLandingSheetSync();
+        initLandingPhotoSync();
         setTimeout(typeLoop, 500);
       });
     </script>

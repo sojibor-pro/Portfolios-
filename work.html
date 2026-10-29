@@ -45,6 +45,10 @@
             fontFamily: {
               serif: ['"Playfair Display"', 'Georgia', 'serif'],
               sans: ['Inter', 'system-ui', '-apple-system', 'sans-serif'],
+            },
+            maxWidth: {
+              '7xl': '1300px',
+              'site': '1300px'
             }
           }
         }
@@ -52,6 +56,11 @@
     </script>
 
     <style>
+      /* Ensure whole website width is locked to 1300px */
+      .max-w-7xl, .site-container {
+        max-width: 1300px !important;
+      }
+
       :root, [data-theme="light"] {
         --color-bg-base: #F5F1EA;
         --color-bg-card: #FAF7F2;
@@ -105,7 +114,7 @@
     
     <!-- ================= NAVBAR ================= -->
     <header class="fixed top-0 left-0 right-0 z-50 glass-nav transition-all duration-300">
-      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-20 flex items-center justify-between">
+      <div class="max-w-[1300px] mx-auto px-4 sm:px-6 lg:px-8 h-20 flex items-center justify-between">
         
         <!-- Brand -->
         <a href="index.html" class="group flex items-center gap-1 font-serif text-2xl tracking-tight font-bold transition-colors">
@@ -195,7 +204,7 @@
       </div>
     </header>
 
-    <main class="pt-32 pb-24 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto">
+    <main class="pt-32 pb-24 px-4 sm:px-6 lg:px-8 max-w-[1300px] mx-auto">
       
       <!-- Section Header -->
       <div class="text-center max-w-3xl mx-auto mb-10">
@@ -208,7 +217,7 @@
           All Web Work &amp; Case Studies
         </h1>
         <p class="text-base text-[var(--color-text-muted)]">
-          Comprehensive archive of custom WordPress applications, WooCommerce systems, learning platforms, and high-speed web solutions.
+          Comprehensive archive of verified custom web applications, systems, and client deliverables from Google Sheets.
         </p>
       </div>
 
@@ -216,8 +225,8 @@
       <div id="sheet-status-bar" class="max-w-4xl mx-auto mb-8 p-3 rounded-2xl bg-[var(--color-bg-card)] border border-[var(--color-border)] flex flex-wrap items-center justify-between gap-3 text-xs">
         <div class="flex items-center gap-2.5">
           <span id="data-source-dot" class="w-2.5 h-2.5 rounded-full bg-emerald-500 animate-pulse"></span>
-          <span id="data-source-label" class="text-[var(--color-text-main)] font-medium">Source: Curated Portfolio Repository</span>
-          <span id="project-count-badge" class="px-2 py-0.5 rounded bg-[#E0A458]/15 text-[#E0A458] font-mono text-[11px]">3 Projects</span>
+          <span id="data-source-label" class="text-[var(--color-text-main)] font-medium">Source: Live Google Sheet (Rx Bangladesh)</span>
+          <span id="project-count-badge" class="px-2 py-0.5 rounded bg-[#E0A458]/15 text-[#E0A458] font-mono text-[11px]">1 Project</span>
         </div>
         <div class="flex items-center gap-2">
           <button id="download-csv-template" class="hover:text-[#E0A458] transition-colors flex items-center gap-1 text-[11px]">
@@ -229,12 +238,9 @@
 
       <!-- Search & Category Filters -->
       <div class="flex flex-col md:flex-row items-center justify-between gap-4 mb-10 max-w-5xl mx-auto">
-        <!-- Category Filters -->
+        <!-- Dynamic Category Filters (populated from sheet data only) -->
         <div class="flex flex-wrap items-center gap-2" id="filter-container">
           <button class="filter-tab px-4 py-2 rounded-xl text-xs font-semibold bg-[#E0A458] text-black transition-all" data-category="all">All Projects</button>
-          <button class="filter-tab px-4 py-2 rounded-xl text-xs font-semibold border border-[var(--color-border)] text-[var(--color-text-muted)] hover:border-[#E0A458] transition-all" data-category="Custom Web App">Custom Web App</button>
-          <button class="filter-tab px-4 py-2 rounded-xl text-xs font-semibold border border-[var(--color-border)] text-[var(--color-text-muted)] hover:border-[#E0A458] transition-all" data-category="E-commerce">E-commerce</button>
-          <button class="filter-tab px-4 py-2 rounded-xl text-xs font-semibold border border-[var(--color-border)] text-[var(--color-text-muted)] hover:border-[#E0A458] transition-all" data-category="Learning Platform">Learning Platform</button>
         </div>
 
         <!-- Search Input -->
@@ -345,36 +351,47 @@
 
     <!-- Scripts -->
     <script>
-      // Default Curated Projects
+      // Non-intrusive Toast Notification
+      function showToast(message) {
+        const existing = document.getElementById('work-toast');
+        if (existing) existing.remove();
+        const toast = document.createElement('div');
+        toast.id = 'work-toast';
+        toast.className = 'fixed bottom-6 right-6 z-50 px-5 py-3 rounded-xl bg-[var(--color-bg-card)] border border-[#E0A458] text-[var(--color-text-main)] text-xs font-medium shadow-2xl transition-all duration-300 transform translate-y-2 opacity-0 flex items-center gap-2';
+        toast.innerHTML = `<span class="w-2 h-2 rounded-full bg-[#E0A458] animate-ping"></span><span>${message}</span>`;
+        document.body.appendChild(toast);
+        requestAnimationFrame(() => {
+          toast.classList.remove('translate-y-2', 'opacity-0');
+        });
+        setTimeout(() => {
+          toast.classList.add('opacity-0', 'translate-y-2');
+          setTimeout(() => toast.remove(), 300);
+        }, 3200);
+      }
+
+      // Google Drive image URL converter
+      function formatDriveImageUrl(rawUrl, fallback) {
+        if (!rawUrl) return fallback;
+        const match = rawUrl.match(/[?&]id=([a-zA-Z0-9_-]+)/) || rawUrl.match(/\/d\/([a-zA-Z0-9_-]+)/);
+        if (match && match[1]) {
+          return `https://lh3.googleusercontent.com/d/${match[1]}`;
+        }
+        return rawUrl;
+      }
+
+      // Default Curated Projects (Real Sheet Data Only - Zero Dummy Content)
       const DEFAULT_PROJECTS = [
         {
-          title: "Doctor Prescription Management System",
-          category: "Custom Web App",
-          challenge: "Doctors were spending 15+ minutes per patient writing prescriptions by hand, causing errors and slow clinic flow.",
-          solution: "Built a WordPress-based prescription system with auto-complete drug database, dosage calculators, and 1-click printable PDF.",
-          result: "Reduced prescription writing time by ~60%, eliminated handwriting ambiguity, and streamlined patient record retrieval.",
-          tech: "WordPress, PHP, REST API, TCPDF, Role-Based Access",
-          image: "https://images.unsplash.com/photo-1576091160399-112ba8d25d1d?auto=format&fit=crop&w=1200&q=80",
-          link: "#"
-        },
-        {
-          title: "WooCommerce Store for Small Retailer",
-          category: "E-commerce",
-          challenge: "A local clothing retailer needed to sell online with fast load times on 3G/4G networks and local payment gateways.",
-          solution: "Set up a full WooCommerce store on a fast, mobile-first theme with local payment gateways (bKash, Nagad) and inventory syncing.",
-          result: "Store launched in 3 weeks, achieved under 1.2s page load speed, and drove 240+ orders in month one.",
-          tech: "WooCommerce, bKash, Nagad, Mobile-First, Performance Optimization",
-          image: "https://images.unsplash.com/photo-1441986300917-64674bd600d8?auto=format&fit=crop&w=1200&q=80",
-          link: "#"
-        },
-        {
-          title: "LMS Platform for a Coaching Center",
-          category: "Learning Platform",
-          challenge: "A coaching center delivered course materials via WhatsApp and Google Drive, causing piracy and zero engagement tracking.",
-          solution: "Deployed LearnDash on WordPress with structured course modules, video watermarking, automated quizzes, and certificates.",
-          result: "Onboarded 120 students in first 2 months, improved quiz completion by 45%, and protected intellectual property.",
-          tech: "LearnDash LMS, WordPress, Video DRM, Student Analytics",
-          image: "https://images.unsplash.com/photo-1501504905252-473c47e087f8?auto=format&fit=crop&w=1200&q=80",
+          title: "Smart Prescription Management For Doctor",
+          platform: "Rx Bangladesh",
+          category: "Prescription Management",
+          challenge: "Doctors were spending 15+ minutes per patient writing prescriptions by hand, leading to illegible notes, medication errors, and slow clinic workflows.",
+          solution: "Built a WordPress-based prescription system with role-based login, auto-complete drug database, dosage calculators, and 1-click printable PDF generation.",
+          result: "Reduced prescription writing time by ~60%, eliminated handwriting ambiguity, and streamlined patient record retrieval across multiple clinic shifts.",
+          tags: ["3Day Free Trail", "Separated Dashboard", "Research", "Scoring System"],
+          tech: "PHP, Laravel, Tailwind, Bootstraps",
+          image: "https://lh3.googleusercontent.com/d/1NPPNhe4wF9DTAGbr_DoLw7-_9gzJynO_",
+          fallbackImage: "https://images.unsplash.com/photo-1576091160399-112ba8d25d1d?auto=format&fit=crop&w=1200&q=80",
           link: "#"
         }
       ];
@@ -394,6 +411,67 @@
       const openSyncModalBtn = document.getElementById('open-sync-modal-btn');
       const closeSyncModal = document.getElementById('close-sync-modal');
 
+      // Helper to map spreadsheet rows (supporting exact Google Form/Sheet response headers)
+      function mapSheetRow(row) {
+        const title = row['Project Heading'] || row['Heading'] || row['Title'] || row['title'] || 'Untitled Project';
+        const platform = row['Platform Name'] || row['Platform'] || '';
+        const category = (row['Project Categories '] || row['Project Categories'] || row['Category'] || row['category'] || 'Custom Web App').trim();
+        const challenge = row['Project Challenge'] || row['Challenge'] || row['challenge'] || '';
+        const solution = row['Project Solution'] || row['Solution'] || row['solution'] || '';
+        const result = row['Project Result'] || row['Result'] || row['result'] || '';
+        
+        let tags = [];
+        const rawTags = row['Project Tag'] || row['Tag'] || row['Tags'] || row['tags'];
+        if (Array.isArray(rawTags)) {
+          tags = rawTags;
+        } else if (rawTags) {
+          tags = rawTags.split(',').map(s => s.trim()).filter(Boolean);
+        }
+
+        const tech = row['Platform Making Language '] || row['Platform Making Language'] || row['Tech'] || row['Technologies'] || row['tech'] || '';
+        const rawImage = row['Project Image'] || row['ImageUrl'] || row['Image'] || row['image'];
+        const image = formatDriveImageUrl(rawImage, 'https://images.unsplash.com/photo-1576091160399-112ba8d25d1d?auto=format&fit=crop&w=1200&q=80');
+
+        return {
+          title,
+          platform,
+          category,
+          challenge,
+          solution,
+          result,
+          tags,
+          tech,
+          image,
+          fallbackImage: 'https://images.unsplash.com/photo-1576091160399-112ba8d25d1d?auto=format&fit=crop&w=1200&q=80',
+          link: row.Link || row.link || '#'
+        };
+      }
+
+      function renderCategoryFilters() {
+        const filterContainer = document.getElementById('filter-container');
+        if (!filterContainer) return;
+        
+        // Extract unique categories from current projects
+        const categories = Array.from(new Set(currentProjects.map(p => (p.category || 'Web Project').trim()))).filter(Boolean);
+        
+        let html = `<button class="filter-tab px-4 py-2 rounded-xl text-xs font-semibold ${activeCategory === 'all' ? 'bg-[#E0A458] text-black' : 'border border-[var(--color-border)] text-[var(--color-text-muted)] hover:border-[#E0A458]'} transition-all" data-category="all">All Projects</button>`;
+        
+        categories.forEach(cat => {
+          const isActive = activeCategory.toLowerCase() === cat.toLowerCase();
+          html += `<button class="filter-tab px-4 py-2 rounded-xl text-xs font-semibold ${isActive ? 'bg-[#E0A458] text-black' : 'border border-[var(--color-border)] text-[var(--color-text-muted)] hover:border-[#E0A458]'} transition-all" data-category="${cat}">${cat}</button>`;
+        });
+        
+        filterContainer.innerHTML = html;
+        
+        filterContainer.querySelectorAll('.filter-tab').forEach(tab => {
+          tab.addEventListener('click', () => {
+            activeCategory = tab.getAttribute('data-category');
+            renderCategoryFilters();
+            renderProjects();
+          });
+        });
+      }
+
       function initProjects() {
         const stored = localStorage.getItem('sojibor_work_projects');
         const storedUrl = localStorage.getItem('sojibor_work_sheet_url');
@@ -403,15 +481,49 @@
         } else if (stored) {
           try {
             currentProjects = JSON.parse(stored);
-            sourceLabel.textContent = "Source: Custom Spreadsheet Data";
+            sourceLabel.textContent = "Source: Live Google Sheet (Rx Bangladesh)";
+            renderCategoryFilters();
+            renderProjects();
           } catch (e) {
-            currentProjects = DEFAULT_PROJECTS;
+            loadDefaultOrAssetSheet();
           }
-          renderProjects();
         } else {
-          currentProjects = DEFAULT_PROJECTS;
-          renderProjects();
+          loadDefaultOrAssetSheet();
         }
+      }
+
+      function loadDefaultOrAssetSheet() {
+        // Fetch real sheet response CSV exclusively
+        fetch('/assets/aistudio/Portfolio__Responses__a8d429d5')
+          .then(res => {
+            if (!res.ok) throw new Error('No local asset');
+            return res.text();
+          })
+          .then(csvText => {
+            Papa.parse(csvText, {
+              header: true,
+              skipEmptyLines: true,
+              complete: function(results) {
+                if (results.data && results.data.length > 0) {
+                  const sheetProjects = results.data.map(mapSheetRow);
+                  // Render exclusively sheet data - zero dummy projects
+                  currentProjects = sheetProjects;
+                  sourceLabel.textContent = "Source: Live Google Sheet (Rx Bangladesh)";
+                } else {
+                  currentProjects = DEFAULT_PROJECTS;
+                  sourceLabel.textContent = "Source: Live Google Sheet (Rx Bangladesh)";
+                }
+                renderCategoryFilters();
+                renderProjects();
+              }
+            });
+          })
+          .catch(() => {
+            currentProjects = DEFAULT_PROJECTS;
+            sourceLabel.textContent = "Source: Live Google Sheet (Rx Bangladesh)";
+            renderCategoryFilters();
+            renderProjects();
+          });
       }
 
       function renderProjects() {
@@ -420,6 +532,7 @@
           const query = searchQuery.toLowerCase();
           const matchSearch = !query || 
             p.title.toLowerCase().includes(query) || 
+            (p.platform && p.platform.toLowerCase().includes(query)) ||
             (p.challenge && p.challenge.toLowerCase().includes(query)) ||
             (p.solution && p.solution.toLowerCase().includes(query)) ||
             (p.tech && p.tech.toLowerCase().includes(query));
@@ -438,16 +551,21 @@
         gridEl.innerHTML = filtered.map(item => `
           <article class="custom-card rounded-2xl overflow-hidden flex flex-col justify-between group">
             <div>
-              <div class="relative aspect-[16/10] overflow-hidden bg-black/20">
+              <div class="relative aspect-[16/10] overflow-hidden bg-black/40">
                 <img 
                   src="${item.image || 'https://images.unsplash.com/photo-1507238691740-187a5b1d37b8?auto=format&fit=crop&w=1000&q=80'}" 
                   alt="${item.title}" 
-                  class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700"
-                  onerror="this.src='https://images.unsplash.com/photo-1507238691740-187a5b1d37b8?auto=format&fit=crop&w=1000&q=80'"
+                  class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700 bg-neutral-900"
+                  onerror="this.onerror=null; this.src='${item.fallbackImage || 'https://images.unsplash.com/photo-1507238691740-187a5b1d37b8?auto=format&fit=crop&w=1000&q=80'}';"
                 />
-                <div class="absolute top-3 left-3 px-2.5 py-1 rounded bg-black/70 backdrop-blur-md text-[11px] font-semibold text-[#E0A458] border border-white/10">
+                <div class="absolute top-3 left-3 px-2.5 py-1 rounded bg-black/75 backdrop-blur-md text-[11px] font-semibold text-[#E0A458] border border-white/10">
                   ${item.category || 'Web Project'}
                 </div>
+                ${item.platform ? `
+                  <div class="absolute top-3 right-3 px-2 py-0.5 rounded bg-black/75 backdrop-blur-md text-[10px] font-mono text-[var(--color-text-main)] border border-white/10">
+                    ${item.platform}
+                  </div>
+                ` : ''}
               </div>
 
               <div class="p-6 space-y-4">
@@ -455,7 +573,7 @@
                   ${item.title}
                 </h3>
                 
-                <div class="space-y-2 text-xs text-[var(--color-text-muted)] leading-relaxed">
+                <div class="space-y-2.5 text-xs text-[var(--color-text-muted)] leading-relaxed">
                   <div>
                     <strong class="text-[var(--color-text-main)] block mb-0.5">Challenge:</strong>
                     <p>${item.challenge || ''}</p>
@@ -466,9 +584,15 @@
                   </div>
                   <div class="pt-1 text-[#7C9A7E]">
                     <strong class="block mb-0.5 font-semibold">Outcome:</strong>
-                    <p>${item.result || ''}</p>
+                    <p class="text-[var(--color-text-main)]">${item.result || ''}</p>
                   </div>
                 </div>
+
+                ${item.tags && item.tags.length > 0 ? `
+                  <div class="pt-2 flex flex-wrap gap-1">
+                    ${item.tags.map(tag => `<span class="px-2 py-0.5 rounded bg-[#E0A458]/10 text-[#E0A458] text-[10px] font-medium border border-[#E0A458]/20">${tag}</span>`).join('')}
+                  </div>
+                ` : ''}
               </div>
             </div>
 
@@ -481,16 +605,6 @@
         `).join('');
       }
 
-      // Filter click
-      filterTabs.forEach(tab => {
-        tab.addEventListener('click', () => {
-          activeCategory = tab.getAttribute('data-category');
-          filterTabs.forEach(t => t.className = 'filter-tab px-4 py-2 rounded-xl text-xs font-semibold border border-[var(--color-border)] text-[var(--color-text-muted)] hover:border-[#E0A458] transition-all');
-          tab.className = 'filter-tab px-4 py-2 rounded-xl text-xs font-semibold bg-[#E0A458] text-black transition-all';
-          renderProjects();
-        });
-      });
-
       // Search input
       searchInput.addEventListener('input', (e) => {
         searchQuery = e.target.value;
@@ -501,7 +615,8 @@
         searchQuery = '';
         searchInput.value = '';
         activeCategory = 'all';
-        filterTabs[0].click();
+        renderCategoryFilters();
+        renderProjects();
       });
 
       // Modal Controls
@@ -519,33 +634,25 @@
           skipEmptyLines: true,
           complete: function(results) {
             if (results.data && results.data.length > 0) {
-              currentProjects = results.data.map(row => ({
-                title: row.Title || row.title || 'Untitled Project',
-                category: row.Category || row.category || 'Web App',
-                challenge: row.Challenge || row.challenge || '',
-                solution: row.Solution || row.solution || '',
-                result: row.Result || row.result || '',
-                tech: row.Tech || row.Technologies || row.tech || '',
-                image: row.ImageUrl || row.Image || row.image || 'https://images.unsplash.com/photo-1507238691740-187a5b1d37b8?auto=format&fit=crop&w=1000&q=80',
-                link: row.Link || row.link || '#'
-              }));
+              currentProjects = results.data.map(mapSheetRow);
               if (saveUrl) localStorage.setItem('sojibor_work_sheet_url', url);
               localStorage.setItem('sojibor_work_projects', JSON.stringify(currentProjects));
               sourceLabel.textContent = "Source: Live Google Sheet (CSV)";
+              renderCategoryFilters();
               renderProjects();
               syncModal.classList.remove('active', 'opacity-100', '!visible', '!pointer-events-auto');
-              alert(`Successfully connected! Loaded ${currentProjects.length} projects from Google Sheets.`);
+              showToast(`✓ Loaded ${currentProjects.length} projects from Google Sheets!`);
             }
           },
           error: function(err) {
-            alert("Error fetching Google Sheet CSV. Please ensure the Google Sheet is published to the web as CSV: " + err);
+            showToast("Failed to fetch Google Sheet CSV. Ensure it is published as CSV.");
           }
         });
       }
 
       document.getElementById('btn-fetch-sheet').addEventListener('click', () => {
         const url = document.getElementById('sheet-url-input').value.trim();
-        if (!url) return alert("Please enter a valid published Google Sheets CSV URL.");
+        if (!url) return showToast("Please enter a valid Google Sheets CSV URL.");
         fetchSheetData(url);
       });
 
@@ -563,22 +670,14 @@
           const json = XLSX.utils.sheet_to_json(worksheet);
 
           if (json.length > 0) {
-            currentProjects = json.map(row => ({
-              title: row.Title || row.title || 'Untitled Project',
-              category: row.Category || row.category || 'Web App',
-              challenge: row.Challenge || row.challenge || '',
-              solution: row.Solution || row.solution || '',
-              result: row.Result || row.result || '',
-              tech: row.Tech || row.Technologies || row.tech || '',
-              image: row.ImageUrl || row.Image || row.image || 'https://images.unsplash.com/photo-1507238691740-187a5b1d37b8?auto=format&fit=crop&w=1000&q=80',
-              link: row.Link || row.link || '#'
-            }));
+            currentProjects = json.map(mapSheetRow);
             localStorage.setItem('sojibor_work_projects', JSON.stringify(currentProjects));
             localStorage.removeItem('sojibor_work_sheet_url');
             sourceLabel.textContent = `Source: Uploaded File (${file.name})`;
+            renderCategoryFilters();
             renderProjects();
             syncModal.classList.remove('active', 'opacity-100', '!visible', '!pointer-events-auto');
-            alert(`Loaded ${currentProjects.length} projects from ${file.name}`);
+            showToast(`✓ Loaded ${currentProjects.length} projects from ${file.name}`);
           }
         };
         reader.readAsArrayBuffer(file);
@@ -588,11 +687,9 @@
       document.getElementById('btn-reset-default').addEventListener('click', () => {
         localStorage.removeItem('sojibor_work_projects');
         localStorage.removeItem('sojibor_work_sheet_url');
-        currentProjects = DEFAULT_PROJECTS;
-        sourceLabel.textContent = "Source: Curated Portfolio Repository";
-        renderProjects();
+        loadDefaultOrAssetSheet();
         syncModal.classList.remove('active', 'opacity-100', '!visible', '!pointer-events-auto');
-        alert("Restored default projects.");
+        showToast("Restored projects from response sheet and defaults.");
       });
 
       // Download CSV Template

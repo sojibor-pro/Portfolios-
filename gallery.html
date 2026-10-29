@@ -45,6 +45,10 @@
             fontFamily: {
               serif: ['"Playfair Display"', 'Georgia', 'serif'],
               sans: ['Inter', 'system-ui', '-apple-system', 'sans-serif'],
+            },
+            maxWidth: {
+              '7xl': '1300px',
+              'site': '1300px'
             }
           }
         }
@@ -52,6 +56,11 @@
     </script>
 
     <style>
+      /* Ensure whole website width is locked to 1300px */
+      .max-w-7xl, .site-container {
+        max-width: 1300px !important;
+      }
+
       :root, [data-theme="light"] {
         --color-bg-base: #F5F1EA;
         --color-bg-card: #FAF7F2;
@@ -114,7 +123,7 @@
     
     <!-- ================= NAVBAR ================= -->
     <header class="fixed top-0 left-0 right-0 z-50 glass-nav transition-all duration-300">
-      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-20 flex items-center justify-between">
+      <div class="max-w-[1300px] mx-auto px-4 sm:px-6 lg:px-8 h-20 flex items-center justify-between">
         
         <!-- Brand -->
         <a href="index.html" class="group flex items-center gap-1 font-serif text-2xl tracking-tight font-bold transition-colors">
@@ -204,7 +213,7 @@
       </div>
     </header>
 
-    <main class="pt-32 pb-24 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto">
+    <main class="pt-32 pb-24 px-4 sm:px-6 lg:px-8 max-w-[1300px] mx-auto">
       
       <!-- Section Header -->
       <div class="text-center max-w-3xl mx-auto mb-10">
@@ -364,18 +373,46 @@
 
     <!-- Scripts -->
     <script>
+      // Non-intrusive Toast Notification
+      function showToast(message) {
+        const existing = document.getElementById('gallery-toast');
+        if (existing) existing.remove();
+        const toast = document.createElement('div');
+        toast.id = 'gallery-toast';
+        toast.className = 'fixed bottom-6 right-6 z-50 px-5 py-3 rounded-xl bg-[var(--color-bg-card)] border border-[#E0A458] text-[var(--color-text-main)] text-xs font-medium shadow-2xl transition-all duration-300 transform translate-y-2 opacity-0 flex items-center gap-2';
+        toast.innerHTML = `<span class="w-2 h-2 rounded-full bg-[#E0A458] animate-ping"></span><span>${message}</span>`;
+        document.body.appendChild(toast);
+        requestAnimationFrame(() => {
+          toast.classList.remove('translate-y-2', 'opacity-0');
+        });
+        setTimeout(() => {
+          toast.classList.add('opacity-0', 'translate-y-2');
+          setTimeout(() => toast.remove(), 300);
+        }, 3200);
+      }
+
+      // Convert Google Drive shareable URLs into direct high-res image streams
+      function formatDriveImageUrl(rawUrl, fallback) {
+        if (!rawUrl) return fallback;
+        const match = rawUrl.match(/[?&]id=([a-zA-Z0-9_-]+)/) || rawUrl.match(/\/d\/([a-zA-Z0-9_-]+)/);
+        if (match && match[1]) {
+          return `https://lh3.googleusercontent.com/d/${match[1]}`;
+        }
+        return rawUrl;
+      }
+
       const DEFAULT_PHOTOS = [
         {
           title: "Streets of Old Dhaka",
-          category: "street",
+          category: "Street & Documentary",
           caption: "Streets of Old Dhaka · Golden hour shadows and motion",
-          meta: "Old Dhaka · 35mm f/2.0",
+          meta: "Old Dhaka, Bangladesh · 35mm f/2.0",
           full: "https://images.unsplash.com/photo-1509316975850-ff9c5deb0cd9?auto=format&fit=crop&w=1600&q=85",
           thumb: "https://images.unsplash.com/photo-1509316975850-ff9c5deb0cd9?auto=format&fit=crop&w=800&q=80"
         },
         {
           title: "Handloom Weave Textures",
-          category: "textile",
+          category: "Textile & Craft",
           caption: "Handloom Weave Textures · Tangail weavers at work",
           meta: "Tangail, Bangladesh · 50mm f/1.8",
           full: "https://images.unsplash.com/photo-1606760227091-3dd870d97f1d?auto=format&fit=crop&w=1600&q=85",
@@ -383,23 +420,23 @@
         },
         {
           title: "Studio Portraiture",
-          category: "portrait",
+          category: "Portraiture",
           caption: "Studio Portraiture · Natural ambient light & quiet contemplation",
-          meta: "Studio Session · 85mm f/1.4",
+          meta: "Studio Session, Dhaka · 85mm f/1.4",
           full: "https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=1600&q=85",
           thumb: "https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=800&q=80"
         },
         {
           title: "Architectural Shadows",
-          category: "architecture",
+          category: "Architecture",
           caption: "Architectural Geometry · Light, angles and brutalist structures",
-          meta: "National Parliament · 24mm f/4.0",
+          meta: "National Parliament, Dhaka · 24mm f/4.0",
           full: "https://images.unsplash.com/photo-1513694203232-719a280e022f?auto=format&fit=crop&w=1600&q=85",
           thumb: "https://images.unsplash.com/photo-1513694203232-719a280e022f?auto=format&fit=crop&w=800&q=80"
         },
         {
           title: "Serene River Dusk",
-          category: "street",
+          category: "Street & Documentary",
           caption: "Serene Waters · Quiet dawn on the Meghna riverbanks",
           meta: "Meghna River · 50mm f/2.8",
           full: "https://images.unsplash.com/photo-1507525428034-b723cf961d3e?auto=format&fit=crop&w=1600&q=85",
@@ -407,7 +444,7 @@
         },
         {
           title: "Rainy Night Solitude",
-          category: "street",
+          category: "Street & Documentary",
           caption: "Night Reflections · Dhaka rainy night urban silhouettes",
           meta: "Dhanmondi, Dhaka · 35mm f/1.4",
           full: "https://images.unsplash.com/photo-1519501025264-65ba15a82390?auto=format&fit=crop&w=1600&q=85",
@@ -424,10 +461,58 @@
       const countBadge = document.getElementById('photo-count-badge');
       const sourceLabel = document.getElementById('data-source-label');
       const searchInput = document.getElementById('photo-search-input');
-      const filterTabs = document.querySelectorAll('.filter-tab');
       const syncModal = document.getElementById('sync-modal');
       const openSyncModalBtn = document.getElementById('open-sync-modal-btn');
       const closeSyncModal = document.getElementById('close-sync-modal');
+
+      // Helper to map spreadsheet rows matching Google Form headers:
+      // Timestamp,Photo Categorizes,Photo Uploaded,Photo Tag,Photo Title,Photo Location,"Capturing Details (Lens, Camera)"
+      function mapPhotoRow(row) {
+        const title = row['Photo Title'] || row['Title'] || row['title'] || 'Untitled Photograph';
+        const category = (row['Photo Categorizes'] || row['Photo Categories'] || row['Category'] || row['category'] || 'Street & Documentary').trim();
+        const rawImg = row['Photo Uploaded'] || row['FullImageUrl'] || row['ImageUrl'] || row['Image'] || row['image'];
+        const location = row['Photo Location'] || row['Location'] || row['location'] || '';
+        const details = row['Capturing Details (Lens, Camera)'] || row['Gear'] || row['Camera'] || row['Details'] || row['details'] || '';
+        const tags = row['Photo Tag'] || row['Tag'] || row['Tags'] || '';
+        
+        const imgUrl = formatDriveImageUrl(rawImg, 'https://images.unsplash.com/photo-1516035069371-29a1b244cc32?auto=format&fit=crop&w=1600&q=85');
+        const metaText = [location, details].filter(Boolean).join(' · ') || 'Candid capture';
+        const captionText = `${title}${location ? ' · ' + location : ''}`;
+
+        return {
+          title,
+          category,
+          location,
+          details,
+          tags,
+          caption: captionText,
+          meta: metaText,
+          full: imgUrl,
+          thumb: imgUrl
+        };
+      }
+
+      function renderCategoryFilters() {
+        const filterContainer = document.getElementById('filter-container');
+        if (!filterContainer) return;
+        
+        const categories = Array.from(new Set(currentPhotos.map(p => (p.category || 'General').trim()))).filter(Boolean);
+        let html = `<button class="filter-tab px-4 py-2 rounded-xl text-xs font-semibold ${activeCategory === 'all' ? 'bg-[#E0A458] text-black' : 'border border-[var(--color-border)] text-[var(--color-text-muted)] hover:border-[#E0A458]'} transition-all" data-category="all">All Photos</button>`;
+        
+        categories.forEach(cat => {
+          const isActive = activeCategory.toLowerCase() === cat.toLowerCase();
+          html += `<button class="filter-tab px-4 py-2 rounded-xl text-xs font-semibold ${isActive ? 'bg-[#E0A458] text-black' : 'border border-[var(--color-border)] text-[var(--color-text-muted)] hover:border-[#E0A458]'} transition-all" data-category="${cat}">${cat}</button>`;
+        });
+        
+        filterContainer.innerHTML = html;
+        filterContainer.querySelectorAll('.filter-tab').forEach(tab => {
+          tab.addEventListener('click', () => {
+            activeCategory = tab.getAttribute('data-category');
+            renderCategoryFilters();
+            renderPhotos();
+          });
+        });
+      }
 
       function initPhotos() {
         const stored = localStorage.getItem('sojibor_gallery_photos');
@@ -438,25 +523,59 @@
         } else if (stored) {
           try {
             currentPhotos = JSON.parse(stored);
-            sourceLabel.textContent = "Source: Custom Spreadsheet Photos";
+            sourceLabel.textContent = "Source: Live Google Sheet (Photography Responses)";
+            renderCategoryFilters();
+            renderPhotos();
           } catch(e) {
-            currentPhotos = DEFAULT_PHOTOS;
+            loadDefaultOrAssetPhotoSheet();
           }
-          renderPhotos();
         } else {
-          currentPhotos = DEFAULT_PHOTOS;
-          renderPhotos();
+          loadDefaultOrAssetPhotoSheet();
         }
+      }
+
+      function loadDefaultOrAssetPhotoSheet() {
+        // Connect directly to user's Photography Responses file
+        fetch('/assets/aistudio/Photography__Responses__182278b8')
+          .then(res => {
+            if (!res.ok) throw new Error('No local asset');
+            return res.text();
+          })
+          .then(csvText => {
+            Papa.parse(csvText, {
+              header: true,
+              skipEmptyLines: true,
+              complete: function(results) {
+                if (results.data && results.data.length > 0) {
+                  currentPhotos = results.data.map(mapPhotoRow);
+                  sourceLabel.textContent = "Source: Live Google Sheet (Photography Responses)";
+                } else {
+                  // Ready for user's uploads; shows curated preview until first response row is added
+                  currentPhotos = DEFAULT_PHOTOS;
+                  sourceLabel.textContent = "Source: Photography Responses Sheet Connected (Awaiting Uploads)";
+                }
+                renderCategoryFilters();
+                renderPhotos();
+              }
+            });
+          })
+          .catch(() => {
+            currentPhotos = DEFAULT_PHOTOS;
+            sourceLabel.textContent = "Source: Curated Photography Gallery";
+            renderCategoryFilters();
+            renderPhotos();
+          });
       }
 
       function renderPhotos() {
         const filtered = currentPhotos.filter(p => {
-          const matchCategory = activeCategory === 'all' || p.category.toLowerCase().includes(activeCategory.toLowerCase());
+          const matchCategory = activeCategory === 'all' || p.category.toLowerCase() === activeCategory.toLowerCase();
           const query = searchQuery.toLowerCase();
           const matchSearch = !query || 
             p.title.toLowerCase().includes(query) ||
             (p.caption && p.caption.toLowerCase().includes(query)) ||
-            (p.meta && p.meta.toLowerCase().includes(query));
+            (p.meta && p.meta.toLowerCase().includes(query)) ||
+            (p.category && p.category.toLowerCase().includes(query));
           return matchCategory && matchSearch;
         });
 
@@ -479,7 +598,7 @@
             <img 
               src="${item.thumb || item.full}" 
               alt="${item.title}" 
-              class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700"
+              class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700 bg-neutral-900"
               onerror="this.src='https://images.unsplash.com/photo-1516035069371-29a1b244cc32?auto=format&fit=crop&w=800&q=80'"
             />
             <div class="absolute inset-0 bg-gradient-to-t from-black/85 via-black/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex flex-col justify-end p-6">
@@ -498,16 +617,6 @@
         });
       }
 
-      // Filter tabs
-      filterTabs.forEach(tab => {
-        tab.addEventListener('click', () => {
-          activeCategory = tab.getAttribute('data-category');
-          filterTabs.forEach(t => t.className = 'filter-tab px-4 py-2 rounded-xl text-xs font-semibold border border-[var(--color-border)] text-[var(--color-text-muted)] hover:border-[#E0A458] transition-all');
-          tab.className = 'filter-tab px-4 py-2 rounded-xl text-xs font-semibold bg-[#E0A458] text-black transition-all';
-          renderPhotos();
-        });
-      });
-
       // Search
       searchInput.addEventListener('input', (e) => {
         searchQuery = e.target.value;
@@ -518,7 +627,8 @@
         searchQuery = '';
         searchInput.value = '';
         activeCategory = 'all';
-        filterTabs[0].click();
+        renderCategoryFilters();
+        renderPhotos();
       });
 
       // Lightbox
@@ -560,31 +670,25 @@
           skipEmptyLines: true,
           complete: function(results) {
             if (results.data && results.data.length > 0) {
-              currentPhotos = results.data.map(row => ({
-                title: row.Title || row.title || 'Untitled Photo',
-                category: (row.Category || row.category || 'street').toLowerCase(),
-                caption: row.Caption || row.caption || row.Title || '',
-                meta: row.Meta || row.Gear || row.Location || row.meta || '',
-                full: row.FullImageUrl || row.ImageUrl || row.Image || row.full || 'https://images.unsplash.com/photo-1516035069371-29a1b244cc32?auto=format&fit=crop&w=1600&q=85',
-                thumb: row.ThumbnailUrl || row.ImageUrl || row.Image || row.thumb || 'https://images.unsplash.com/photo-1516035069371-29a1b244cc32?auto=format&fit=crop&w=800&q=80'
-              }));
+              currentPhotos = results.data.map(mapPhotoRow);
               if (saveUrl) localStorage.setItem('sojibor_gallery_sheet_url', url);
               localStorage.setItem('sojibor_gallery_photos', JSON.stringify(currentPhotos));
               sourceLabel.textContent = "Source: Live Google Sheet (CSV)";
+              renderCategoryFilters();
               renderPhotos();
               syncModal.classList.remove('active', 'opacity-100', '!visible', '!pointer-events-auto');
-              alert(`Successfully connected! Loaded ${currentPhotos.length} photos from Google Sheets.`);
+              showToast(`✓ Loaded ${currentPhotos.length} photos from Google Sheets!`);
             }
           },
           error: function(err) {
-            alert("Error fetching Google Sheet CSV. Please ensure it is published to the web as CSV: " + err);
+            showToast("Error fetching Google Sheet CSV. Ensure it is published as CSV.");
           }
         });
       }
 
       document.getElementById('btn-fetch-sheet').addEventListener('click', () => {
         const url = document.getElementById('sheet-url-input').value.trim();
-        if (!url) return alert("Please enter a valid published Google Sheets CSV URL.");
+        if (!url) return showToast("Please enter a valid published Google Sheets CSV URL.");
         fetchSheetData(url);
       });
 
@@ -602,20 +706,14 @@
           const json = XLSX.utils.sheet_to_json(worksheet);
 
           if (json.length > 0) {
-            currentPhotos = json.map(row => ({
-              title: row.Title || row.title || 'Untitled Photo',
-              category: (row.Category || row.category || 'street').toLowerCase(),
-              caption: row.Caption || row.caption || row.Title || '',
-              meta: row.Meta || row.Gear || row.Location || row.meta || '',
-              full: row.FullImageUrl || row.ImageUrl || row.Image || row.full || 'https://images.unsplash.com/photo-1516035069371-29a1b244cc32?auto=format&fit=crop&w=1600&q=85',
-              thumb: row.ThumbnailUrl || row.ImageUrl || row.Image || row.thumb || 'https://images.unsplash.com/photo-1516035069371-29a1b244cc32?auto=format&fit=crop&w=800&q=80'
-            }));
+            currentPhotos = json.map(mapPhotoRow);
             localStorage.setItem('sojibor_gallery_photos', JSON.stringify(currentPhotos));
             localStorage.removeItem('sojibor_gallery_sheet_url');
             sourceLabel.textContent = `Source: Uploaded File (${file.name})`;
+            renderCategoryFilters();
             renderPhotos();
             syncModal.classList.remove('active', 'opacity-100', '!visible', '!pointer-events-auto');
-            alert(`Loaded ${currentPhotos.length} photos from ${file.name}`);
+            showToast(`✓ Loaded ${currentPhotos.length} photos from ${file.name}`);
           }
         };
         reader.readAsArrayBuffer(file);
@@ -625,25 +723,23 @@
       document.getElementById('btn-reset-default').addEventListener('click', () => {
         localStorage.removeItem('sojibor_gallery_photos');
         localStorage.removeItem('sojibor_gallery_sheet_url');
-        currentPhotos = DEFAULT_PHOTOS;
-        sourceLabel.textContent = "Source: Curated Photography Gallery";
-        renderPhotos();
+        loadDefaultOrAssetPhotoSheet();
         syncModal.classList.remove('active', 'opacity-100', '!visible', '!pointer-events-auto');
-        alert("Restored default gallery.");
+        showToast("Restored photography responses connection.");
       });
 
-      // Sample CSV Template Download
+      // Sample CSV Template Download matching user's Google Form
       function downloadPhotoTemplate() {
-        const csvContent = "Title,Category,Caption,Location,Gear,FullImageUrl,ThumbnailUrl\n" +
-          '"Streets of Old Dhaka","street","Streets of Old Dhaka · Golden hour shadows","Dhaka, Bangladesh","35mm f/2.0","https://images.unsplash.com/photo-1509316975850-ff9c5deb0cd9?auto=format&fit=crop&w=1600&q=85","https://images.unsplash.com/photo-1509316975850-ff9c5deb0cd9?auto=format&fit=crop&w=800&q=80"\n' +
-          '"Handloom Weave Textures","textile","Handloom Weave Textures · Tangail weavers at work","Tangail","50mm f/1.8","https://images.unsplash.com/photo-1606760227091-3dd870d97f1d?auto=format&fit=crop&w=1600&q=85","https://images.unsplash.com/photo-1606760227091-3dd870d97f1d?auto=format&fit=crop&w=800&q=80"\n' +
-          '"Studio Portraiture","portrait","Studio Portraiture · Natural ambient light","Studio Session","85mm f/1.4","https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=1600&q=85","https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=800&q=80"\n';
+        const csvContent = 'Timestamp,Photo Categorizes,Photo Uploaded,Photo Tag,Photo Title,Photo Location,"Capturing Details (Lens, Camera)"\n' +
+          '"2026-10-29 10:00:00","Street & Documentary","https://drive.google.com/open?id=123456789","Street, Morning, Dhaka","Streets of Old Dhaka","Old Dhaka, Bangladesh","35mm f/2.0, Sony A7IV"\n' +
+          '"2026-10-29 10:15:00","Textile & Craft","https://drive.google.com/open?id=987654321","Handloom, Cotton, Weave","Handloom Weave Textures","Tangail, Bangladesh","50mm f/1.8, Sony A7IV"\n' +
+          '"2026-10-29 10:30:00","Portraiture","https://drive.google.com/open?id=112233445","Studio, Natural Light, Portrait","Studio Portraiture","Dhaka, Bangladesh","85mm f/1.4, Sony A7IV"\n';
 
         const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
         const url = URL.createObjectURL(blob);
         const a = document.createElement('a');
         a.href = url;
-        a.download = 'sojibor_photography_catalog_template.csv';
+        a.download = 'Photography__Responses__template.csv';
         a.click();
         URL.revokeObjectURL(url);
       }
