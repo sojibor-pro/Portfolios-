@@ -1,0 +1,1501 @@
+<!doctype html>
+<html lang="en" data-theme="dark">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Developer &amp; Creative Tools Suite | MD Sojibor Rahman</title>
+    <meta name="description" content="Free browser-based productivity tools: multi-calculator, rich text doc editor, photo editor, PDF toolkit, image resizer, and background remover by MD Sojibor Rahman." />
+
+    <!-- Google Fonts: Inter & Playfair Display -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400;1,600&display=swap" rel="stylesheet" />
+
+    <!-- DaisyUI CDN -->
+    <link href="https://cdn.jsdelivr.net/npm/daisyui@4.12.23/dist/full.min.css" rel="stylesheet" type="text/css" />
+
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+
+    <script>
+      tailwind.config = {
+        darkMode: ['class', '[data-theme="dark"]'],
+        theme: {
+          extend: {
+            colors: {
+              amber: {
+                DEFAULT: '#E0A458',
+                accent: '#E0A458',
+                hover: '#C98D45',
+                light: '#F8E9D6',
+                muted: 'rgba(224, 164, 88, 0.12)'
+              },
+              sage: {
+                DEFAULT: '#7C9A7E',
+                secondary: '#7C9A7E'
+              },
+              midnight: '#0E0E10',
+              cream: '#F5F1EA',
+              offwhite: '#EDEDED'
+            },
+            fontFamily: {
+              serif: ['"Playfair Display"', 'Georgia', 'serif'],
+              sans: ['Inter', 'system-ui', '-apple-system', 'sans-serif'],
+            },
+            maxWidth: {
+              '7xl': '1300px',
+              'site': '1300px'
+            }
+          }
+        }
+      };
+    </script>
+
+    <style>
+      /* Ensure whole website width is locked to 1300px */
+      .max-w-7xl, .site-container {
+        max-width: 1300px !important;
+      }
+
+      :root, [data-theme="light"] {
+        --color-bg-base: #F5F1EA;
+        --color-bg-card: #FAF7F2;
+        --color-bg-surface: #FFFFFF;
+        --color-text-main: #0E0E10;
+        --color-text-muted: #575762;
+        --color-border: rgba(14, 14, 16, 0.10);
+        --nav-glass-bg: rgba(245, 241, 234, 0.92);
+      }
+
+      [data-theme="dark"] {
+        --color-bg-base: #0E0E10;
+        --color-bg-card: #18181E;
+        --color-bg-surface: #141418;
+        --color-text-main: #EDEDED;
+        --color-text-muted: #9D9DA8;
+        --color-border: rgba(237, 237, 237, 0.10);
+        --nav-glass-bg: rgba(14, 14, 16, 0.92);
+      }
+
+      body {
+        background-color: var(--color-bg-base);
+        color: var(--color-text-main);
+        font-family: 'Inter', system-ui, -apple-system, sans-serif;
+        transition: background-color 0.3s ease, color 0.3s ease;
+      }
+
+      h1, h2, h3, h4, .font-serif {
+        font-family: 'Playfair Display', Georgia, serif;
+      }
+
+      .glass-nav {
+        background: var(--nav-glass-bg);
+        backdrop-filter: blur(14px);
+        border-bottom: 1px solid var(--color-border);
+      }
+
+      .custom-card {
+        background-color: var(--color-bg-card);
+        border: 1px solid var(--color-border);
+        transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+      }
+
+      .custom-card:hover {
+        border-color: rgba(224, 164, 88, 0.45);
+      }
+
+      /* Checkerboard background for transparent image canvas */
+      .bg-checkerboard {
+        background-color: #1e1e24;
+        background-image: 
+          linear-gradient(45deg, #141418 25%, transparent 25%), 
+          linear-gradient(-45deg, #141418 25%, transparent 25%), 
+          linear-gradient(45deg, transparent 75%, #141418 75%), 
+          linear-gradient(-45deg, transparent 75%, #141418 75%);
+        background-size: 16px 16px;
+        background-position: 0 0, 0 8px, 8px -8px, -8px 0px;
+      }
+
+      /* Scrollbar */
+      ::-webkit-scrollbar {
+        width: 8px;
+        height: 8px;
+      }
+      ::-webkit-scrollbar-track {
+        background: var(--color-bg-base);
+      }
+      ::-webkit-scrollbar-thumb {
+        background: rgba(224, 164, 88, 0.3);
+        border-radius: 4px;
+      }
+      ::-webkit-scrollbar-thumb:hover {
+        background: #E0A458;
+      }
+    </style>
+  </head>
+  <body class="selection:bg-[#E0A458] selection:text-black antialiased">
+    
+    <!-- ================= NAVBAR ================= -->
+    <header class="fixed top-0 left-0 right-0 z-50 glass-nav transition-all duration-300">
+      <div class="max-w-[1300px] mx-auto px-4 sm:px-6 lg:px-8 h-20 flex items-center justify-between">
+        
+        <!-- Brand -->
+        <a href="index.html" class="group flex items-center gap-1 font-serif text-2xl tracking-tight font-bold transition-colors">
+          <span>Sojibor</span><span class="text-[#E0A458] text-3xl leading-none group-hover:scale-125 transition-transform duration-200">.</span>
+        </a>
+
+        <!-- Desktop Navigation Links -->
+        <nav class="hidden md:flex items-center space-x-7 text-sm font-medium">
+          <a href="index.html#home" class="hover:text-[#E0A458] transition-colors py-1">Home</a>
+          <a href="index.html#services" class="hover:text-[#E0A458] transition-colors py-1">Services</a>
+          <a href="work.html" class="hover:text-[#E0A458] transition-colors py-1">Portfolio</a>
+          <a href="index.html#research" class="hover:text-[#E0A458] transition-colors py-1">Research</a>
+          <a href="gallery.html" class="hover:text-[#E0A458] transition-colors py-1">Photography</a>
+          <a href="tools.html" class="text-[#E0A458] font-semibold border-b-2 border-[#E0A458] py-1 flex items-center gap-1">
+            <span>Tools</span>
+            <span class="px-1.5 py-0.5 text-[9px] font-mono bg-[#E0A458]/20 text-[#E0A458] rounded">Suite</span>
+          </a>
+          <a href="index.html#about" class="hover:text-[#E0A458] transition-colors py-1">About</a>
+          <a href="index.html#contact" class="hover:text-[#E0A458] transition-colors py-1">Contact</a>
+        </nav>
+
+        <!-- Right Side: Theme Toggle & Let's Talk CTA -->
+        <div class="flex items-center gap-3 sm:gap-4">
+          <!-- Theme Toggle Button -->
+          <button 
+            id="theme-toggle" 
+            aria-label="Toggle Dark/Light Mode" 
+            class="p-2.5 rounded-full border border-[var(--color-border)] hover:border-[#E0A458] bg-[var(--color-bg-card)] transition-colors focus:outline-none"
+            title="Toggle theme"
+          >
+            <svg id="sun-icon" class="w-4 h-4 hidden text-[#E0A458]" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z" />
+            </svg>
+            <svg id="moon-icon" class="w-4 h-4 text-[#0E0E10]" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z" />
+            </svg>
+          </button>
+
+          <!-- "Let's Talk" Button -->
+          <a 
+            href="index.html#contact" 
+            class="hidden sm:inline-flex items-center justify-center px-5 py-2.5 text-xs font-semibold uppercase tracking-wider text-black bg-[#E0A458] hover:bg-[#c88f47] transition-all rounded shadow-sm hover:shadow-md"
+          >
+            Let's Talk
+          </a>
+
+          <!-- Mobile Hamburger Toggle -->
+          <button 
+            id="mobile-menu-btn" 
+            aria-label="Open mobile menu" 
+            class="md:hidden p-2 rounded-lg border border-[var(--color-border)] text-current hover:text-[#E0A458] focus:outline-none"
+          >
+            <svg id="menu-icon-open" class="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16m-7 6h7" />
+            </svg>
+            <svg id="menu-icon-close" class="w-6 h-6 hidden" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+            </svg>
+          </button>
+        </div>
+      </div>
+
+      <!-- Mobile Dropdown Navigation -->
+      <div id="mobile-nav" class="hidden md:hidden px-6 pt-3 pb-6 border-b border-[var(--color-border)] bg-[var(--color-bg-base)]">
+        <div class="flex flex-col space-y-3.5 text-base font-medium">
+          <a href="index.html#home" class="mobile-link hover:text-[#E0A458] transition-colors py-1">Home</a>
+          <a href="index.html#services" class="mobile-link hover:text-[#E0A458] transition-colors py-1">Services</a>
+          <a href="work.html" class="mobile-link hover:text-[#E0A458] transition-colors py-1">Portfolio</a>
+          <a href="index.html#research" class="mobile-link hover:text-[#E0A458] transition-colors py-1">Research</a>
+          <a href="gallery.html" class="mobile-link hover:text-[#E0A458] transition-colors py-1">Photography</a>
+          <a href="tools.html" class="mobile-link text-[#E0A458] font-semibold transition-colors py-1">Tools Suite</a>
+          <a href="index.html#about" class="mobile-link hover:text-[#E0A458] transition-colors py-1">About</a>
+          <a href="index.html#contact" class="mobile-link hover:text-[#E0A458] transition-colors py-1">Contact</a>
+          <div class="pt-3">
+            <a href="index.html#contact" class="mobile-link block text-center py-2.5 text-xs font-semibold uppercase tracking-wider text-black bg-[#E0A458] hover:bg-[#c88f47] rounded">
+              Let's Talk
+            </a>
+          </div>
+        </div>
+      </div>
+    </header>
+
+    <main class="pt-32 pb-24 px-4 sm:px-6 lg:px-8 max-w-[1300px] mx-auto">
+      
+      <!-- Section Header -->
+      <div class="text-center max-w-3xl mx-auto mb-12">
+        <div class="inline-flex items-center gap-2 text-xs font-semibold uppercase tracking-widest text-[#E0A458] mb-3">
+          <span class="w-6 h-[2px] bg-[#E0A458]"></span>
+          Browser-Based Creative &amp; Utility Suite
+          <span class="w-6 h-[2px] bg-[#E0A458]"></span>
+        </div>
+        <h1 class="text-4xl sm:text-5xl font-serif font-bold tracking-tight mb-4 text-[var(--color-text-main)]">
+          Online Tools &amp; Utilities
+        </h1>
+        <p class="text-base text-[var(--color-text-muted)] leading-relaxed">
+          High-performance, privacy-focused client-side tools: multi-discipline calculators, office document editor, photo filters, PDF utilities, image resizing, and instant background removal.
+        </p>
+      </div>
+
+      <!-- Quick Navigation Tabs / Categories -->
+      <div class="flex flex-wrap items-center justify-center gap-2 mb-10 max-w-4xl mx-auto">
+        <button class="tool-cat-btn px-4 py-2 rounded-xl text-xs font-semibold bg-[#E0A458] text-black transition-all" data-target="all">All Tools</button>
+        <button class="tool-cat-btn px-4 py-2 rounded-xl text-xs font-semibold border border-[var(--color-border)] text-[var(--color-text-muted)] hover:border-[#E0A458] transition-all" data-target="calculators">Calculators</button>
+        <button class="tool-cat-btn px-4 py-2 rounded-xl text-xs font-semibold border border-[var(--color-border)] text-[var(--color-text-muted)] hover:border-[#E0A458] transition-all" data-target="office">MS Office &amp; Docs</button>
+        <button class="tool-cat-btn px-4 py-2 rounded-xl text-xs font-semibold border border-[var(--color-border)] text-[var(--color-text-muted)] hover:border-[#E0A458] transition-all" data-target="photo">Photo Editing</button>
+        <button class="tool-cat-btn px-4 py-2 rounded-xl text-xs font-semibold border border-[var(--color-border)] text-[var(--color-text-muted)] hover:border-[#E0A458] transition-all" data-target="pdf">PDF Toolkit</button>
+        <button class="tool-cat-btn px-4 py-2 rounded-xl text-xs font-semibold border border-[var(--color-border)] text-[var(--color-text-muted)] hover:border-[#E0A458] transition-all" data-target="image">Resize &amp; BG Remover</button>
+        <button class="tool-cat-btn px-4 py-2 rounded-xl text-xs font-semibold border border-[var(--color-border)] text-[var(--color-text-muted)] hover:border-[#E0A458] transition-all" data-target="developer">Developer Helpers</button>
+      </div>
+
+      <!-- Tool Container Grid / Panels -->
+      <div class="space-y-16">
+
+        <!-- ================= TOOL 1: CALCULATORS ================= -->
+        <section id="tool-calculators" class="tool-card custom-card rounded-3xl p-6 sm:p-8 lg:p-10" data-cat="calculators">
+          <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pb-6 border-b border-[var(--color-border)] mb-6">
+            <div class="flex items-center gap-3">
+              <div class="w-12 h-12 rounded-2xl bg-[#E0A458]/15 text-[#E0A458] flex items-center justify-center shrink-0">
+                <svg class="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 7h6m0 10v-3m-3 3h.01M9 17h.01M9 14h.01M12 14h.01M15 11h.01M12 11h.01M9 11h.01M7 21h10a2 2 0 002-2V5a2 2 0 00-2-2H7a2 2 0 00-2 2v14a2 2 0 002 2z" />
+                </svg>
+              </div>
+              <div>
+                <h2 class="text-2xl font-serif font-bold text-[var(--color-text-main)]">Smart Multi-Calculator Suite</h2>
+                <p class="text-xs text-[var(--color-text-muted)]">Scientific, Textile Engineering &amp; Web Developer units</p>
+              </div>
+            </div>
+
+            <!-- Sub-tabs for Calculator -->
+            <div class="flex items-center gap-1.5 p-1 rounded-xl bg-[var(--color-bg-base)] border border-[var(--color-border)] text-xs">
+              <button class="calc-subtab px-3 py-1.5 rounded-lg font-semibold bg-[#E0A458] text-black transition-all" data-calctab="scientific">Scientific</button>
+              <button class="calc-subtab px-3 py-1.5 rounded-lg font-medium text-[var(--color-text-muted)] hover:text-[#E0A458] transition-all" data-calctab="textile">Textile &amp; GSM</button>
+              <button class="calc-subtab px-3 py-1.5 rounded-lg font-medium text-[var(--color-text-muted)] hover:text-[#E0A458] transition-all" data-calctab="web">Web &amp; Aspect Ratio</button>
+            </div>
+          </div>
+
+          <!-- 1A: Scientific / General Calculator -->
+          <div id="calc-panel-scientific" class="calc-panel max-w-md mx-auto">
+            <div class="rounded-2xl p-4 bg-[var(--color-bg-base)] border border-[var(--color-border)] mb-4">
+              <div id="calc-history" class="text-right text-xs text-[var(--color-text-muted)] font-mono h-5 overflow-hidden"></div>
+              <input 
+                id="calc-display" 
+                type="text" 
+                readonly 
+                value="0" 
+                class="w-full bg-transparent text-right text-3xl font-mono font-bold text-[var(--color-text-main)] focus:outline-none"
+              />
+            </div>
+            
+            <div class="grid grid-cols-4 gap-2 text-sm font-semibold">
+              <button class="calc-btn p-3 rounded-xl bg-[var(--color-bg-card)] border border-[var(--color-border)] hover:bg-[#E0A458]/20 text-[#E0A458]" data-val="C">C</button>
+              <button class="calc-btn p-3 rounded-xl bg-[var(--color-bg-card)] border border-[var(--color-border)] hover:bg-[#E0A458]/20" data-val="(">(</button>
+              <button class="calc-btn p-3 rounded-xl bg-[var(--color-bg-card)] border border-[var(--color-border)] hover:bg-[#E0A458]/20" data-val=")">)</button>
+              <button class="calc-btn p-3 rounded-xl bg-[#E0A458]/20 text-[#E0A458] hover:bg-[#E0A458]/30" data-val="/">÷</button>
+
+              <button class="calc-btn p-3 rounded-xl bg-[var(--color-bg-card)] border border-[var(--color-border)] hover:bg-[#E0A458]/20" data-val="7">7</button>
+              <button class="calc-btn p-3 rounded-xl bg-[var(--color-bg-card)] border border-[var(--color-border)] hover:bg-[#E0A458]/20" data-val="8">8</button>
+              <button class="calc-btn p-3 rounded-xl bg-[var(--color-bg-card)] border border-[var(--color-border)] hover:bg-[#E0A458]/20" data-val="9">9</button>
+              <button class="calc-btn p-3 rounded-xl bg-[#E0A458]/20 text-[#E0A458] hover:bg-[#E0A458]/30" data-val="*">×</button>
+
+              <button class="calc-btn p-3 rounded-xl bg-[var(--color-bg-card)] border border-[var(--color-border)] hover:bg-[#E0A458]/20" data-val="4">4</button>
+              <button class="calc-btn p-3 rounded-xl bg-[var(--color-bg-card)] border border-[var(--color-border)] hover:bg-[#E0A458]/20" data-val="5">5</button>
+              <button class="calc-btn p-3 rounded-xl bg-[var(--color-bg-card)] border border-[var(--color-border)] hover:bg-[#E0A458]/20" data-val="6">6</button>
+              <button class="calc-btn p-3 rounded-xl bg-[#E0A458]/20 text-[#E0A458] hover:bg-[#E0A458]/30" data-val="-">−</button>
+
+              <button class="calc-btn p-3 rounded-xl bg-[var(--color-bg-card)] border border-[var(--color-border)] hover:bg-[#E0A458]/20" data-val="1">1</button>
+              <button class="calc-btn p-3 rounded-xl bg-[var(--color-bg-card)] border border-[var(--color-border)] hover:bg-[#E0A458]/20" data-val="2">2</button>
+              <button class="calc-btn p-3 rounded-xl bg-[var(--color-bg-card)] border border-[var(--color-border)] hover:bg-[#E0A458]/20" data-val="3">3</button>
+              <button class="calc-btn p-3 rounded-xl bg-[#E0A458]/20 text-[#E0A458] hover:bg-[#E0A458]/30" data-val="+">+</button>
+
+              <button class="calc-btn p-3 rounded-xl bg-[var(--color-bg-card)] border border-[var(--color-border)] hover:bg-[#E0A458]/20" data-val="0">0</button>
+              <button class="calc-btn p-3 rounded-xl bg-[var(--color-bg-card)] border border-[var(--color-border)] hover:bg-[#E0A458]/20" data-val=".">.</button>
+              <button class="calc-btn p-3 rounded-xl bg-[var(--color-bg-card)] border border-[var(--color-border)] hover:bg-[#E0A458]/20 text-xs" data-val="back">⌫</button>
+              <button class="calc-btn p-3 rounded-xl bg-[#E0A458] text-black font-bold hover:bg-[#c88f47]" data-val="=">=</button>
+            </div>
+          </div>
+
+          <!-- 1B: Textile Engineering & Fabric GSM Calculator -->
+          <div id="calc-panel-textile" class="calc-panel hidden grid grid-cols-1 md:grid-cols-2 gap-6">
+            <div class="p-5 rounded-2xl bg-[var(--color-bg-base)] border border-[var(--color-border)]">
+              <h3 class="font-serif font-bold text-base text-[#7C9A7E] mb-3">Fabric GSM Calculator (Grams per Square Meter)</h3>
+              <p class="text-xs text-[var(--color-text-muted)] mb-4">Calculate fabric weight from sample dimensions.</p>
+              
+              <div class="space-y-3 text-xs">
+                <div>
+                  <label class="block font-medium mb-1">Sample Weight (Grams):</label>
+                  <input type="number" id="gsm-weight" placeholder="e.g. 2.4" class="w-full px-3 py-2 rounded-xl border border-[var(--color-border)] bg-[var(--color-bg-card)] focus:outline-none focus:border-[#7C9A7E]" />
+                </div>
+                <div class="grid grid-cols-2 gap-3">
+                  <div>
+                    <label class="block font-medium mb-1">Length (cm):</label>
+                    <input type="number" id="gsm-length" placeholder="10" class="w-full px-3 py-2 rounded-xl border border-[var(--color-border)] bg-[var(--color-bg-card)] focus:outline-none focus:border-[#7C9A7E]" />
+                  </div>
+                  <div>
+                    <label class="block font-medium mb-1">Width (cm):</label>
+                    <input type="number" id="gsm-width" placeholder="10" class="w-full px-3 py-2 rounded-xl border border-[var(--color-border)] bg-[var(--color-bg-card)] focus:outline-none focus:border-[#7C9A7E]" />
+                  </div>
+                </div>
+                <button id="btn-calc-gsm" class="w-full py-2.5 rounded-xl bg-[#7C9A7E] text-white font-semibold hover:bg-[#68846a] transition-all">Calculate GSM</button>
+                <div id="gsm-result" class="p-3 rounded-xl bg-[var(--color-bg-card)] border border-[var(--color-border)] text-center text-sm font-bold text-[#E0A458] hidden"></div>
+              </div>
+            </div>
+
+            <div class="p-5 rounded-2xl bg-[var(--color-bg-base)] border border-[var(--color-border)]">
+              <h3 class="font-serif font-bold text-base text-[#E0A458] mb-3">Dye Bath Liquor &amp; Chemical Ratio</h3>
+              <p class="text-xs text-[var(--color-text-muted)] mb-4">Calculate exact water &amp; chemical volume for wet processing.</p>
+              
+              <div class="space-y-3 text-xs">
+                <div>
+                  <label class="block font-medium mb-1">Fabric Batch Weight (kg):</label>
+                  <input type="number" id="dye-fabric-kg" placeholder="e.g. 50" class="w-full px-3 py-2 rounded-xl border border-[var(--color-border)] bg-[var(--color-bg-card)] focus:outline-none focus:border-[#E0A458]" />
+                </div>
+                <div>
+                  <label class="block font-medium mb-1">Liquor Ratio (M:L e.g. 1:8 enter 8):</label>
+                  <input type="number" id="dye-ratio" placeholder="e.g. 8" class="w-full px-3 py-2 rounded-xl border border-[var(--color-border)] bg-[var(--color-bg-card)] focus:outline-none focus:border-[#E0A458]" />
+                </div>
+                <button id="btn-calc-dye" class="w-full py-2.5 rounded-xl bg-[#E0A458] text-black font-semibold hover:bg-[#c88f47] transition-all">Calculate Total Water Needed</button>
+                <div id="dye-result" class="p-3 rounded-xl bg-[var(--color-bg-card)] border border-[var(--color-border)] text-center text-sm font-bold text-[#7C9A7E] hidden"></div>
+              </div>
+            </div>
+          </div>
+
+          <!-- 1C: Web & Aspect Ratio Calculator -->
+          <div id="calc-panel-web" class="calc-panel hidden grid grid-cols-1 md:grid-cols-2 gap-6">
+            <div class="p-5 rounded-2xl bg-[var(--color-bg-base)] border border-[var(--color-border)]">
+              <h3 class="font-serif font-bold text-base text-[#E0A458] mb-3">Aspect Ratio &amp; Dimension Solver</h3>
+              <p class="text-xs text-[var(--color-text-muted)] mb-4">Calculate proportional width or height instantly.</p>
+              <div class="space-y-3 text-xs">
+                <div class="grid grid-cols-2 gap-3">
+                  <div>
+                    <label class="block font-medium mb-1">Original Width (px):</label>
+                    <input type="number" id="ar-orig-w" value="1920" class="w-full px-3 py-2 rounded-xl border border-[var(--color-border)] bg-[var(--color-bg-card)] focus:outline-none focus:border-[#E0A458]" />
+                  </div>
+                  <div>
+                    <label class="block font-medium mb-1">Original Height (px):</label>
+                    <input type="number" id="ar-orig-h" value="1080" class="w-full px-3 py-2 rounded-xl border border-[var(--color-border)] bg-[var(--color-bg-card)] focus:outline-none focus:border-[#E0A458]" />
+                  </div>
+                </div>
+                <div>
+                  <label class="block font-medium mb-1">Target Width (px):</label>
+                  <input type="number" id="ar-target-w" placeholder="e.g. 1200" class="w-full px-3 py-2 rounded-xl border border-[var(--color-border)] bg-[var(--color-bg-card)] focus:outline-none focus:border-[#E0A458]" />
+                </div>
+                <button id="btn-calc-ar" class="w-full py-2.5 rounded-xl bg-[#E0A458] text-black font-semibold hover:bg-[#c88f47] transition-all">Solve New Height</button>
+                <div id="ar-result" class="p-3 rounded-xl bg-[var(--color-bg-card)] border border-[var(--color-border)] text-center text-sm font-bold text-[#7C9A7E] hidden"></div>
+              </div>
+            </div>
+
+            <div class="p-5 rounded-2xl bg-[var(--color-bg-base)] border border-[var(--color-border)]">
+              <h3 class="font-serif font-bold text-base text-[#7C9A7E] mb-3">PX to REM / EM Web Converter</h3>
+              <p class="text-xs text-[var(--color-text-muted)] mb-4">Convert typography units with customizable base font size.</p>
+              <div class="space-y-3 text-xs">
+                <div class="grid grid-cols-2 gap-3">
+                  <div>
+                    <label class="block font-medium mb-1">Pixels (px):</label>
+                    <input type="number" id="unit-px" value="24" class="w-full px-3 py-2 rounded-xl border border-[var(--color-border)] bg-[var(--color-bg-card)] focus:outline-none focus:border-[#7C9A7E]" />
+                  </div>
+                  <div>
+                    <label class="block font-medium mb-1">Base Font (default 16px):</label>
+                    <input type="number" id="unit-base" value="16" class="w-full px-3 py-2 rounded-xl border border-[var(--color-border)] bg-[var(--color-bg-card)] focus:outline-none focus:border-[#7C9A7E]" />
+                  </div>
+                </div>
+                <div class="p-4 rounded-xl bg-[var(--color-bg-card)] border border-[var(--color-border)] text-center">
+                  <span class="text-xs text-[var(--color-text-muted)] block">Calculated Result:</span>
+                  <span id="unit-rem-result" class="text-2xl font-mono font-bold text-[#E0A458]">1.5rem</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- ================= TOOL 2: MS OFFICE & DOCUMENT SUITE ================= -->
+        <section id="tool-office" class="tool-card custom-card rounded-3xl p-6 sm:p-8 lg:p-10" data-cat="office">
+          <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pb-6 border-b border-[var(--color-border)] mb-6">
+            <div class="flex items-center gap-3">
+              <div class="w-12 h-12 rounded-2xl bg-[#7C9A7E]/20 text-[#7C9A7E] flex items-center justify-center shrink-0">
+                <svg class="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+                </svg>
+              </div>
+              <div>
+                <h2 class="text-2xl font-serif font-bold text-[var(--color-text-main)]">MS Office Alternative &amp; Document Studio</h2>
+                <p class="text-xs text-[var(--color-text-muted)]">Rich text Word processor, live markdown, and quick spreadsheet export</p>
+              </div>
+            </div>
+
+            <!-- Action buttons -->
+            <div class="flex items-center gap-2">
+              <button id="btn-export-doc" class="px-3.5 py-1.5 rounded-xl text-xs font-semibold bg-[#E0A458] text-black hover:bg-[#c88f47] transition-all flex items-center gap-1.5">
+                <svg class="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4" /></svg>
+                <span>Download .DOC</span>
+              </button>
+              <button id="btn-print-doc" class="px-3 py-1.5 rounded-xl text-xs font-semibold border border-[var(--color-border)] text-[var(--color-text-main)] hover:border-[#E0A458] transition-all flex items-center gap-1">
+                <span>Print / PDF</span>
+              </button>
+            </div>
+          </div>
+
+          <!-- Document Toolbar -->
+          <div class="flex flex-wrap items-center gap-1.5 p-2 rounded-2xl bg-[var(--color-bg-base)] border border-[var(--color-border)] mb-4 text-xs">
+            <button class="doc-btn px-2.5 py-1.5 rounded-lg hover:bg-[#E0A458]/20 font-bold" data-cmd="bold">B</button>
+            <button class="doc-btn px-2.5 py-1.5 rounded-lg hover:bg-[#E0A458]/20 italic" data-cmd="italic">I</button>
+            <button class="doc-btn px-2.5 py-1.5 rounded-lg hover:bg-[#E0A458]/20 underline" data-cmd="underline">U</button>
+            <span class="w-[1px] h-4 bg-[var(--color-border)] mx-1"></span>
+            <button class="doc-btn px-2.5 py-1.5 rounded-lg hover:bg-[#E0A458]/20" data-cmd="formatBlock" data-val="h1">H1</button>
+            <button class="doc-btn px-2.5 py-1.5 rounded-lg hover:bg-[#E0A458]/20" data-cmd="formatBlock" data-val="h2">H2</button>
+            <button class="doc-btn px-2.5 py-1.5 rounded-lg hover:bg-[#E0A458]/20" data-cmd="formatBlock" data-val="p">P</button>
+            <span class="w-[1px] h-4 bg-[var(--color-border)] mx-1"></span>
+            <button class="doc-btn px-2.5 py-1.5 rounded-lg hover:bg-[#E0A458]/20" data-cmd="insertUnorderedList">• Bullet</button>
+            <button class="doc-btn px-2.5 py-1.5 rounded-lg hover:bg-[#E0A458]/20" data-cmd="insertOrderedList">1. Number</button>
+            <span class="w-[1px] h-4 bg-[var(--color-border)] mx-1"></span>
+            <button class="doc-btn px-2.5 py-1.5 rounded-lg hover:bg-[#E0A458]/20" data-cmd="justifyLeft">Left</button>
+            <button class="doc-btn px-2.5 py-1.5 rounded-lg hover:bg-[#E0A458]/20" data-cmd="justifyCenter">Center</button>
+            <button class="doc-btn px-2.5 py-1.5 rounded-lg hover:bg-[#E0A458]/20" data-cmd="justifyRight">Right</button>
+            <span class="w-[1px] h-4 bg-[var(--color-border)] mx-1"></span>
+            <button id="btn-clear-doc" class="px-2.5 py-1.5 rounded-lg hover:bg-red-500/20 text-red-400">Clear</button>
+          </div>
+
+          <!-- Document Canvas / Editable Area -->
+          <div 
+            id="doc-editor" 
+            contenteditable="true" 
+            class="min-h-[280px] p-6 rounded-2xl bg-[var(--color-bg-base)] border border-[var(--color-border)] text-sm leading-relaxed focus:outline-none focus:border-[#E0A458]"
+          >
+            <h2>Project Proposal &amp; Technical Scope</h2>
+            <p>Welcome to your lightweight in-browser document editor. Format contracts, write research summaries, or craft meeting agendas without launching heavy software.</p>
+            <ul>
+              <li>High-speed local autosave directly in your browser.</li>
+              <li>1-click export to standard Microsoft Word .doc format.</li>
+              <li>Built-in word &amp; character count tracker below.</li>
+            </ul>
+          </div>
+
+          <div class="flex items-center justify-between text-xs text-[var(--color-text-muted)] font-mono mt-3 px-1">
+            <span id="doc-word-count">Words: 42 · Characters: 278</span>
+            <span class="text-[#7C9A7E]">✓ Autosaved locally</span>
+          </div>
+        </section>
+
+        <!-- ================= TOOL 3: PHOTO EDITING ================= -->
+        <section id="tool-photo" class="tool-card custom-card rounded-3xl p-6 sm:p-8 lg:p-10" data-cat="photo">
+          <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pb-6 border-b border-[var(--color-border)] mb-6">
+            <div class="flex items-center gap-3">
+              <div class="w-12 h-12 rounded-2xl bg-[#E0A458]/15 text-[#E0A458] flex items-center justify-center shrink-0">
+                <svg class="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z" />
+                </svg>
+              </div>
+              <div>
+                <h2 class="text-2xl font-serif font-bold text-[var(--color-text-main)]">Photo Editing Studio</h2>
+                <p class="text-xs text-[var(--color-text-muted)]">Filters, tone curves, rotation, and high-res export</p>
+              </div>
+            </div>
+
+            <!-- Upload Photo & Download -->
+            <div class="flex items-center gap-2">
+              <label class="cursor-pointer px-3.5 py-1.5 rounded-xl text-xs font-semibold bg-[var(--color-bg-base)] border border-[var(--color-border)] hover:border-[#E0A458] text-[var(--color-text-main)] transition-all">
+                <span>Upload Photo</span>
+                <input type="file" id="photo-upload-input" accept="image/*" class="hidden" />
+              </label>
+              <button id="btn-download-photo" class="px-3.5 py-1.5 rounded-xl text-xs font-semibold bg-[#E0A458] text-black hover:bg-[#c88f47] transition-all flex items-center gap-1.5">
+                <svg class="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4" /></svg>
+                <span>Save Image</span>
+              </button>
+            </div>
+          </div>
+
+          <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
+            <!-- Canvas Preview -->
+            <div class="lg:col-span-8 flex flex-col items-center">
+              <div class="relative w-full aspect-[16/10] bg-[var(--color-bg-base)] rounded-2xl border border-[var(--color-border)] overflow-hidden flex items-center justify-center p-4">
+                <canvas id="photo-canvas" class="max-w-full max-h-full object-contain rounded-xl shadow-lg"></canvas>
+              </div>
+              <div class="flex items-center gap-2 mt-4 text-xs font-mono text-[var(--color-text-muted)]">
+                <button id="btn-rotate-ccw" class="px-3 py-1.5 rounded-lg border border-[var(--color-border)] hover:border-[#E0A458]">↺ Rotate 90°</button>
+                <button id="btn-rotate-cw" class="px-3 py-1.5 rounded-lg border border-[var(--color-border)] hover:border-[#E0A458]">↻ Rotate 90°</button>
+                <button id="btn-flip-h" class="px-3 py-1.5 rounded-lg border border-[var(--color-border)] hover:border-[#E0A458]">⇄ Flip H</button>
+                <button id="btn-reset-filters" class="px-3 py-1.5 rounded-lg text-red-400 hover:underline">Reset</button>
+              </div>
+            </div>
+
+            <!-- Controls Panel -->
+            <div class="lg:col-span-4 space-y-4 text-xs">
+              <!-- Quick Style Presets -->
+              <div>
+                <label class="block font-medium mb-1.5 text-[var(--color-text-main)]">Quick Atmosphere Presets:</label>
+                <div class="grid grid-cols-2 gap-2">
+                  <button class="preset-btn px-2.5 py-1.5 rounded-xl border border-[var(--color-border)] hover:border-[#E0A458] text-center" data-preset="amber">Midnight Amber</button>
+                  <button class="preset-btn px-2.5 py-1.5 rounded-xl border border-[var(--color-border)] hover:border-[#E0A458] text-center" data-preset="sage">Cinematic Sage</button>
+                  <button class="preset-btn px-2.5 py-1.5 rounded-xl border border-[var(--color-border)] hover:border-[#E0A458] text-center" data-preset="bw">B&amp;W Contrast</button>
+                  <button class="preset-btn px-2.5 py-1.5 rounded-xl border border-[var(--color-border)] hover:border-[#E0A458] text-center" data-preset="vintage">Vintage Warm</button>
+                </div>
+              </div>
+
+              <!-- Sliders -->
+              <div class="space-y-3 pt-2 border-t border-[var(--color-border)]">
+                <div>
+                  <div class="flex justify-between mb-1"><span>Brightness</span><span id="val-bright" class="font-mono">100%</span></div>
+                  <input type="range" id="slider-bright" min="0" max="200" value="100" class="w-full accent-[#E0A458]" />
+                </div>
+                <div>
+                  <div class="flex justify-between mb-1"><span>Contrast</span><span id="val-contrast" class="font-mono">100%</span></div>
+                  <input type="range" id="slider-contrast" min="0" max="200" value="100" class="w-full accent-[#E0A458]" />
+                </div>
+                <div>
+                  <div class="flex justify-between mb-1"><span>Saturation</span><span id="val-saturate" class="font-mono">100%</span></div>
+                  <input type="range" id="slider-saturate" min="0" max="200" value="100" class="w-full accent-[#E0A458]" />
+                </div>
+                <div>
+                  <div class="flex justify-between mb-1"><span>Sepia Tone</span><span id="val-sepia" class="font-mono">0%</span></div>
+                  <input type="range" id="slider-sepia" min="0" max="100" value="0" class="w-full accent-[#E0A458]" />
+                </div>
+                <div>
+                  <div class="flex justify-between mb-1"><span>Soft Blur</span><span id="val-blur" class="font-mono">0px</span></div>
+                  <input type="range" id="slider-blur" min="0" max="20" value="0" class="w-full accent-[#E0A458]" />
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- ================= TOOL 4: PDF TOOLKIT ================= -->
+        <section id="tool-pdf" class="tool-card custom-card rounded-3xl p-6 sm:p-8 lg:p-10" data-cat="pdf">
+          <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pb-6 border-b border-[var(--color-border)] mb-6">
+            <div class="flex items-center gap-3">
+              <div class="w-12 h-12 rounded-2xl bg-red-500/15 text-red-400 flex items-center justify-center shrink-0">
+                <svg class="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 21h10a2 2 0 002-2V9.414a1 1 0 00-.293-.707l-5.414-5.414A1 1 0 0012.586 3H7a2 2 0 00-2 2v14a2 2 0 002 2z" />
+                </svg>
+              </div>
+              <div>
+                <h2 class="text-2xl font-serif font-bold text-[var(--color-text-main)]">PDF Toolkit &amp; Converter</h2>
+                <p class="text-xs text-[var(--color-text-muted)]">Inspect metadata, view PDF pages, extract clean text, and generate PDF documents</p>
+              </div>
+            </div>
+          </div>
+
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+            <!-- PDF Viewer & Text Extractor -->
+            <div class="p-6 rounded-2xl bg-[var(--color-bg-base)] border border-[var(--color-border)] flex flex-col justify-between">
+              <div>
+                <h3 class="font-serif font-bold text-base text-[var(--color-text-main)] mb-2">PDF Inspector &amp; Viewer</h3>
+                <p class="text-xs text-[var(--color-text-muted)] mb-4">Upload any PDF file to inspect its size, structure, and view in an isolated frame.</p>
+                
+                <input type="file" id="pdf-file-input" accept=".pdf" class="w-full text-xs file:mr-3 file:py-2 file:px-4 file:rounded-lg file:border-0 file:text-xs file:font-semibold file:bg-red-500/20 file:text-red-400 mb-4" />
+                
+                <div id="pdf-preview-box" class="h-56 rounded-xl border border-[var(--color-border)] bg-[var(--color-bg-card)] flex items-center justify-center text-xs text-[var(--color-text-muted)] overflow-hidden">
+                  <span id="pdf-placeholder-text">No PDF selected yet</span>
+                  <iframe id="pdf-iframe" class="w-full h-full hidden"></iframe>
+                </div>
+              </div>
+
+              <div id="pdf-stats" class="mt-4 pt-3 border-t border-[var(--color-border)] text-xs font-mono text-[var(--color-text-muted)] flex justify-between">
+                <span>Status: Ready</span>
+                <span id="pdf-size-label">0 KB</span>
+              </div>
+            </div>
+
+            <!-- PDF Document Generator -->
+            <div class="p-6 rounded-2xl bg-[var(--color-bg-base)] border border-[var(--color-border)] flex flex-col justify-between">
+              <div>
+                <h3 class="font-serif font-bold text-base text-[var(--color-text-main)] mb-2">Create Printable PDF Note</h3>
+                <p class="text-xs text-[var(--color-text-muted)] mb-4">Type or paste content to instantly convert into a print-ready PDF layout.</p>
+                
+                <div class="space-y-3 text-xs">
+                  <div>
+                    <label class="block font-medium mb-1">Document Title:</label>
+                    <input type="text" id="pdf-gen-title" value="Project Specification &amp; Deliverables" class="w-full px-3 py-2 rounded-xl border border-[var(--color-border)] bg-[var(--color-bg-card)] focus:outline-none focus:border-[#E0A458]" />
+                  </div>
+                  <div>
+                    <label class="block font-medium mb-1">Author / Sign-off:</label>
+                    <input type="text" id="pdf-gen-author" value="MD Sojibor Rahman" class="w-full px-3 py-2 rounded-xl border border-[var(--color-border)] bg-[var(--color-bg-card)] focus:outline-none focus:border-[#E0A458]" />
+                  </div>
+                  <div>
+                    <label class="block font-medium mb-1">Content Body:</label>
+                    <textarea id="pdf-gen-body" rows="4" class="w-full px-3 py-2 rounded-xl border border-[var(--color-border)] bg-[var(--color-bg-card)] focus:outline-none focus:border-[#E0A458] leading-relaxed">This document is formatted and ready for client export. High quality typography and clean margins guaranteed.</textarea>
+                  </div>
+                </div>
+              </div>
+
+              <button id="btn-generate-pdf" class="mt-4 w-full py-2.5 rounded-xl bg-[#E0A458] text-black font-semibold text-xs hover:bg-[#c88f47] transition-all flex items-center justify-center gap-2">
+                <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 17h2a2 2 0 002-2v-4a2 2 0 00-2-2H5a2 2 0 00-2 2v4a2 2 0 002 2h2m2 4h6a2 2 0 002-2v-4a2 2 0 00-2-2H9a2 2 0 00-2 2v4a2 2 0 002 2zm8-12V5a2 2 0 00-2-2H9a2 2 0 00-2 2v4h10z" /></svg>
+                <span>Print &amp; Export as PDF</span>
+              </button>
+            </div>
+          </div>
+        </section>
+
+        <!-- ================= TOOL 5: RESIZER & BACKGROUND REMOVER ================= -->
+        <section id="tool-image" class="tool-card custom-card rounded-3xl p-6 sm:p-8 lg:p-10" data-cat="image">
+          <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pb-6 border-b border-[var(--color-border)] mb-6">
+            <div class="flex items-center gap-3">
+              <div class="w-12 h-12 rounded-2xl bg-[#7C9A7E]/20 text-[#7C9A7E] flex items-center justify-center shrink-0">
+                <svg class="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10" />
+                </svg>
+              </div>
+              <div>
+                <h2 class="text-2xl font-serif font-bold text-[var(--color-text-main)]">Image Resizer &amp; Background Remover</h2>
+                <p class="text-xs text-[var(--color-text-muted)]">Scale images with custom dimensions and make solid/studio backgrounds transparent</p>
+              </div>
+            </div>
+
+            <!-- Upload Image -->
+            <label class="cursor-pointer px-4 py-2 rounded-xl text-xs font-semibold bg-[#E0A458] text-black hover:bg-[#c88f47] transition-all flex items-center gap-1.5">
+              <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z" /></svg>
+              <span>Select Image to Process</span>
+              <input type="file" id="resizer-file-input" accept="image/*" class="hidden" />
+            </label>
+          </div>
+
+          <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
+            <!-- Canvas Preview with Transparency Checkerboard -->
+            <div class="lg:col-span-7 flex flex-col items-center">
+              <div class="relative w-full aspect-[4/3] bg-checkerboard rounded-2xl border border-[var(--color-border)] overflow-hidden flex items-center justify-center p-4">
+                <canvas id="resizer-canvas" class="max-w-full max-h-full object-contain rounded-lg shadow-xl cursor-crosshair" title="Click on background color to remove it"></canvas>
+              </div>
+              <p class="text-[11px] text-[var(--color-text-muted)] mt-2 font-mono text-center">
+                💡 Tip: Click anywhere on the image preview above to sample &amp; remove that background color!
+              </p>
+            </div>
+
+            <!-- Resize & BG Removal Settings -->
+            <div class="lg:col-span-5 space-y-6 text-xs">
+              
+              <!-- 1. Resize Controls -->
+              <div class="p-5 rounded-2xl bg-[var(--color-bg-base)] border border-[var(--color-border)] space-y-3">
+                <h3 class="font-serif font-bold text-sm text-[var(--color-text-main)]">1. Dimension Resizing</h3>
+                
+                <div class="grid grid-cols-2 gap-3">
+                  <div>
+                    <label class="block font-medium mb-1">Target Width (px):</label>
+                    <input type="number" id="resize-w" value="800" class="w-full px-3 py-2 rounded-xl border border-[var(--color-border)] bg-[var(--color-bg-card)] focus:outline-none focus:border-[#E0A458]" />
+                  </div>
+                  <div>
+                    <label class="block font-medium mb-1">Target Height (px):</label>
+                    <input type="number" id="resize-h" value="600" class="w-full px-3 py-2 rounded-xl border border-[var(--color-border)] bg-[var(--color-bg-card)] focus:outline-none focus:border-[#E0A458]" />
+                  </div>
+                </div>
+
+                <div class="flex items-center gap-2 pt-1">
+                  <input type="checkbox" id="resize-lock-ratio" checked class="accent-[#E0A458]" />
+                  <label for="resize-lock-ratio" class="cursor-pointer">Maintain aspect ratio lock</label>
+                </div>
+              </div>
+
+              <!-- 2. Background Remover Controls -->
+              <div class="p-5 rounded-2xl bg-[var(--color-bg-base)] border border-[var(--color-border)] space-y-3">
+                <h3 class="font-serif font-bold text-sm text-[#E0A458]">2. Background Removal (Chroma Key)</h3>
+                
+                <div class="flex items-center justify-between gap-3">
+                  <div class="flex items-center gap-2">
+                    <span class="font-medium">Color to Remove:</span>
+                    <input type="color" id="bg-color-picker" value="#ffffff" class="w-7 h-7 rounded border border-[var(--color-border)] cursor-pointer" />
+                  </div>
+                  <button id="btn-apply-bg-remove" class="px-3 py-1.5 rounded-lg bg-[#7C9A7E] text-white font-semibold hover:bg-[#68846a]">
+                    Make Transparent
+                  </button>
+                </div>
+
+                <div>
+                  <div class="flex justify-between mb-1">
+                    <span>Tolerance (Threshold):</span>
+                    <span id="tolerance-val" class="font-mono">40</span>
+                  </div>
+                  <input type="range" id="tolerance-slider" min="5" max="150" value="40" class="w-full accent-[#E0A458]" />
+                </div>
+              </div>
+
+              <!-- Download Button -->
+              <div class="space-y-2">
+                <button id="btn-download-processed" class="w-full py-3 rounded-xl bg-[#E0A458] text-black font-semibold text-xs hover:bg-[#c88f47] transition-all flex items-center justify-center gap-2 shadow-lg">
+                  <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4" /></svg>
+                  <span>Download Transparent PNG</span>
+                </button>
+                <button id="btn-reset-resizer" class="w-full text-center text-xs text-gray-400 hover:text-white py-1">
+                  Revert to Original Image
+                </button>
+              </div>
+
+            </div>
+          </div>
+        </section>
+
+        <!-- ================= TOOL 6: DEVELOPER & TEXT HELPERS ================= -->
+        <section id="tool-developer" class="tool-card custom-card rounded-3xl p-6 sm:p-8 lg:p-10" data-cat="developer">
+          <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pb-6 border-b border-[var(--color-border)] mb-6">
+            <div class="flex items-center gap-3">
+              <div class="w-12 h-12 rounded-2xl bg-[#E0A458]/15 text-[#E0A458] flex items-center justify-center shrink-0">
+                <svg class="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 20l4-16m4 4l4 4-4 4M6 16l-4-4 4-4" />
+                </svg>
+              </div>
+              <div>
+                <h2 class="text-2xl font-serif font-bold text-[var(--color-text-main)]">Developer &amp; Web Helpers</h2>
+                <p class="text-xs text-[var(--color-text-muted)]">JSON beautifier, Base64 encoder, URL encoder &amp; slug generator</p>
+              </div>
+            </div>
+          </div>
+
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+            <!-- JSON Formatter -->
+            <div class="p-6 rounded-2xl bg-[var(--color-bg-base)] border border-[var(--color-border)] space-y-3">
+              <div class="flex items-center justify-between">
+                <h3 class="font-serif font-bold text-sm text-[var(--color-text-main)]">JSON Formatter &amp; Validator</h3>
+                <div class="flex items-center gap-2 text-xs">
+                  <button id="btn-json-format" class="text-[#E0A458] hover:underline font-mono">Format</button>
+                  <button id="btn-json-minify" class="text-[var(--color-text-muted)] hover:underline font-mono">Minify</button>
+                </div>
+              </div>
+              <textarea id="json-input" rows="7" placeholder='{"status":"success","code":200}' class="w-full px-3 py-2 rounded-xl border border-[var(--color-border)] bg-[var(--color-bg-card)] font-mono text-xs focus:outline-none focus:border-[#E0A458]"></textarea>
+              <div id="json-feedback" class="text-[11px] font-mono text-[var(--color-text-muted)]">Input standard JSON above</div>
+            </div>
+
+            <!-- Base64 & Slug Utility -->
+            <div class="p-6 rounded-2xl bg-[var(--color-bg-base)] border border-[var(--color-border)] space-y-3">
+              <div class="flex items-center justify-between">
+                <h3 class="font-serif font-bold text-sm text-[var(--color-text-main)]">Base64 &amp; URL Slugger</h3>
+                <div class="flex items-center gap-2 text-xs">
+                  <button id="btn-to-slug" class="text-[#7C9A7E] hover:underline font-mono">To Slug</button>
+                  <button id="btn-to-base64" class="text-[#E0A458] hover:underline font-mono">To Base64</button>
+                </div>
+              </div>
+              <textarea id="encoder-input" rows="7" placeholder="Paste your text or string here to convert to URL-safe slug or Base64..." class="w-full px-3 py-2 rounded-xl border border-[var(--color-border)] bg-[var(--color-bg-card)] font-mono text-xs focus:outline-none focus:border-[#7C9A7E]"></textarea>
+              <div class="flex justify-between items-center text-[11px] font-mono text-[var(--color-text-muted)]">
+                <span id="encoder-feedback">Ready</span>
+                <button id="btn-copy-encoder" class="hover:text-[#E0A458]">Copy Output</button>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- ================= EXTENSION BANNER: REQUEST MORE TOOLS ================= -->
+        <div class="p-8 rounded-3xl bg-[var(--color-bg-card)] border border-[var(--color-border)] text-center relative overflow-hidden">
+          <div class="max-w-xl mx-auto space-y-3">
+            <span class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-semibold uppercase tracking-wider bg-[#E0A458]/15 text-[#E0A458]">
+              More Tools Coming Soon
+            </span>
+            <h3 class="font-serif font-bold text-2xl text-[var(--color-text-main)]">Need a Specialized Engineering Tool?</h3>
+            <p class="text-xs text-[var(--color-text-muted)] leading-relaxed">
+              Have an idea for a custom WordPress helper, textile recipe generator, or image asset converter? Reach out directly and I can build it.
+            </p>
+            <div class="pt-2">
+              <a href="index.html#contact" class="inline-flex items-center gap-2 px-6 py-2.5 rounded-xl text-xs font-semibold bg-[#E0A458] text-black hover:bg-[#c88f47] transition-all">
+                Suggest a Tool to Build →
+              </a>
+            </div>
+          </div>
+        </div>
+
+      </div>
+
+    </main>
+
+    <!-- Footer -->
+    <footer class="border-t border-[var(--color-border)] py-10 px-4 text-center text-xs text-[var(--color-text-muted)]">
+      © 2026 MD Sojibor Rahman · Made in Dhaka · <a href="index.html" class="text-[#E0A458] hover:underline">Return to Main Portfolio</a>
+    </footer>
+
+    <!-- Scripts -->
+    <script>
+      // Non-intrusive Toast Notification
+      function showToast(message) {
+        const existing = document.getElementById('tools-toast');
+        if (existing) existing.remove();
+        const toast = document.createElement('div');
+        toast.id = 'tools-toast';
+        toast.className = 'fixed bottom-6 right-6 z-50 px-5 py-3 rounded-xl bg-[var(--color-bg-card)] border border-[#E0A458] text-[var(--color-text-main)] text-xs font-medium shadow-2xl transition-all duration-300 transform translate-y-2 opacity-0 flex items-center gap-2';
+        toast.innerHTML = `<span class="w-2 h-2 rounded-full bg-[#E0A458] animate-ping"></span><span>${message}</span>`;
+        document.body.appendChild(toast);
+        requestAnimationFrame(() => toast.classList.remove('translate-y-2', 'opacity-0'));
+        setTimeout(() => {
+          toast.classList.add('opacity-0', 'translate-y-2');
+          setTimeout(() => toast.remove(), 300);
+        }, 3200);
+      }
+
+      // Category filter buttons
+      const catButtons = document.querySelectorAll('.tool-cat-btn');
+      const toolCards = document.querySelectorAll('.tool-card');
+
+      catButtons.forEach(btn => {
+        btn.addEventListener('click', () => {
+          const target = btn.getAttribute('data-target');
+          catButtons.forEach(b => b.className = 'tool-cat-btn px-4 py-2 rounded-xl text-xs font-semibold border border-[var(--color-border)] text-[var(--color-text-muted)] hover:border-[#E0A458] transition-all');
+          btn.className = 'tool-cat-btn px-4 py-2 rounded-xl text-xs font-semibold bg-[#E0A458] text-black transition-all';
+
+          toolCards.forEach(card => {
+            if (target === 'all' || card.getAttribute('data-cat') === target) {
+              card.classList.remove('hidden');
+            } else {
+              card.classList.add('hidden');
+            }
+          });
+        });
+      });
+
+      /* ================= 1. CALCULATOR LOGIC ================= */
+      // Sub-tabs
+      const calcSubtabs = document.querySelectorAll('.calc-subtab');
+      const calcPanels = document.querySelectorAll('.calc-panel');
+
+      calcSubtabs.forEach(tab => {
+        tab.addEventListener('click', () => {
+          const target = tab.getAttribute('data-calctab');
+          calcSubtabs.forEach(t => t.className = 'calc-subtab px-3 py-1.5 rounded-lg font-medium text-[var(--color-text-muted)] hover:text-[#E0A458] transition-all');
+          tab.className = 'calc-subtab px-3 py-1.5 rounded-lg font-semibold bg-[#E0A458] text-black transition-all';
+          calcPanels.forEach(p => p.classList.add('hidden'));
+          document.getElementById(`calc-panel-${target}`).classList.remove('hidden');
+        });
+      });
+
+      // Scientific Calculator
+      const calcDisplay = document.getElementById('calc-display');
+      const calcHistory = document.getElementById('calc-history');
+      let calcExpr = '';
+
+      document.querySelectorAll('.calc-btn').forEach(btn => {
+        btn.addEventListener('click', () => {
+          const val = btn.getAttribute('data-val');
+          if (val === 'C') {
+            calcExpr = '';
+            calcDisplay.value = '0';
+            calcHistory.textContent = '';
+          } else if (val === 'back') {
+            calcExpr = calcExpr.slice(0, -1);
+            calcDisplay.value = calcExpr || '0';
+          } else if (val === '=') {
+            try {
+              // Safe evaluation using basic tokens
+              const sanitized = calcExpr.replace(/[^0-9+\-*/().]/g, '');
+              const result = Function(`'use strict'; return (${sanitized})`)();
+              calcHistory.textContent = calcExpr + ' =';
+              calcDisplay.value = Number.isFinite(result) ? result : 'Error';
+              calcExpr = String(result);
+            } catch(e) {
+              calcDisplay.value = 'Error';
+              calcExpr = '';
+            }
+          } else {
+            calcExpr += val;
+            calcDisplay.value = calcExpr;
+          }
+        });
+      });
+
+      // Textile GSM
+      document.getElementById('btn-calc-gsm').addEventListener('click', () => {
+        const weight = parseFloat(document.getElementById('gsm-weight').value);
+        const length = parseFloat(document.getElementById('gsm-length').value);
+        const width = parseFloat(document.getElementById('gsm-width').value);
+        const resEl = document.getElementById('gsm-result');
+
+        if (!weight || !length || !width) {
+          return showToast('Please enter weight, length, and width values');
+        }
+
+        const areaM2 = (length / 100) * (width / 100);
+        const gsm = (weight / areaM2).toFixed(2);
+        resEl.classList.remove('hidden');
+        resEl.innerHTML = `Fabric Density: <span class="text-xl">${gsm}</span> g/m² (GSM)`;
+        showToast(`Calculated: ${gsm} GSM`);
+      });
+
+      // Textile Dye Liquor
+      document.getElementById('btn-calc-dye').addEventListener('click', () => {
+        const fabricKg = parseFloat(document.getElementById('dye-fabric-kg').value);
+        const ratio = parseFloat(document.getElementById('dye-ratio').value);
+        const resEl = document.getElementById('dye-result');
+
+        if (!fabricKg || !ratio) {
+          return showToast('Please enter fabric weight and liquor ratio');
+        }
+
+        const liters = (fabricKg * ratio).toFixed(1);
+        resEl.classList.remove('hidden');
+        resEl.innerHTML = `Total Dye Liquor: <span class="text-xl">${liters}</span> Liters of Water`;
+        showToast(`Liquor volume: ${liters} L`);
+      });
+
+      // Aspect Ratio Solver
+      document.getElementById('btn-calc-ar').addEventListener('click', () => {
+        const origW = parseFloat(document.getElementById('ar-orig-w').value);
+        const origH = parseFloat(document.getElementById('ar-orig-h').value);
+        const targetW = parseFloat(document.getElementById('ar-target-w').value);
+        const resEl = document.getElementById('ar-result');
+
+        if (!origW || !origH || !targetW) {
+          return showToast('Please enter original dimensions and target width');
+        }
+
+        const targetH = Math.round((origH / origW) * targetW);
+        resEl.classList.remove('hidden');
+        resEl.innerHTML = `Solved Proportional Height: <span class="text-xl">${targetH}px</span>`;
+        showToast(`Proportional Height: ${targetH}px`);
+      });
+
+      // PX to REM
+      const pxInput = document.getElementById('unit-px');
+      const baseInput = document.getElementById('unit-base');
+      const remResult = document.getElementById('unit-rem-result');
+
+      function updateRem() {
+        const px = parseFloat(pxInput.value) || 0;
+        const base = parseFloat(baseInput.value) || 16;
+        remResult.textContent = `${(px / base).toFixed(3).replace(/\.?0+$/, '')}rem`;
+      }
+      pxInput.addEventListener('input', updateRem);
+      baseInput.addEventListener('input', updateRem);
+
+      /* ================= 2. MS OFFICE & DOCUMENT EDITOR ================= */
+      const docEditor = document.getElementById('doc-editor');
+      const docWordCount = document.getElementById('doc-word-count');
+
+      // Toolbar commands
+      document.querySelectorAll('.doc-btn').forEach(btn => {
+        btn.addEventListener('click', (e) => {
+          e.preventDefault();
+          const cmd = btn.getAttribute('data-cmd');
+          const val = btn.getAttribute('data-val') || null;
+          document.execCommand(cmd, false, val);
+          docEditor.focus();
+          updateDocStats();
+        });
+      });
+
+      document.getElementById('btn-clear-doc').addEventListener('click', () => {
+        if (confirm('Clear entire document?')) {
+          docEditor.innerHTML = '<p><br></p>';
+          updateDocStats();
+        }
+      });
+
+      function updateDocStats() {
+        const text = docEditor.innerText || '';
+        const words = text.trim() ? text.trim().split(/\s+/).length : 0;
+        const chars = text.length;
+        docWordCount.textContent = `Words: ${words} · Characters: ${chars}`;
+        localStorage.setItem('sojibor_tool_doc', docEditor.innerHTML);
+      }
+
+      docEditor.addEventListener('input', updateDocStats);
+
+      // Load saved doc
+      const savedDoc = localStorage.getItem('sojibor_tool_doc');
+      if (savedDoc) {
+        docEditor.innerHTML = savedDoc;
+        updateDocStats();
+      }
+
+      // Download .DOC file
+      document.getElementById('btn-export-doc').addEventListener('click', () => {
+        const content = docEditor.innerHTML;
+        const header = "<html xmlns:o='urn:schemas-microsoft-com:office:office' "+
+          "xmlns:w='urn:schemas-microsoft-com:office:word' "+
+          "xmlns='http://www.w3.org/TR/REC-html40'>"+
+          "<head><meta charset='utf-8'><title>Exported Document</title></head><body>";
+        const footer = "</body></html>";
+        const sourceHTML = header + content + footer;
+        
+        const blob = new Blob(['\ufeff' + sourceHTML], {
+          type: 'application/msword'
+        });
+        const url = URL.createObjectURL(blob);
+        const a = document.createElement('a');
+        a.href = url;
+        a.download = 'Document_Export.doc';
+        a.click();
+        URL.revokeObjectURL(url);
+        showToast('✓ Document downloaded as .doc');
+      });
+
+      // Print / PDF
+      document.getElementById('btn-print-doc').addEventListener('click', () => {
+        const win = window.open('', '_blank');
+        if (win) {
+          win.document.write(`
+            <html>
+              <head>
+                <title>Document Print</title>
+                <style>
+                  body { font-family: system-ui, sans-serif; line-height: 1.6; padding: 40px; color: #111; }
+                  h1, h2, h3 { color: #111; }
+                </style>
+              </head>
+              <body>${docEditor.innerHTML}</body>
+            </html>
+          `);
+          win.document.close();
+          win.print();
+        } else {
+          window.print();
+        }
+      });
+
+      /* ================= 3. PHOTO EDITING STUDIO ================= */
+      const photoCanvas = document.getElementById('photo-canvas');
+      const photoCtx = photoCanvas.getContext('2d');
+      let currentImage = new Image();
+      currentImage.crossOrigin = 'anonymous';
+
+      let rotation = 0;
+      let flipH = 1;
+      let filters = {
+        bright: 100,
+        contrast: 100,
+        saturate: 100,
+        sepia: 0,
+        blur: 0
+      };
+
+      // Load default image initially
+      function loadDefaultPhoto() {
+        currentImage.src = 'https://images.unsplash.com/photo-1509316975850-ff9c5deb0cd9?auto=format&fit=crop&w=1200&q=80';
+        currentImage.onload = () => applyFilters();
+      }
+      loadDefaultPhoto();
+
+      // Upload custom photo
+      document.getElementById('photo-upload-input').addEventListener('change', (e) => {
+        const file = e.target.files[0];
+        if (!file) return;
+        const reader = new FileReader();
+        reader.onload = (event) => {
+          currentImage = new Image();
+          currentImage.onload = () => {
+            rotation = 0;
+            flipH = 1;
+            applyFilters();
+            showToast('✓ Photo loaded for editing');
+          };
+          currentImage.src = event.target.result;
+        };
+        reader.readAsDataURL(file);
+      });
+
+      function applyFilters() {
+        if (!currentImage.complete || currentImage.naturalWidth === 0) return;
+
+        const isRotated = (rotation % 180 !== 0);
+        const w = isRotated ? currentImage.naturalHeight : currentImage.naturalWidth;
+        const h = isRotated ? currentImage.naturalWidth : currentImage.naturalHeight;
+
+        photoCanvas.width = w;
+        photoCanvas.height = h;
+
+        photoCtx.save();
+        photoCtx.clearRect(0, 0, w, h);
+
+        // Center transformation
+        photoCtx.translate(w / 2, h / 2);
+        photoCtx.rotate((rotation * Math.PI) / 180);
+        photoCtx.scale(flipH, 1);
+
+        // Apply CSS filters directly to canvas context
+        photoCtx.filter = `brightness(${filters.bright}%) contrast(${filters.contrast}%) saturate(${filters.saturate}%) sepia(${filters.sepia}%) blur(${filters.blur}px)`;
+        photoCtx.drawImage(currentImage, -currentImage.naturalWidth / 2, -currentImage.naturalHeight / 2);
+        photoCtx.restore();
+      }
+
+      // Sliders listeners
+      const sBright = document.getElementById('slider-bright');
+      const sContrast = document.getElementById('slider-contrast');
+      const sSaturate = document.getElementById('slider-saturate');
+      const sSepia = document.getElementById('slider-sepia');
+      const sBlur = document.getElementById('slider-blur');
+
+      sBright.addEventListener('input', (e) => {
+        filters.bright = e.target.value;
+        document.getElementById('val-bright').textContent = `${filters.bright}%`;
+        applyFilters();
+      });
+      sContrast.addEventListener('input', (e) => {
+        filters.contrast = e.target.value;
+        document.getElementById('val-contrast').textContent = `${filters.contrast}%`;
+        applyFilters();
+      });
+      sSaturate.addEventListener('input', (e) => {
+        filters.saturate = e.target.value;
+        document.getElementById('val-saturate').textContent = `${filters.saturate}%`;
+        applyFilters();
+      });
+      sSepia.addEventListener('input', (e) => {
+        filters.sepia = e.target.value;
+        document.getElementById('val-sepia').textContent = `${filters.sepia}%`;
+        applyFilters();
+      });
+      sBlur.addEventListener('input', (e) => {
+        filters.blur = e.target.value;
+        document.getElementById('val-blur').textContent = `${filters.blur}px`;
+        applyFilters();
+      });
+
+      // Rotation & Flip
+      document.getElementById('btn-rotate-cw').addEventListener('click', () => {
+        rotation = (rotation + 90) % 360;
+        applyFilters();
+      });
+      document.getElementById('btn-rotate-ccw').addEventListener('click', () => {
+        rotation = (rotation - 90 + 360) % 360;
+        applyFilters();
+      });
+      document.getElementById('btn-flip-h').addEventListener('click', () => {
+        flipH *= -1;
+        applyFilters();
+      });
+
+      // Presets
+      document.querySelectorAll('.preset-btn').forEach(btn => {
+        btn.addEventListener('click', () => {
+          const preset = btn.getAttribute('data-preset');
+          if (preset === 'amber') {
+            filters = { bright: 105, contrast: 115, saturate: 125, sepia: 25, blur: 0 };
+          } else if (preset === 'sage') {
+            filters = { bright: 100, contrast: 110, saturate: 85, sepia: 10, blur: 0 };
+          } else if (preset === 'bw') {
+            filters = { bright: 100, contrast: 140, saturate: 0, sepia: 0, blur: 0 };
+          } else if (preset === 'vintage') {
+            filters = { bright: 95, contrast: 90, saturate: 110, sepia: 40, blur: 0 };
+          }
+          // Update inputs
+          sBright.value = filters.bright; document.getElementById('val-bright').textContent = `${filters.bright}%`;
+          sContrast.value = filters.contrast; document.getElementById('val-contrast').textContent = `${filters.contrast}%`;
+          sSaturate.value = filters.saturate; document.getElementById('val-saturate').textContent = `${filters.saturate}%`;
+          sSepia.value = filters.sepia; document.getElementById('val-sepia').textContent = `${filters.sepia}%`;
+          sBlur.value = filters.blur; document.getElementById('val-blur').textContent = `${filters.blur}px`;
+          applyFilters();
+          showToast(`Preset "${btn.textContent}" applied`);
+        });
+      });
+
+      document.getElementById('btn-reset-filters').addEventListener('click', () => {
+        filters = { bright: 100, contrast: 100, saturate: 100, sepia: 0, blur: 0 };
+        rotation = 0;
+        flipH = 1;
+        sBright.value = 100; document.getElementById('val-bright').textContent = '100%';
+        sContrast.value = 100; document.getElementById('val-contrast').textContent = '100%';
+        sSaturate.value = 100; document.getElementById('val-saturate').textContent = '100%';
+        sSepia.value = 0; document.getElementById('val-sepia').textContent = '0%';
+        sBlur.value = 0; document.getElementById('val-blur').textContent = '0px';
+        applyFilters();
+        showToast('Filters reset');
+      });
+
+      // Save Edited Photo
+      document.getElementById('btn-download-photo').addEventListener('click', () => {
+        const link = document.createElement('a');
+        link.download = 'sojibor_photo_edited.png';
+        link.href = photoCanvas.toDataURL('image/png');
+        link.click();
+        showToast('✓ Photo downloaded');
+      });
+
+      /* ================= 4. PDF TOOLKIT ================= */
+      // PDF File Inspector
+      document.getElementById('pdf-file-input').addEventListener('change', (e) => {
+        const file = e.target.files[0];
+        if (!file) return;
+
+        const sizeKb = (file.size / 1024).toFixed(1);
+        document.getElementById('pdf-size-label').textContent = `${sizeKb} KB`;
+
+        const iframe = document.getElementById('pdf-iframe');
+        const placeholder = document.getElementById('pdf-placeholder-text');
+        const fileUrl = URL.createObjectURL(file);
+
+        iframe.src = fileUrl;
+        iframe.classList.remove('hidden');
+        placeholder.classList.add('hidden');
+        showToast(`✓ PDF loaded (${sizeKb} KB)`);
+      });
+
+      // PDF Generator
+      document.getElementById('btn-generate-pdf').addEventListener('click', () => {
+        const title = document.getElementById('pdf-gen-title').value;
+        const author = document.getElementById('pdf-gen-author').value;
+        const body = document.getElementById('pdf-gen-body').value;
+
+        const printWindow = window.open('', '_blank');
+        if (printWindow) {
+          printWindow.document.write(`
+            <html>
+              <head>
+                <title>${title}</title>
+                <style>
+                  @page { size: A4; margin: 20mm; }
+                  body { font-family: 'Georgia', serif; line-height: 1.7; color: #111; max-width: 800px; margin: 0 auto; }
+                  h1 { font-size: 26px; border-bottom: 2px solid #E0A458; padding-bottom: 8px; margin-bottom: 6px; }
+                  .meta { font-family: sans-serif; font-size: 12px; color: #666; margin-bottom: 24px; }
+                  p { font-size: 14px; white-space: pre-wrap; }
+                </style>
+              </head>
+              <body>
+                <h1>${title}</h1>
+                <div class="meta">Generated by ${author} · Date: ${new Date().toLocaleDateString()}</div>
+                <p>${body}</p>
+              </body>
+            </html>
+          `);
+          printWindow.document.close();
+          printWindow.print();
+        } else {
+          showToast('Please allow popups to print/save PDF');
+        }
+      });
+
+      /* ================= 5. RESIZE & BG REMOVER ================= */
+      const resizerCanvas = document.getElementById('resizer-canvas');
+      const resizerCtx = resizerCanvas.getContext('2d');
+      let resizerImage = new Image();
+      resizerImage.crossOrigin = 'anonymous';
+
+      // Load initial sample
+      resizerImage.src = 'https://images.unsplash.com/photo-1576091160399-112ba8d25d1d?auto=format&fit=crop&w=1000&q=80';
+      resizerImage.onload = () => {
+        document.getElementById('resize-w').value = resizerImage.naturalWidth;
+        document.getElementById('resize-h').value = resizerImage.naturalHeight;
+        drawResizerCanvas();
+      };
+
+      document.getElementById('resizer-file-input').addEventListener('change', (e) => {
+        const file = e.target.files[0];
+        if (!file) return;
+        const reader = new FileReader();
+        reader.onload = (event) => {
+          resizerImage = new Image();
+          resizerImage.onload = () => {
+            document.getElementById('resize-w').value = resizerImage.naturalWidth;
+            document.getElementById('resize-h').value = resizerImage.naturalHeight;
+            drawResizerCanvas();
+            showToast('✓ Image loaded for resizing / transparency');
+          };
+          resizerImage.src = event.target.result;
+        };
+        reader.readAsDataURL(file);
+      });
+
+      function drawResizerCanvas() {
+        if (!resizerImage.complete) return;
+        const w = parseInt(document.getElementById('resize-w').value) || resizerImage.naturalWidth;
+        const h = parseInt(document.getElementById('resize-h').value) || resizerImage.naturalHeight;
+
+        resizerCanvas.width = w;
+        resizerCanvas.height = h;
+        resizerCtx.clearRect(0, 0, w, h);
+        resizerCtx.drawImage(resizerImage, 0, 0, w, h);
+      }
+
+      // Aspect ratio lock
+      const lockRatio = document.getElementById('resize-lock-ratio');
+      const inputW = document.getElementById('resize-w');
+      const inputH = document.getElementById('resize-h');
+
+      inputW.addEventListener('input', () => {
+        if (lockRatio.checked && resizerImage.naturalWidth > 0) {
+          const ratio = resizerImage.naturalHeight / resizerImage.naturalWidth;
+          inputH.value = Math.round(inputW.value * ratio);
+        }
+        drawResizerCanvas();
+      });
+
+      inputH.addEventListener('input', () => {
+        if (lockRatio.checked && resizerImage.naturalHeight > 0) {
+          const ratio = resizerImage.naturalWidth / resizerImage.naturalHeight;
+          inputW.value = Math.round(inputH.value * ratio);
+        }
+        drawResizerCanvas();
+      });
+
+      // Background Chroma Removal
+      const toleranceSlider = document.getElementById('tolerance-slider');
+      const toleranceVal = document.getElementById('tolerance-val');
+      toleranceSlider.addEventListener('input', (e) => toleranceVal.textContent = e.target.value);
+
+      function hexToRgb(hex) {
+        const parsed = parseInt(hex.replace('#', ''), 16);
+        return {
+          r: (parsed >> 16) & 255,
+          g: (parsed >> 8) & 255,
+          b: parsed & 255
+        };
+      }
+
+      function removeBackground(targetRgb, tolerance) {
+        drawResizerCanvas(); // redraw fresh image at current scale
+        const w = resizerCanvas.width;
+        const h = resizerCanvas.height;
+        const imgData = resizerCtx.getImageData(0, 0, w, h);
+        const data = imgData.data;
+
+        for (let i = 0; i < data.length; i += 4) {
+          const r = data[i];
+          const g = data[i + 1];
+          const b = data[i + 2];
+
+          // Euclidean color distance
+          const dist = Math.sqrt(
+            Math.pow(r - targetRgb.r, 2) + 
+            Math.pow(g - targetRgb.g, 2) + 
+            Math.pow(b - targetRgb.b, 2)
+          );
+
+          if (dist < tolerance) {
+            data[i + 3] = 0; // Transparent
+          }
+        }
+
+        resizerCtx.putImageData(imgData, 0, 0);
+        showToast('✓ Background color removed!');
+      }
+
+      document.getElementById('btn-apply-bg-remove').addEventListener('click', () => {
+        const colorHex = document.getElementById('bg-color-picker').value;
+        const targetRgb = hexToRgb(colorHex);
+        const tolerance = parseFloat(toleranceSlider.value);
+        removeBackground(targetRgb, tolerance);
+      });
+
+      // Canvas click eye-dropper to remove background
+      resizerCanvas.addEventListener('click', (e) => {
+        const rect = resizerCanvas.getBoundingClientRect();
+        const scaleX = resizerCanvas.width / rect.width;
+        const scaleY = resizerCanvas.height / rect.height;
+        const x = Math.floor((e.clientX - rect.left) * scaleX);
+        const y = Math.floor((e.clientY - rect.top) * scaleY);
+
+        const pixel = resizerCtx.getImageData(x, y, 1, 1).data;
+        const targetRgb = { r: pixel[0], g: pixel[1], b: pixel[2] };
+        
+        // Update color input
+        const hex = "#" + ((1 << 24) + (pixel[0] << 16) + (pixel[1] << 8) + pixel[2]).toString(16).slice(1);
+        document.getElementById('bg-color-picker').value = hex;
+
+        const tolerance = parseFloat(toleranceSlider.value);
+        removeBackground(targetRgb, tolerance);
+      });
+
+      // Download Processed Image
+      document.getElementById('btn-download-processed').addEventListener('click', () => {
+        const link = document.createElement('a');
+        link.download = 'sojibor_processed_image.png';
+        link.href = resizerCanvas.toDataURL('image/png');
+        link.click();
+        showToast('✓ Transparent PNG downloaded');
+      });
+
+      document.getElementById('btn-reset-resizer').addEventListener('click', () => {
+        drawResizerCanvas();
+        showToast('Reverted to original image');
+      });
+
+      /* ================= 6. DEVELOPER UTILITIES ================= */
+      // JSON Formatter
+      const jsonInput = document.getElementById('json-input');
+      const jsonFeedback = document.getElementById('json-feedback');
+
+      document.getElementById('btn-json-format').addEventListener('click', () => {
+        try {
+          const parsed = JSON.parse(jsonInput.value);
+          jsonInput.value = JSON.stringify(parsed, null, 2);
+          jsonFeedback.textContent = '✓ Valid JSON formatted';
+          jsonFeedback.className = 'text-[11px] font-mono text-emerald-400';
+          showToast('JSON formatted');
+        } catch(e) {
+          jsonFeedback.textContent = '✗ Invalid JSON syntax: ' + e.message;
+          jsonFeedback.className = 'text-[11px] font-mono text-red-400';
+        }
+      });
+
+      document.getElementById('btn-json-minify').addEventListener('click', () => {
+        try {
+          const parsed = JSON.parse(jsonInput.value);
+          jsonInput.value = JSON.stringify(parsed);
+          jsonFeedback.textContent = '✓ Minified JSON output';
+          jsonFeedback.className = 'text-[11px] font-mono text-emerald-400';
+          showToast('JSON minified');
+        } catch(e) {
+          jsonFeedback.textContent = '✗ Invalid JSON syntax: ' + e.message;
+          jsonFeedback.className = 'text-[11px] font-mono text-red-400';
+        }
+      });
+
+      // Base64 & Slugger
+      const encInput = document.getElementById('encoder-input');
+      const encFeedback = document.getElementById('encoder-feedback');
+
+      document.getElementById('btn-to-slug').addEventListener('click', () => {
+        const text = encInput.value;
+        const slug = text
+          .toLowerCase()
+          .trim()
+          .replace(/[^\w\s-]/g, '')
+          .replace(/[\s_-]+/g, '-')
+          .replace(/^-+|-+$/g, '');
+        encInput.value = slug;
+        encFeedback.textContent = 'Slug generated';
+        showToast('Converted to URL Slug');
+      });
+
+      document.getElementById('btn-to-base64').addEventListener('click', () => {
+        try {
+          const b64 = btoa(unescape(encodeURIComponent(encInput.value)));
+          encInput.value = b64;
+          encFeedback.textContent = 'Base64 encoded';
+          showToast('Encoded to Base64');
+        } catch(e) {
+          encFeedback.textContent = 'Error encoding';
+        }
+      });
+
+      document.getElementById('btn-copy-encoder').addEventListener('click', () => {
+        navigator.clipboard.writeText(encInput.value).then(() => {
+          showToast('✓ Copied to clipboard');
+        });
+      });
+
+      /* ================= THEME & MENU TOGGLE ================= */
+      const themeToggleBtn = document.getElementById('theme-toggle');
+      const sunIcon = document.getElementById('sun-icon');
+      const moonIcon = document.getElementById('moon-icon');
+
+      function applyTheme(theme) {
+        document.documentElement.setAttribute('data-theme', theme);
+        localStorage.setItem('theme', theme);
+        if (theme === 'dark') {
+          sunIcon.classList.remove('hidden');
+          moonIcon.classList.add('hidden');
+        } else {
+          sunIcon.classList.add('hidden');
+          moonIcon.classList.remove('hidden');
+        }
+      }
+
+      applyTheme(localStorage.getItem('theme') || 'dark');
+      themeToggleBtn.addEventListener('click', () => {
+        const next = document.documentElement.getAttribute('data-theme') === 'dark' ? 'light' : 'dark';
+        applyTheme(next);
+      });
+
+      // Mobile Menu Toggle
+      const mobileMenuBtn = document.getElementById('mobile-menu-btn');
+      const mobileNav = document.getElementById('mobile-nav');
+      const menuIconOpen = document.getElementById('menu-icon-open');
+      const menuIconClose = document.getElementById('menu-icon-close');
+
+      if (mobileMenuBtn && mobileNav) {
+        mobileMenuBtn.addEventListener('click', () => {
+          const isOpen = !mobileNav.classList.contains('hidden');
+          if (isOpen) {
+            mobileNav.classList.add('hidden');
+            if (menuIconOpen) menuIconOpen.classList.remove('hidden');
+            if (menuIconClose) menuIconClose.classList.add('hidden');
+          } else {
+            mobileNav.classList.remove('hidden');
+            if (menuIconOpen) menuIconOpen.classList.add('hidden');
+            if (menuIconClose) menuIconClose.classList.remove('hidden');
+          }
+        });
+      }
+    </script>
+  </body>
+</html>

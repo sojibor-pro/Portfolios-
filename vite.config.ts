@@ -24,6 +24,7 @@ export default defineConfig(() => {
           main: path.resolve('.', 'index.html'),
           work: path.resolve('.', 'work.html'),
           gallery: path.resolve('.', 'gallery.html'),
+          tools: path.resolve('.', 'tools.html'),
         },
       },
     },
