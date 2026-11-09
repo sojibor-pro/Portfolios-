@@ -28,6 +28,9 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/js-beautify/1.14.9/beautify-html.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/js-beautify/1.14.9/beautify-css.min.js"></script>
 
+    <!-- HLS.js for Live IPTV and Bangladeshi TV m3u8 streams -->
+    <script src="https://cdn.jsdelivr.net/npm/hls.js@latest"></script>
+
     <script>
       tailwind.config = {
         darkMode: ['class', '[data-theme="dark"]'],
@@ -315,19 +318,23 @@
       <div class="space-y-16">
 
         <!-- ================================================================= -->
-        <!-- 1. MS OFFICE APPS: WORD, EXCEL, POWERPOINT                        -->
+        <!-- 1. MS OFFICE APPS: WORD, EXCEL, POWERPOINT (VIEW & EDIT ONLY)      -->
         <!-- ================================================================= -->
         <section id="tool-office" class="tool-card custom-card rounded-3xl p-6 sm:p-8 lg:p-10" data-cat="office">
           <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pb-6 border-b border-[var(--color-border)] mb-6">
             <div class="flex items-center gap-3">
               <div class="w-12 h-12 rounded-2xl bg-[#E0A458]/15 text-[#E0A458] flex items-center justify-center shrink-0">
                 <svg class="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" />
                 </svg>
               </div>
               <div>
-                <h2 class="text-2xl font-serif font-bold text-[var(--color-text-main)]">MS Office Suite (Word · Excel · PowerPoint)</h2>
-                <p class="text-xs text-[var(--color-text-muted)]">View, create, edit, format page layouts &amp; export documents, spreadsheets &amp; presentations</p>
+                <div class="flex items-center gap-2">
+                  <h2 class="text-2xl font-serif font-bold text-[var(--color-text-main)]">MS Office Viewer &amp; Editor</h2>
+                  <span class="px-2 py-0.5 rounded text-[10px] font-mono bg-[#E0A458]/20 text-[#E0A458] font-bold">View &amp; Edit Mode Only</span>
+                </div>
+                <p class="text-xs text-[var(--color-text-muted)]">Open, view, edit and adjust existing documents, spreadsheets &amp; presentation decks (No blank creation)</p>
               </div>
             </div>
 
@@ -339,8 +346,27 @@
             </div>
           </div>
 
-          <!-- APP 1A: MS WORD PROCESSOR -->
+          <!-- APP 1A: MS WORD PROCESSOR (VIEW & EDIT ONLY) -->
           <div id="office-app-word" class="office-app-panel">
+            <!-- Open Document & Preset Selector Bar -->
+            <div class="flex flex-wrap items-center justify-between gap-3 p-3 bg-[var(--color-bg-base)] border border-[var(--color-border)] rounded-2xl mb-3 text-xs">
+              <div class="flex flex-wrap items-center gap-2">
+                <span class="text-[var(--color-text-muted)] font-semibold">Loaded Document:</span>
+                <select id="word-preset-select" class="px-3 py-1.5 rounded-lg bg-[var(--color-bg-card)] border border-[var(--color-border)] text-xs text-[var(--color-text-main)] focus:outline-none focus:border-[#E0A458]">
+                  <option value="textile">📄 Textile Wet-Processing &amp; Sustainability Report.docx</option>
+                  <option value="software">📄 Full-Stack Web Architecture Specification.docx</option>
+                  <option value="contract">📄 Garment Export Merchandising Agreement.doc</option>
+                </select>
+              </div>
+              <div class="flex items-center gap-2">
+                <label class="cursor-pointer px-3 py-1.5 rounded-lg bg-[var(--color-bg-card)] border border-[#E0A458] text-[#E0A458] font-semibold hover:bg-[#E0A458]/10 transition-all flex items-center gap-1.5">
+                  <svg class="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-8l-4-4m0 0L8 8m4-4v12" /></svg>
+                  <span>Open Document (.docx, .doc, .txt)</span>
+                  <input type="file" id="word-upload-input" accept=".docx,.doc,.txt,.html,.rtf" class="hidden" />
+                </label>
+              </div>
+            </div>
+
             <!-- Word Formatting Toolbar with Layout, Font Size, Margins -->
             <div class="flex flex-wrap items-center gap-2 p-3 rounded-2xl bg-[var(--color-bg-base)] border border-[var(--color-border)] mb-4 text-xs">
               <!-- Font Family -->
@@ -387,7 +413,7 @@
 
               <!-- Page Layout Settings -->
               <div class="flex items-center gap-1.5">
-                <span class="text-[11px] text-[var(--color-text-muted)]">Page:</span>
+                <span class="text-[11px] text-[var(--color-text-muted)]">Layout:</span>
                 <select id="word-page-size" class="px-2 py-1.5 rounded-lg bg-[var(--color-bg-card)] border border-[var(--color-border)]">
                   <option value="a4">A4 (Standard)</option>
                   <option value="letter">US Letter</option>
@@ -403,7 +429,7 @@
               <!-- Export Buttons -->
               <div class="ml-auto flex items-center gap-2">
                 <button id="btn-export-word-doc" class="px-3 py-1.5 rounded-lg bg-[#E0A458] text-black font-semibold hover:bg-[#c88f47] transition-all flex items-center gap-1">
-                  <span>Download .DOC</span>
+                  <span>Save / Download .DOC</span>
                 </button>
                 <button id="btn-print-word-doc" class="px-3 py-1.5 rounded-lg border border-[var(--color-border)] hover:border-[#E0A458] transition-all">
                   <span>Print / PDF</span>
@@ -418,28 +444,37 @@
                 class="w-full max-w-[850px] min-h-[520px] p-10 bg-[var(--color-bg-card)] border border-[var(--color-border)] rounded-xl shadow-xl focus:outline-none focus:border-[#E0A458] text-base leading-relaxed" 
                 contenteditable="true"
               >
-                <h1 style="font-family:'Playfair Display', serif; font-size:28px; margin-bottom:8px; color:var(--color-text-main);">Project Scope &amp; Management Plan</h1>
-                <p style="color:var(--color-text-muted); font-size:14px; margin-bottom:16px;">Prepared by MD Sojibor Rahman · Textile Engineer &amp; Full-Stack WordPress Developer</p>
-                <hr style="border-color:var(--color-border); margin-bottom:20px;">
-                <p>Welcome to your complete in-browser MS Word document editor. You can format text, adjust typography, configure page sizes (A4, Letter, Legal), switch margins, and immediately export to standard Microsoft Word .doc format or print to PDF.</p>
-                <br>
-                <h2 style="font-size:20px; font-weight:bold; margin-bottom:8px;">Core Deliverables:</h2>
-                <ul>
-                  <li>Clean responsive web architectures with modern UI standards.</li>
-                  <li>Industrial textile wet-process optimization and dye-bath sustainability metrics.</li>
-                  <li>Automated document generation and instant client sign-off files.</li>
-                </ul>
+                <!-- Rendered dynamically from loaded document -->
               </div>
             </div>
 
             <div class="flex items-center justify-between text-xs text-[var(--color-text-muted)] font-mono mt-3 px-1">
               <span id="word-stats">Words: 68 · Characters: 480</span>
-              <span class="text-[#7C9A7E]">✓ Auto-saving in browser</span>
+              <span class="text-[#7C9A7E]">✓ Live edits auto-saved in memory</span>
             </div>
           </div>
 
-          <!-- APP 1B: MS EXCEL SPREADSHEET -->
+          <!-- APP 1B: MS EXCEL SPREADSHEET (VIEW & EDIT ONLY) -->
           <div id="office-app-excel" class="office-app-panel hidden">
+            <!-- Open Spreadsheet & Presets Selector Bar -->
+            <div class="flex flex-wrap items-center justify-between gap-3 p-3 bg-[var(--color-bg-base)] border border-[var(--color-border)] rounded-2xl mb-3 text-xs">
+              <div class="flex flex-wrap items-center gap-2">
+                <span class="text-[var(--color-text-muted)] font-semibold">Loaded Spreadsheet:</span>
+                <select id="excel-preset-select" class="px-3 py-1.5 rounded-lg bg-[var(--color-bg-card)] border border-[var(--color-border)] text-xs text-[var(--color-text-main)] focus:outline-none focus:border-[#E0A458]">
+                  <option value="consumption">📊 Garment Fabric Consumption &amp; Costing.xlsx</option>
+                  <option value="efficiency">📊 Production Line SMV &amp; Operator Efficiency.xlsx</option>
+                  <option value="invoices">📊 Client Invoicing &amp; Billing Register.csv</option>
+                </select>
+              </div>
+              <div class="flex items-center gap-2">
+                <label class="cursor-pointer px-3 py-1.5 rounded-lg bg-[var(--color-bg-card)] border border-[#7C9A7E] text-[#7C9A7E] font-semibold hover:bg-[#7C9A7E]/10 transition-all flex items-center gap-1.5">
+                  <svg class="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-8l-4-4m0 0L8 8m4-4v12" /></svg>
+                  <span>Open Existing Spreadsheet (.xlsx, .csv)</span>
+                  <input type="file" id="excel-import-file" accept=".csv, .xlsx, .xls" class="hidden" />
+                </label>
+              </div>
+            </div>
+
             <!-- Excel Toolbar -->
             <div class="flex flex-wrap items-center justify-between gap-3 p-3 rounded-2xl bg-[var(--color-bg-base)] border border-[var(--color-border)] mb-4 text-xs">
               <div class="flex items-center gap-2">
@@ -447,21 +482,17 @@
                 <input 
                   type="text" 
                   id="excel-formula-bar" 
-                  placeholder="Formula bar e.g. =SUM(B1:B5) or value" 
+                  placeholder="Formula bar e.g. =SUM(B1:B5) or cell value" 
                   class="w-64 sm:w-80 px-3 py-1.5 rounded-lg bg-[var(--color-bg-card)] border border-[var(--color-border)] font-mono focus:outline-none focus:border-[#E0A458]"
                 />
                 <button id="btn-excel-apply-formula" class="px-2.5 py-1.5 rounded-lg bg-[#E0A458]/20 text-[#E0A458] font-semibold hover:bg-[#E0A458]/30">Apply</button>
               </div>
 
               <div class="flex flex-wrap items-center gap-2">
-                <button id="btn-excel-add-row" class="px-2.5 py-1.5 rounded-lg border border-[var(--color-border)] hover:border-[#E0A458]">+ Add Row</button>
+                <button id="btn-excel-add-row" class="px-2.5 py-1.5 rounded-lg border border-[var(--color-border)] hover:border-[#E0A458]">+ Add Row to Sheet</button>
                 <button id="btn-excel-add-col" class="px-2.5 py-1.5 rounded-lg border border-[var(--color-border)] hover:border-[#E0A458]">+ Add Column</button>
-                <label class="cursor-pointer px-2.5 py-1.5 rounded-lg border border-[var(--color-border)] hover:border-[#7C9A7E] text-[#7C9A7E]">
-                  <span>Open CSV/XLSX</span>
-                  <input type="file" id="excel-import-file" accept=".csv, .xlsx, .xls" class="hidden" />
-                </label>
                 <button id="btn-excel-export-xlsx" class="px-3 py-1.5 rounded-lg bg-[#7C9A7E] text-white font-semibold hover:bg-[#68846a] flex items-center gap-1">
-                  <span>Export .XLSX</span>
+                  <span>Save .XLSX</span>
                 </button>
                 <button id="btn-excel-export-csv" class="px-3 py-1.5 rounded-lg bg-[#E0A458] text-black font-semibold hover:bg-[#c88f47]">
                   <span>Export CSV</span>
@@ -477,21 +508,35 @@
             </div>
 
             <div class="flex items-center justify-between text-xs text-[var(--color-text-muted)] font-mono mt-3 px-1">
-              <span>Supports formulas: <strong class="text-[#E0A458]">=SUM(A1:A5)</strong>, <strong class="text-[#E0A458]">=AVERAGE(B1:B5)</strong>, <strong class="text-[#E0A458]">=COUNT(A1:A5)</strong>, <strong class="text-[#E0A458]">=MIN(B1:B5)</strong></span>
+              <span>Supports live formulas: <strong class="text-[#E0A458]">=SUM(A1:A5)</strong>, <strong class="text-[#E0A458]">=AVERAGE(B1:B5)</strong>, <strong class="text-[#E0A458]">=COUNT(A1:A5)</strong>, <strong class="text-[#E0A458]">=MIN(B1:B5)</strong></span>
               <span id="excel-active-cell">Active Cell: A1</span>
             </div>
           </div>
 
-          <!-- APP 1C: MS POWERPOINT PRESENTATION STUDIO -->
+          <!-- APP 1C: MS POWERPOINT PRESENTATION (VIEW & EDIT ONLY) -->
           <div id="office-app-ppt" class="office-app-panel hidden">
+            <!-- Open Deck & Presets Selector Bar -->
+            <div class="flex flex-wrap items-center justify-between gap-3 p-3 bg-[var(--color-bg-base)] border border-[var(--color-border)] rounded-2xl mb-3 text-xs">
+              <div class="flex flex-wrap items-center gap-2">
+                <span class="text-[var(--color-text-muted)] font-semibold">Loaded Presentation Deck:</span>
+                <select id="ppt-preset-select" class="px-3 py-1.5 rounded-lg bg-[var(--color-bg-card)] border border-[var(--color-border)] text-xs text-[var(--color-text-main)] focus:outline-none focus:border-[#E0A458]">
+                  <option value="textile_deck">📽️ Sustainable Textile Engineering Strategy (3 Slides)</option>
+                  <option value="portfolio_pitch">📽️ Full-Stack Digital Product Architecture (3 Slides)</option>
+                </select>
+              </div>
+              <div class="flex items-center gap-2">
+                <label class="cursor-pointer px-3 py-1.5 rounded-lg bg-[var(--color-bg-card)] border border-[#E0A458] text-[#E0A458] font-semibold hover:bg-[#E0A458]/10 transition-all flex items-center gap-1.5">
+                  <svg class="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-8l-4-4m0 0L8 8m4-4v12" /></svg>
+                  <span>Open Existing Deck (.json, .txt)</span>
+                  <input type="file" id="ppt-upload-input" accept=".json,.txt" class="hidden" />
+                </label>
+              </div>
+            </div>
+
             <!-- PPT Toolbar -->
             <div class="flex flex-wrap items-center justify-between gap-3 p-3 rounded-2xl bg-[var(--color-bg-base)] border border-[var(--color-border)] mb-4 text-xs">
               <div class="flex items-center gap-2">
-                <button id="btn-ppt-add-slide" class="px-3 py-1.5 rounded-lg bg-[#E0A458] text-black font-semibold hover:bg-[#c88f47] flex items-center gap-1">
-                  <span>+ New Slide</span>
-                </button>
-                <button id="btn-ppt-duplicate-slide" class="px-2.5 py-1.5 rounded-lg border border-[var(--color-border)] hover:border-[#E0A458]">Duplicate</button>
-                <button id="btn-ppt-delete-slide" class="px-2.5 py-1.5 rounded-lg border border-red-500/30 text-red-400 hover:bg-red-500/10">Delete Slide</button>
+                <button id="btn-ppt-duplicate-slide" class="px-2.5 py-1.5 rounded-lg border border-[var(--color-border)] hover:border-[#E0A458]">Duplicate Current Slide</button>
                 <select id="ppt-slide-layout" class="px-2.5 py-1.5 rounded-lg bg-[var(--color-bg-card)] border border-[var(--color-border)]">
                   <option value="title">Title Cover Slide</option>
                   <option value="content" selected>Title &amp; Key Content</option>
